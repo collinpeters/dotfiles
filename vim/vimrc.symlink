@@ -22,10 +22,10 @@ Bundle 'Raimondi/delimitMate'
 Bundle 'ervandew/supertab'
 Bundle 'rking/ag.vim'
 Bundle 'elzr/vim-json'
+Bundle 'collinpeters/dbext.vim'
 "Bundle 'lsdr/monokai'
 " vim-scripts
 Bundle 'Align'
-Bundle 'dbext.vim'
 Bundle 'SQLComplete.vim'
 Bundle 'SQLUtilities.vim'
 

@@ -24,7 +24,11 @@ done
 # load everything but the path and completion files
 for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}
 do
-  source $file
+	# EXCLUDING OH-MY-ZSH!!
+	if [[ "$config_file" != *oh-my-zsh* ]] 
+	then
+		source $file
+	fi
 done
 
 # initialize autocomplete here, otherwise functions won't be loaded
@@ -38,3 +42,6 @@ do
 done
 
 unset config_files
+
+# Now source oh-my-zsh
+source ~/.oh-my-zsh/oh-my-zshrc

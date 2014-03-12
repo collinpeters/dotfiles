@@ -25,7 +25,7 @@ done
 for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}
 do
 	# EXCLUDING OH-MY-ZSH!!
-	if [[ "$config_file" != *oh-my-zsh* ]] 
+	if [[ "$file" != *oh-my-zsh* ]] 
 	then
 		source $file
 	fi

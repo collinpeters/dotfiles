@@ -1,0 +1,5 @@
+--type-set=properties=.properties
+--type-set=mxml=.mxml
+--type-set=as=.as
+--type-set=tag=.tag
+--ignore-dir=.metadata

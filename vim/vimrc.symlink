@@ -27,7 +27,6 @@ Bundle 'collinpeters/dbext.vim'
 " vim-scripts
 Bundle 'Align'
 Bundle 'SQLComplete.vim'
-Bundle 'SQLUtilities.vim'
 
 filetype plugin indent on     " required!
 

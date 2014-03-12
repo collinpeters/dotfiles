@@ -1,4 +1,195 @@
+" Don't worry about compatibility with Vi
+set nocompatible
+
+filetype off                   " required!
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required! 
+Bundle 'gmarik/vundle'
+
+" original repos on github
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-git'
+Bundle 'tpope/vim-unimpaired'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'scrooloose/nerdtree'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'Raimondi/delimitMate'
+Bundle 'ervandew/supertab'
+Bundle 'rking/ag.vim'
+Bundle 'elzr/vim-json'
+"Bundle 'lsdr/monokai'
+" vim-scripts
+Bundle 'Align'
+Bundle 'dbext.vim'
+Bundle 'SQLComplete.vim'
+Bundle 'SQLUtilities.vim'
+
+filetype plugin indent on     " required!
+
+" Favourite colorscheme
+colorscheme solarized
+"colorscheme dante
+"colorscheme manxome
+"colorscheme molokai
+
+" 16 colors option for solarized to look right
+set t_Co=16
+
+" Dark background
+set background=dark
+
+" Syntax highlighting
 syntax on
 
-" Wrap gitcommit file types at the appropriate length
-filetype indent plugin on
+if has("autocmd")
+	" Jump to the last position when reopening a file
+	au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+" Remap leader to comma
+let mapleader = ","
+
+" jj is the same as escape in edit mode (killer!!)
+inoremap jj <ESC>
+
+" the ';' is the same as ':'  i.e. use ;w to save to save the need to press shift
+noremap ; :
+
+" Clear the search. No more typing 'asdfawdsf' to clear the search
+nmap <silent> ,/ :nohlsearch<CR>
+
+" Bubble single lines using ctrl-up/down - http://vimcasts.org/episodes/bubbling-text/
+nmap <C-Up> [e
+nmap <C-Down> ]e
+
+" Easy window navigation
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" Wrapped lines goes down/up to next row, rather than next line in file (you've fooled me for the last time Vim!!!)
+nnoremap j gj
+nnoremap k gk
+
+" visual shifting (does not exit Visual mode after shift)
+vnoremap < <gv
+vnoremap > >gv 
+
+" Options, options, options
+set showcmd                    " Show (partial) command in status line
+set showmatch                  " Highlight matching brackets
+set ignorecase                 " Do case insensitive matching
+set smartcase                  " Do smart case matching
+set incsearch                  " Incremental search (find as you type)
+set autowrite                  " Automatically save before commands like :next and :make
+set hidden                     " Hide buffers when they are abandoned
+"set mouse=a                    " Enable mouse usage (all modes) in terminals
+set wildignore+=*.class        " Ignore these files
+set wildmenu                   " Use the wildmenu
+set wildmode=list:longest,full " command <Tab> completion, list matches, then longest common part, then all.
+set tabstop=4                  " Tab stop of 4 characters
+set shiftwidth=4               " Number of spaces to use for each step of (auto)indent
+set nobackup                   " Don't make backup files
+set ai                         " Automatic indents
+set nowrap                     " Don't wrap by default
+set hlsearch                   " highlight search matches
+set scrolloff=3                " Have 3 lines of offset (or buffer) when scrolling
+set relativenumber             " Show relative line numbers
+set formatoptions=croql        " Format options
+set pastetoggle=<F2>           " Handle the paste toggle when pasting code
+set showtabline=1              " Show the tab line if there are two or more tabs
+set autochdir                  " Change the working directory to that of the current file
+set splitbelow 				   " split below
+set splitright 				   " vertical split right
+set lazyredraw                 " do not update screen while executing macros
+
+if has('cmdline_info')
+	set ruler                  	" show the ruler
+	set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " a ruler on steroids
+	set showcmd                	" show partial commands in status line and selected characters/lines in visual mode
+endif
+
+if has('statusline')
+	set laststatus=2
+
+	" Broken down into easily includeable segments
+	set statusline=%<%t\                        " Filename w/o path
+	set statusline+=%w%h%m%r                    " Options
+	set statusline+=%{fugitive#statusline()}    " Git Hotness
+	set statusline+=\ [%{&ff}/%Y]               " File type
+	" set statusline+=\ [%{expand('%:p:h')}]      " Path of file
+	" set statusline+=\ [A=\%03.3b/H=\%02.2B]   " ASCII / Hexadecimal value of char
+	set statusline+=%=%-14.(b%n-%l,%c%V%)\ %p%% " Right aligned file nav info (overrides ruler)
+endif
+
+" This isn't working for some reason
+"set cursorline
+"set cursorcolumn
+"hi CursorLine guibg=#333333 	" highlight bg color of current line
+"hi CursorColumn guibg=#333333   " highlight cursor
+
+
+" Set font for GUI vims
+if has('gui_running')
+	set linespace=0                " No extra spaces between rows
+
+	let os = substitute(system('uname'), "\n", "", "")
+	if os == "Windows"
+		" Do Windows specific stuff.
+		set gfn=Consolas:h10:cANSI
+	elseif os == "Linux"
+		" Do Linux-specific stuff.
+		" set gfn=Ubuntu\ Mono\ 11
+		set guifont=Consolas\ 11
+	endif
+endif
+
+" ------------
+" PLUGINS
+" ------------
+
+" NerdTree
+:nmap <silent> <F7> :NERDTreeToggle<CR> " Toggle the NerdTree on F7
+nmap <leader>nt :NERDTreeFind<CR> 		" Select current file in NerdTree
+
+" Ctags
+set tags=./tags;/,$HOME/.vimtags 							" This will look in the current directory for 'tags', and work up the tree towards root until one is found. 
+"map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR> " C-\ - Open the definition in a new tab
+"map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>      " A-] - Open the definition in a vertical split
+
+" EasyTags
+"let g:easytags_updatetime_min=5000
+let g:easytags_updatetime_autodisable=1
+
+" TabBar
+nmap <F8> :TagbarToggle<CR>
+let g:tagbar_autofocus=1
+
+" Ctrl-P ignore
+let g:ctrlp_custom_ignore = {
+    \ 'dir': '\.git$\|\.settings$\|\.metadata$\|\target$',
+	\ 'file': '\.class$\|\.exe$\|\.swp$\|\.so$\|\.dll$',
+    \ }
+let g:ctrlp_working_path_mode = 2
+
+" Supertab
+"let g:SuperTabDefaultCompletionType = "<c-x><c-u>"
+let g:SuperTabDefaultCompletionType = 'context'
+let g:SuperTabClosePreviewOnPopupClose = 1 	" Automatically close the scratch window
+" Vim tab completion
+set completeopt=menuone,longest
+
+" Source external db_ext conf
+source ~/.vim/db_ext.conf
+:autocmd InsertEnter,InsertLeave * set cul!
+
+" Reload vimrc on save
+if has("autocmd")
+	autocmd bufwritepost .vimrc source $MYVIMRC
+endif

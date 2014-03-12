@@ -1,0 +1,102 @@
+# Use ctrl-a instead of the hard to type ctrl-b
+set-option -g prefix C-a
+
+# source config file
+bind r source-file ~/.tmux.conf
+
+# use "v" and "s" to do vertical/horizontal splits, like vim
+unbind %
+bind s split-window -v
+bind v split-window -h
+
+# use the vim motion keys to move between panes
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+# use vim motion keys while in copy mode
+setw -g mode-keys vi
+
+# use the vim resize keys.
+# the number at the end is how much the pane will be resized,
+# and 1 is fairly small -- you might want to tweak this.
+bind < resize-pane -L 1
+bind > resize-pane -R 1
+bind - resize-pane -D 1
+bind + resize-pane -U 1
+
+# Make copy/paste more Vi like
+unbind [
+bind Escape copy-mode
+unbind p
+bind p paste-buffer
+bind-key -t vi-copy 'v' begin-selection
+bind-key -t vi-copy 'y' copy-selection
+
+# Ctrl-A Ctrl-A to last window
+bind-key C-a last-window
+
+# Don't use zero based indexing. Start with window 1 (instead of 0)
+set -g base-index 1
+# Also start with pane 1
+set -g pane-base-index 1
+
+# Don't automatically rename windows
+setw -g automatic-rename off
+set-option -g allow-rename off
+
+# Allow selection of pane using mouse
+# setw -g mode-mouse on
+# set-option -g mouse-select-pane on
+# set-option -g mouse-select-window on
+
+# Set window notifications
+setw -g monitor-activity on
+set -g visual-activity on
+
+# 10k lines of history
+set -g history-limit 10000
+
+# Set status bar
+set -g status-left-length 20
+set -g status-left ' #[fg=cyan,bright]#10H#[fg=green]:#[fg=white]#S#[fg=green] | #[default]'
+#set -g status-right-length 50
+set -g status-right '#[fg=yellow]%y-%m-%d %H:%M #(uptime | cut -d ":" -f 5-)'
+
+set -g status-justify left
+
+
+#### COLOUR - Solarized theme - https://github.com/seebi/tmux-colors-solarized
+# default statusbar colors
+set-option -g status-bg colour235 #base02
+set-option -g status-fg colour136 #yellow
+set-option -g status-attr default
+
+# default window title colors
+set-window-option -g window-status-fg colour244
+set-window-option -g window-status-bg default
+#set-window-option -g window-status-attr dim
+
+# active window title colors
+set-window-option -g window-status-current-fg colour166 #orange
+set-window-option -g window-status-current-bg default
+#set-window-option -g window-status-current-attr bright
+setw -g window-status-format "#[fg=color7]#[bg=color14] #I #[bg=color14]#[fg=white] #W "
+setw -g window-status-current-format "#[bg=black]#[fg=yellow] #I #[fg=black]#[bg=colour14] #W "
+
+
+# pane border
+set-option -g pane-border-fg colour235 #base02
+set-option -g pane-active-border-fg colour240 #base01
+
+# message text
+set-option -g message-bg colour235 #base02
+set-option -g message-fg colour166 #orange
+
+# pane number display
+set-option -g display-panes-active-colour colour33 #blue
+set-option -g display-panes-colour colour166 #orange
+
+# clock
+set-window-option -g clock-mode-colour colour64 #green

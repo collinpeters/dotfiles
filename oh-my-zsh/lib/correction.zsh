@@ -1,3 +1,7 @@
+# NO ZSH AUTO-CORRECT!!!
+#unsetopt correct_all
+unsetopt correct
+
 alias man='nocorrect man'
 alias mv='nocorrect mv'
 alias mysql='nocorrect mysql'

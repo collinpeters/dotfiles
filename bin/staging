@@ -1,0 +1,22 @@
+#!/bin/sh
+# Create a new session named 'staging'
+tmux new-session -d -s staging
+
+# Rename first window
+tmux rename-window -t staging:1 'Localhost'
+
+# Login to Apache 
+tmux new-window -t staging:2 -n 'Apache' 'ssh staging-apache1'
+# Login to Tomcat and automatically start 'tailcat' based on custom bashrc
+tmux new-window -t staging:3 -n 'Tomcat Log' 'ssh staging-tomcat1 -t "/bin/bash --rcfile ~/.bashrc_tail"'
+# Login to Tomcat
+tmux new-window -t staging:4 -n 'Tomcat' 'ssh staging-tomcat1'
+# Login to PostgreSQL
+tmux new-window -t staging:5 -n 'Postgres' 'ssh staging-postgres1'
+# Login to the Connector
+tmux new-window -t staging:6 -n 'Connector' 'ssh staging-connector'
+
+# Select the Tomcat window
+tmux select-window -t staging:3
+# Start tmux and attach to our staging session
+tmux -2 attach-session -t staging

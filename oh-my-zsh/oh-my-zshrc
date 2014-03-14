@@ -5,7 +5,7 @@ ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="blinks"
+ZSH_THEME="avit"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -40,18 +40,18 @@ export UPDATE_ZSH_DAYS=31
 # Uncomment following line if you want to  shown in the command execution time stamp 
 # in the history command output. The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|
 # yyyy-mm-dd
-# HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="yyyy-mm-dd"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git debian git-flow github ssh-agent vi-mode)
+plugins=(git debian git-flow github ssh-agent vi-mode bower common-aliases docker git-prompt jira mvn maven npm postgres-custom sudo tmux vagrant vagrant-custom vundle z ack)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/Apps:/usr/local/bin:$PATH
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # # Preferred editor for local and remote sessions
@@ -69,3 +69,11 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 # Auto-correct seems to suck for me
 unsetopt correct_all
+
+JIRA_URL=https://intouch.atlassian.net
+JIRA_RAPID_BOARD="true"
+
+# start vpn
+alias vpnup="nmcli connection up id InTouch"
+
+archey

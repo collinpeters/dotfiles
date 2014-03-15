@@ -6,8 +6,7 @@ filetype off                   " required!
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
-" let Vundle manage Vundle
-" required! 
+" let Vundle manage Vundle, required! 
 Bundle 'gmarik/vundle'
 
 " original repos on github
@@ -17,27 +16,34 @@ Bundle 'tpope/vim-unimpaired'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
+Bundle 'scrooloose/syntastic'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'Raimondi/delimitMate'
 Bundle 'ervandew/supertab'
 Bundle 'rking/ag.vim'
 Bundle 'elzr/vim-json'
 Bundle 'collinpeters/dbext.vim'
-"Bundle 'lsdr/monokai'
+" JavaScript
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'pangloss/vim-javascript'
+Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'marijnh/tern_for_vim'
 " vim-scripts
 Bundle 'Align'
 Bundle 'SQLComplete.vim'
 
 filetype plugin indent on     " required!
 
+" 16 colors option for solarized to look right
+set t_Co=256
+
 " Favourite colorscheme
 colorscheme solarized
+"colorscheme distinguished
 "colorscheme dante
 "colorscheme manxome
 "colorscheme molokai
-
-" 16 colors option for solarized to look right
-set t_Co=16
 
 " Dark background
 set background=dark

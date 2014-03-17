@@ -1,5 +1,5 @@
 " Light background for Gvim
-set background=dark
+"set background=dark
 
 set guioptions=aegimrLt
 

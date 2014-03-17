@@ -16,11 +16,10 @@ Bundle 'tpope/vim-unimpaired'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
-Bundle 'scrooloose/syntastic'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'Raimondi/delimitMate'
-Bundle 'ervandew/supertab'
-Bundle 'rking/ag.vim'
+"Bundle 'ervandew/supertab'
+Bundle 'ervandew/ag'
 Bundle 'elzr/vim-json'
 Bundle 'collinpeters/dbext.vim'
 " JavaScript
@@ -29,6 +28,8 @@ Bundle 'pangloss/vim-javascript'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'marijnh/tern_for_vim'
+" JS - for linting
+Bundle 'scrooloose/syntastic' 
 " vim-scripts
 Bundle 'Align'
 Bundle 'SQLComplete.vim'
@@ -36,7 +37,7 @@ Bundle 'SQLComplete.vim'
 filetype plugin indent on     " required!
 
 " 16 colors option for solarized to look right
-set t_Co=256
+set t_Co=16
 
 " Favourite colorscheme
 colorscheme solarized
@@ -46,7 +47,12 @@ colorscheme solarized
 "colorscheme molokai
 
 " Dark background
-set background=dark
+"set background=dark
+if has('gui_running')
+	set background=light
+else
+	set background=dark
+endif
 
 " Syntax highlighting
 syntax on
@@ -62,17 +68,13 @@ let mapleader = ","
 " jj is the same as escape in edit mode (killer!!)
 inoremap jj <ESC>
 
-" the ';' is the same as ':'  i.e. use ;w to save to save the need to press shift
+" the ';' is the same as ':'  i.e. use ;w to save the file (no need for shift)
 noremap ; :
 
-" Clear the search. No more typing 'asdfawdsf' to clear the search
+" Clear the search. No more typing '/asdfawdsf' to clear the search
 nmap <silent> ,/ :nohlsearch<CR>
 
-" Bubble single lines using ctrl-up/down - http://vimcasts.org/episodes/bubbling-text/
-nmap <C-Up> [e
-nmap <C-Down> ]e
-
-" Easy window navigation
+" Easier window navigation without the ctrl-w
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
@@ -98,6 +100,7 @@ set hidden                     " Hide buffers when they are abandoned
 set wildignore+=*.class        " Ignore these files
 set wildmenu                   " Use the wildmenu
 set wildmode=list:longest,full " command <Tab> completion, list matches, then longest common part, then all.
+"set wildmode=longest:full,full
 set tabstop=4                  " Tab stop of 4 characters
 set shiftwidth=4               " Number of spaces to use for each step of (auto)indent
 set nobackup                   " Don't make backup files
@@ -105,10 +108,11 @@ set ai                         " Automatic indents
 set nowrap                     " Don't wrap by default
 set hlsearch                   " highlight search matches
 set scrolloff=3                " Have 3 lines of offset (or buffer) when scrolling
+set number                     " Show current line number
 set relativenumber             " Show relative line numbers
 set formatoptions=croql        " Format options
 set pastetoggle=<F2>           " Handle the paste toggle when pasting code
-set showtabline=1              " Show the tab line if there are two or more tabs
+set showtabline=2              " Show the tab line if there are two or more tabs
 set autochdir                  " Change the working directory to that of the current file
 set splitbelow 				   " split below
 set splitright 				   " vertical split right
@@ -128,8 +132,8 @@ if has('statusline')
 	set statusline+=%w%h%m%r                    " Options
 	set statusline+=%{fugitive#statusline()}    " Git Hotness
 	set statusline+=\ [%{&ff}/%Y]               " File type
-	" set statusline+=\ [%{expand('%:p:h')}]      " Path of file
-	" set statusline+=\ [A=\%03.3b/H=\%02.2B]   " ASCII / Hexadecimal value of char
+	set statusline+=\ [%{eclim#project#util#ProjectStatusLine()}]      " Eclim
+	"set statusline+=\ [%{expand('%:p:h')}]      " Path of file
 	set statusline+=%=%-14.(b%n-%l,%c%V%)\ %p%% " Right aligned file nav info (overrides ruler)
 endif
 
@@ -190,11 +194,20 @@ let g:SuperTabClosePreviewOnPopupClose = 1 	" Automatically close the scratch wi
 " Vim tab completion
 set completeopt=menuone,longest
 
+" Eclim
+" Pass to YouCompleteMe
+let g:EclimCompletionMethod = 'omnifunc'
+" LocateFile should search workspace
+let g:EclimLocateFileScope = 'workspace'
+" Fallback to 'ag' (silver searcher) for non-project files
+let g:EclimLocateFileNonProjectScope = 'ag'
+
 " Source external db_ext conf
 source ~/.vim/db_ext.conf
 :autocmd InsertEnter,InsertLeave * set cul!
 
 " Reload vimrc on save
-if has("autocmd")
-	autocmd bufwritepost .vimrc source $MYVIMRC
-endif
+"if has("autocmd")
+"	autocmd bufwritepost .vimrc source $MYVIMRC
+"endif
+"

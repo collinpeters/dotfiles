@@ -6,7 +6,7 @@ filetype off                   " required!
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
-" let Vundle manage Vundle, required! 
+" let Vundle manage Vundle, required!
 Bundle 'gmarik/vundle'
 
 " original repos on github
@@ -18,10 +18,15 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'Raimondi/delimitMate'
+Bundle 'majutsushi/tagbar'
 "Bundle 'ervandew/supertab'
+Bundle 'kien/ctrlp.vim'
 Bundle 'ervandew/ag'
 Bundle 'elzr/vim-json'
 Bundle 'collinpeters/dbext.vim'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'bling/vim-airline'
+Bundle 'edkolev/tmuxline.vim'
 " JavaScript
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'pangloss/vim-javascript'
@@ -29,7 +34,7 @@ Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'marijnh/tern_for_vim'
 " JS - for linting
-Bundle 'scrooloose/syntastic' 
+Bundle 'scrooloose/syntastic'
 " vim-scripts
 Bundle 'Align'
 Bundle 'SQLComplete.vim'
@@ -57,8 +62,10 @@ endif
 " Syntax highlighting
 syntax on
 
+set encoding=utf-8
+
+" Jump to the last position when reopening a file
 if has("autocmd")
-	" Jump to the last position when reopening a file
 	au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
@@ -86,7 +93,7 @@ nnoremap k gk
 
 " visual shifting (does not exit Visual mode after shift)
 vnoremap < <gv
-vnoremap > >gv 
+vnoremap > >gv
 
 " Options, options, options
 set showcmd                    " Show (partial) command in status line
@@ -116,7 +123,7 @@ set showtabline=2              " Show the tab line if there are two or more tabs
 set autochdir                  " Change the working directory to that of the current file
 set splitbelow 				   " split below
 set splitright 				   " vertical split right
-set lazyredraw                 " do not update screen while executing macros
+"set lazyredraw                 " do not update screen while executing macros
 
 if has('cmdline_info')
 	set ruler                  	" show the ruler
@@ -124,18 +131,16 @@ if has('cmdline_info')
 	set showcmd                	" show partial commands in status line and selected characters/lines in visual mode
 endif
 
-if has('statusline')
-	set laststatus=2
-
-	" Broken down into easily includeable segments
-	set statusline=%<%t\                        " Filename w/o path
-	set statusline+=%w%h%m%r                    " Options
-	set statusline+=%{fugitive#statusline()}    " Git Hotness
-	set statusline+=\ [%{&ff}/%Y]               " File type
-	set statusline+=\ [%{eclim#project#util#ProjectStatusLine()}]      " Eclim
-	"set statusline+=\ [%{expand('%:p:h')}]      " Path of file
-	set statusline+=%=%-14.(b%n-%l,%c%V%)\ %p%% " Right aligned file nav info (overrides ruler)
-endif
+"if has('statusline')
+"	" Broken down into easily includeable segments
+"	set statusline=%<%t\                        " Filename w/o path
+"	set statusline+=%w%h%m%r                    " Options
+"	set statusline+=%{fugitive#statusline()}    " Git Hotness
+"	set statusline+=\ [%{&ff}/%Y]               " File type
+"	set statusline+=\ [%{eclim#project#util#ProjectStatusLine()}]      " Eclim
+"	"set statusline+=\ [%{expand('%:p:h')}]      " Path of file
+"	set statusline+=%=%-14.(b%n-%l,%c%V%)\ %p%% " Right aligned file nav info (overrides ruler)
+"endif
 
 " This isn't working for some reason
 "set cursorline
@@ -145,19 +150,19 @@ endif
 
 
 " Set font for GUI vims
-if has('gui_running')
-	set linespace=0                " No extra spaces between rows
-
-	let os = substitute(system('uname'), "\n", "", "")
-	if os == "Windows"
-		" Do Windows specific stuff.
-		set gfn=Consolas:h10:cANSI
-	elseif os == "Linux"
-		" Do Linux-specific stuff.
-		" set gfn=Ubuntu\ Mono\ 11
-		set guifont=Consolas\ 11
-	endif
-endif
+" if has('gui_running')
+" 	set linespace=0                " No extra spaces between rows
+"
+" 	let os = substitute(system('uname'), "\n", "", "")
+" 	if os == "Windows"
+" 		" Do Windows specific stuff.
+" 		set gfn=Consolas:h10:cANSI
+" 	elseif os == "Linux"
+" 		" Do Linux-specific stuff.
+" 		" set gfn=Ubuntu\ Mono\ 11
+" 		set guifont=Consolas\ 11
+" 	endif
+" endif
 
 " ------------
 " PLUGINS
@@ -168,7 +173,7 @@ endif
 nmap <leader>nt :NERDTreeFind<CR> 		" Select current file in NerdTree
 
 " Ctags
-set tags=./tags;/,$HOME/.vimtags 							" This will look in the current directory for 'tags', and work up the tree towards root until one is found. 
+set tags=./tags;/,$HOME/.vimtags 							" This will look in the current directory for 'tags', and work up the tree towards root until one is found.
 "map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR> " C-\ - Open the definition in a new tab
 "map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>      " A-] - Open the definition in a vertical split
 
@@ -176,14 +181,14 @@ set tags=./tags;/,$HOME/.vimtags 							" This will look in the current director
 "let g:easytags_updatetime_min=5000
 let g:easytags_updatetime_autodisable=1
 
-" TabBar
+" TagBar
 nmap <F8> :TagbarToggle<CR>
 let g:tagbar_autofocus=1
 
 " Ctrl-P ignore
 let g:ctrlp_custom_ignore = {
-    \ 'dir': '\.git$\|\.settings$\|\.metadata$\|\target$',
-	\ 'file': '\.class$\|\.exe$\|\.swp$\|\.so$\|\.dll$',
+    \ 'dir': '\.git$\|\.settings$\|\.metadata$\|target\|fckeditor',
+	\ 'file': '\.class$\|\.exe$\|\.swp$\|\.so$\|\.dll$\|TEST.*.xml$\|\Test.txt$\|\.jasper$\|\.jrxml$\|\.swf$\|\.png$\|\.gif$\|\configs.xml$\|\link-report.xml$\|\.fla',
     \ }
 let g:ctrlp_working_path_mode = 2
 
@@ -201,6 +206,19 @@ let g:EclimCompletionMethod = 'omnifunc'
 let g:EclimLocateFileScope = 'workspace'
 " Fallback to 'ag' (silver searcher) for non-project files
 let g:EclimLocateFileNonProjectScope = 'ag'
+
+" vim-airline
+set laststatus=2
+let g:airline_powerline_fonts = 1
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_symbols.space = "\ua0"
+let g:airline_theme = "laederon"
+let g:airline#extensions#whitespace#checks = [ 'trailing' ]
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 0
+
 
 " Source external db_ext conf
 source ~/.vim/db_ext.conf

@@ -13,7 +13,6 @@ Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-git'
 Bundle 'tpope/vim-unimpaired'
-Bundle 'altercation/vim-colors-solarized'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'Lokaltog/vim-easymotion'
@@ -24,9 +23,7 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'ervandew/ag'
 Bundle 'elzr/vim-json'
 Bundle 'collinpeters/dbext.vim'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'bling/vim-airline'
-Bundle 'edkolev/tmuxline.vim'
+Bundle 'gcmt/wildfire.vim'
 " JavaScript
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'pangloss/vim-javascript'
@@ -38,6 +35,15 @@ Bundle 'scrooloose/syntastic'
 " vim-scripts
 Bundle 'Align'
 Bundle 'SQLComplete.vim'
+" color schemes 
+Bundle 'nanotech/jellybeans.vim'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'noahfrederick/vim-hemisu'
+Bundle 'vim-scripts/xoria256.vim'
+" ui related
+Bundle 'bling/vim-airline'
+Bundle 'edkolev/tmuxline.vim'
+Bundle 'airblade/vim-gitgutter'
 
 filetype plugin indent on     " required!
 
@@ -45,7 +51,8 @@ filetype plugin indent on     " required!
 set t_Co=16
 
 " Favourite colorscheme
-colorscheme solarized
+colorscheme jellybeans
+"colorscheme solarized
 "colorscheme distinguished
 "colorscheme dante
 "colorscheme manxome
@@ -206,6 +213,10 @@ let g:EclimCompletionMethod = 'omnifunc'
 let g:EclimLocateFileScope = 'workspace'
 " Fallback to 'ag' (silver searcher) for non-project files
 let g:EclimLocateFileNonProjectScope = 'ag'
+" Emulate F3 in Eclipse
+nnoremap <silent> <F3> :JavaSearchContext<CR>
+" ,i to do an import
+nnoremap <silent> <buffer> <leader>i :JavaImport<cr>
 
 " vim-airline
 set laststatus=2

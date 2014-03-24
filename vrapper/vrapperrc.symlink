@@ -1,0 +1,7 @@
+set ignorecase                 " Do case insensitive matching
+set smartcase                  " Do smart case matching
+set incsearch                  " Incremental search (find as you type)
+set hlsearch                   " highlight search matches
+set number                     " Show current line number
+set cursorline
+set scrolloff=3                " Have 3 lines of offset (or buffer) when scrolling

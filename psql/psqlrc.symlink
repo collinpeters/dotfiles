@@ -1,0 +1,5 @@
+-- replace nulls
+\pset null ¤
+
+-- show execution times
+\timing

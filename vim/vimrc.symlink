@@ -45,6 +45,8 @@ Bundle 'bling/vim-airline'
 Bundle 'edkolev/tmuxline.vim'
 Bundle 'airblade/vim-gitgutter'
 
+Bundle 'plasticboy/vim-markdown'
+
 filetype plugin indent on     " required!
 
 " 16 colors option for solarized to look right
@@ -233,6 +235,8 @@ let g:airline#extensions#whitespace#checks = [ 'trailing' ]
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 0
 
+" Vim markdown
+let g:vim_markdown_folding_disabled=1
 
 " Source external db_ext conf
 source ~/.vim/db_ext.conf
@@ -242,4 +246,3 @@ source ~/.vim/db_ext.conf
 "if has("autocmd")
 "	autocmd bufwritepost .vimrc source $MYVIMRC
 "endif
-"

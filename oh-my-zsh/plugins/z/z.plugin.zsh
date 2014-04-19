@@ -1,4 +1,5 @@
 _load_z() {
+  echo $1/z.sh
   source $1/z.sh
 }
 

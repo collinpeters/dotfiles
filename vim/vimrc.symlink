@@ -50,23 +50,30 @@ Bundle 'plasticboy/vim-markdown'
 filetype plugin indent on     " required!
 
 " 16 colors option for solarized to look right
-set t_Co=16
+"set t_Co=256
+
+" Dark background
+set background=dark
+"if has('gui_running')
+"	set background=light
+"else
+"	set background=dark
+"endif
 
 " Favourite colorscheme
 colorscheme jellybeans
+let g:jellybeans_overrides = {
+\    'Normal': { 'guibg': '333333',
+\               'ctermbg': ''},
+\    'LineNr': { 'guibg': '333333',
+\               'ctermbg': ''},
+\}
 "colorscheme solarized
 "colorscheme distinguished
 "colorscheme dante
 "colorscheme manxome
 "colorscheme molokai
 
-" Dark background
-"set background=dark
-if has('gui_running')
-	set background=light
-else
-	set background=dark
-endif
 
 " Syntax highlighting
 syntax on
@@ -152,26 +159,26 @@ endif
 "endif
 
 " This isn't working for some reason
-"set cursorline
-"set cursorcolumn
+set cursorline
+set cursorcolumn
 "hi CursorLine guibg=#333333 	" highlight bg color of current line
 "hi CursorColumn guibg=#333333   " highlight cursor
 
 
 " Set font for GUI vims
-" if has('gui_running')
-" 	set linespace=0                " No extra spaces between rows
-"
-" 	let os = substitute(system('uname'), "\n", "", "")
-" 	if os == "Windows"
-" 		" Do Windows specific stuff.
-" 		set gfn=Consolas:h10:cANSI
-" 	elseif os == "Linux"
-" 		" Do Linux-specific stuff.
-" 		" set gfn=Ubuntu\ Mono\ 11
-" 		set guifont=Consolas\ 11
-" 	endif
-" endif
+if has('gui_running')
+	set linespace=0                " No extra spaces between rows
+
+	let os = substitute(system('uname'), "\n", "", "")
+	if os == "Windows"
+		" Do Windows specific stuff.
+		set gfn=Consolas:h10:cANSI
+	elseif os == "Linux"
+		" Do Linux-specific stuff.
+		" set gfn=Ubuntu\ Mono\ 11
+		set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 13
+	endif
+endif
 
 " ------------
 " PLUGINS

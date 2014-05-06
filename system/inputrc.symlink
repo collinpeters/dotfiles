@@ -1,0 +1,15 @@
+# my inputrc for libreadline (bash not zsh). See also /etc/inputrc
+
+# No bell thank you
+set bell-style none
+
+# Ignore case when using tab completion
+set completion-ignore-case on
+
+# Mappings so home/end keys work on all OSs
+"\e[1~": beginning-of-line
+"\e[7~": beginning-of-line
+"\e[4~": end-of-line
+"\e[8~": end-of-line
+"\e[3~": delete-char
+"\e[2~": paste-from-clipboard

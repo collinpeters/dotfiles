@@ -1,7 +1,11 @@
 #!/bin/sh
 
-# Sessio name
+# Session name
 SESSION=$USER
+
+if [ $1 ]; then
+	SESSION=$1
+fi
 
 # if the session is already running, just attach to it.
 tmux has-session -t $SESSION

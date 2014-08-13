@@ -13,7 +13,9 @@ Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-git'
 Bundle 'tpope/vim-unimpaired'
+Bundle 'tpope/vim-dispatch'
 Bundle 'scrooloose/nerdtree'
+Bundle 'jistr/vim-nerdtree-tabs'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'Raimondi/delimitMate'
@@ -40,17 +42,29 @@ Bundle 'nanotech/jellybeans.vim'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'noahfrederick/vim-hemisu'
 Bundle 'vim-scripts/xoria256.vim'
+Bundle 'vim-scripts/peaksea'
+Bundle 'wesgibbs/vim-irblack'
+Bundle 'vim-scripts/mayansmoke'
+Bundle 'therubymug/vim-pyte'
 " ui related
 Bundle 'bling/vim-airline'
 Bundle 'edkolev/tmuxline.vim'
 Bundle 'airblade/vim-gitgutter'
+" other
+Bundle 'ardagnir/eventloop.vim'
+Bundle 'ardagnir/pterosaur'
 
 Bundle 'plasticboy/vim-markdown'
 
 filetype plugin indent on     " required!
 
+set encoding=utf-8
+
 " 16 colors option for solarized to look right
 "set t_Co=256
+
+" Syntax highlighting
+syntax on
 
 " Dark background
 set background=dark
@@ -61,24 +75,25 @@ set background=dark
 "endif
 
 " Favourite colorscheme
-colorscheme jellybeans
-let g:jellybeans_overrides = {
-\    'Normal': { 'guibg': '333333',
-\               'ctermbg': ''},
-\    'LineNr': { 'guibg': '333333',
-\               'ctermbg': ''},
-\}
+" colorscheme jellybeans
+" let g:jellybeans_overrides = {
+" \    'Normal': { 'guibg': '222222',
+" \               'ctermbg': ''},
+" \    'LineNr': { 'guibg': '222222',
+" \               'ctermbg': ''},
+" \}
 "colorscheme solarized
 "colorscheme distinguished
 "colorscheme dante
 "colorscheme manxome
 "colorscheme molokai
+colorscheme ir_black
 
-
-" Syntax highlighting
-syntax on
-
-set encoding=utf-8
+" This isn't working for some reason
+set cursorline
+set cursorcolumn
+hi CursorLine guibg=Grey11 ctermbg=235 	" highlight bg color of current line
+hi CursorColumn guibg=Grey11 ctermbg=235   " highlight cursor
 
 " Jump to the last position when reopening a file
 if has("autocmd")
@@ -92,7 +107,7 @@ let mapleader = ","
 inoremap jj <ESC>
 
 " the ';' is the same as ':'  i.e. use ;w to save the file (no need for shift)
-noremap ; :
+"noremap ; :
 
 " Clear the search. No more typing '/asdfawdsf' to clear the search
 nmap <silent> ,/ :nohlsearch<CR>
@@ -110,6 +125,9 @@ nnoremap k gk
 " visual shifting (does not exit Visual mode after shift)
 vnoremap < <gv
 vnoremap > >gv
+
+" sudo write
+ca w!! w !sudo tee >/dev/null "%"
 
 " Options, options, options
 set showcmd                    " Show (partial) command in status line
@@ -158,13 +176,6 @@ endif
 "	set statusline+=%=%-14.(b%n-%l,%c%V%)\ %p%% " Right aligned file nav info (overrides ruler)
 "endif
 
-" This isn't working for some reason
-set cursorline
-set cursorcolumn
-"hi CursorLine guibg=#333333 	" highlight bg color of current line
-"hi CursorColumn guibg=#333333   " highlight cursor
-
-
 " Set font for GUI vims
 if has('gui_running')
 	set linespace=0                " No extra spaces between rows
@@ -188,7 +199,8 @@ endif
 let g:vim_json_syntax_conceal = 0
 
 " NerdTree
-:nmap <silent> <F7> :NERDTreeToggle<CR> " Toggle the NerdTree on F7
+":nmap <silent> <F7> :NERDTreeToggle<CR> " Toggle the NerdTree on F7
+map <silent> <F7> :NERDTreeTabsToggle<CR>
 nmap <leader>nt :NERDTreeFind<CR> 		" Select current file in NerdTree
 
 " Ctags

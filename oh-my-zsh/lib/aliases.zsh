@@ -25,8 +25,9 @@ then
 else
     alias history='fc -l 1'
 fi
-# List direcory contents
+# List directory contents
 alias lsa='ls -lah'
-alias l='ls -lh'
-alias la='ls -lAh'
-alias sl=ls # often screw this up
+alias l='ls -lh --group-directories-first'
+alias la='ls -lAh --group-directories-first'
+#alias sl=ls # often screw this up
+alias clear='echo "Use ctrl-l dummy!"'

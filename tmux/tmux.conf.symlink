@@ -66,6 +66,8 @@ set -g status-right '#[fg=yellow]%y-%m-%d %H:%M #(uptime | cut -d ":" -f 5-)'
 
 set -g status-justify left
 
+# renumber windows
+set -g renumber-windows on
 
 #### COLOUR - Solarized theme - https://github.com/seebi/tmux-colors-solarized
 # default statusbar colors

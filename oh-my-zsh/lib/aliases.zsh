@@ -30,4 +30,4 @@ alias lsa='ls -lah'
 alias l='ls -lh --group-directories-first'
 alias la='ls -lAh --group-directories-first'
 #alias sl=ls # often screw this up
-alias clear='echo "Use ctrl-l dummy!"'
+#alias clear='echo "Use ctrl-l dummy!"'

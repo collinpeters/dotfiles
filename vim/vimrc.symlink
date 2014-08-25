@@ -25,7 +25,10 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'ervandew/ag'
 Bundle 'elzr/vim-json'
 Bundle 'collinpeters/dbext.vim'
-Bundle 'gcmt/wildfire.vim'
+" find vim-expand-region better than 'gcmt/wildfire.vim'
+Bundle 'terryma/vim-expand-region'
+" window control
+Bundle 'christoomey/vim-tmux-navigator'
 " JavaScript
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'pangloss/vim-javascript'
@@ -101,7 +104,23 @@ if has("autocmd")
 endif
 
 " Remap leader to comma
-let mapleader = ","
+"let mapleader = ","
+let mapleader = "\<Space>"
+" <Space>o to open a new file:
+nnoremap <Leader>o :CtrlP<CR>
+"" <Space>w to save file (a lot faster than :w<Enter>):
+nnoremap <Leader>w :w<CR>
+" Copy & paste to system clipboard with <Space>p and <Space>y:
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+vmap <Leader>p "+p
+vmap <Leader>P "+P
+" Enter visual mode with <space><space>
+nmap <Leader><Leader> V
+" Enter for expand region
+map <Cr> <Plug>(expand_region_expand)
 
 " jj is the same as escape in edit mode (killer!!)
 inoremap jj <ESC>
@@ -113,10 +132,10 @@ inoremap jj <ESC>
 nmap <silent> ,/ :nohlsearch<CR>
 
 " Easier window navigation without the ctrl-w
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+"map <C-h> <C-w>h
+"map <C-j> <C-w>j
+"map <C-k> <C-w>k
+"map <C-l> <C-w>l
 
 " Wrapped lines goes down/up to next row, rather than next line in file (you've fooled me for the last time Vim!!!)
 nnoremap j gj
@@ -216,7 +235,9 @@ let g:easytags_updatetime_autodisable=1
 nmap <F8> :TagbarToggle<CR>
 let g:tagbar_autofocus=1
 
-" Ctrl-P ignore
+" Ctrl-P 
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+let g:ctrlp_use_caching = 0
 let g:ctrlp_custom_ignore = {
     \ 'dir': '\.git$\|\.settings$\|\.metadata$\|target\|fckeditor',
 	\ 'file': '\.class$\|\.exe$\|\.swp$\|\.so$\|\.dll$\|TEST.*.xml$\|\Test.txt$\|\.jasper$\|\.jrxml$\|\.swf$\|\.png$\|\.gif$\|\configs.xml$\|\link-report.xml$\|\.fla',

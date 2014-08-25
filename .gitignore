@@ -4,3 +4,4 @@ git/gitconfig.symlink
 cache/
 **/.netrwhist
 vim/vim.symlink/bundle/
+vim/vim.symlink/eclim

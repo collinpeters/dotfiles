@@ -45,7 +45,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git debian git-flow github ssh-agent vi-mode vi-mode-custom bower common-aliases docker jira mvn maven postgres-custom sudo tmux vagrant vagrant-custom vundle z ack vim-pager)
+plugins=(git debian git-flow github ssh-agent vi-mode vi-mode-custom bower common-aliases docker jira mvn maven postgres-custom sudo tmux vagrant vagrant-custom vundle z ack vim-pager docker)
 
 source $ZSH/oh-my-zsh.sh
 

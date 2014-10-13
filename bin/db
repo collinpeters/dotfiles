@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# use fasd to execute create db script
+fasd -e sh create_snapshot_dbs.sh

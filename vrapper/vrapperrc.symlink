@@ -1,7 +1,56 @@
-set ignorecase                 " Do case insensitive matching
-set smartcase                  " Do smart case matching
-set incsearch                  " Incremental search (find as you type)
-set hlsearch                   " highlight search matches
-set number                     " Show current line number
-set cursorline
-set scrolloff=3                " Have 3 lines of offset (or buffer) when scrolling
+set ignorecase					" Do case insensitive matching
+set smartcase					" Do smart case matching
+set incsearch					" Incremental search (find as you type)
+set hlsearch					" highlight search matches
+set number						" Show current line number
+set cursorline					" highlight current line
+set autoindent					" indent from previous line, else remove
+set smartindent					" indent even more smartly
+set autochdir					" cwd is path of current file
+set contentassistmode			" ctrl-n & ctrl-p for content assist navigation
+" Have 3 lines of offset (or buffer) when scrolling
+set scrolloff=3
+
+" Note: Escape in Eclipse is activate/focus editor
+" jj is back to command mode
+inoremap jj <esc>
+
+" space-o = open resource (like my vim)
+eclipseaction OpenResource org.eclipse.ui.navigate.openResource
+nnoremap <space>o :OpenResource<cr>
+
+" space-t = open type
+eclipseaction OpenType org.eclipse.jdt.ui.navigate.open.type
+nnoremap <space>t :OpenType<cr>
+
+" [[ and ]] = next/previous member
+eclipseaction NextMember org.eclipse.jdt.ui.edit.text.java.goto.next.member
+nnoremap ]] :NextMember<cr>
+eclipseaction PreviousMember org.eclipse.jdt.ui.edit.text.java.goto.previous.member
+nnoremap [[ :PreviousMember<cr>]]
+
+" K = show JavaDoc for current symbol
+eclipseuiaction ShowJavadoc org.eclipse.ui.edit.text.showInformation
+nnoremap K :ShowJavadoc<cr>"
+
+" space-p = show quick outline
+eclipseuiaction ShowOutline org.eclipse.jdt.ui.edit.text.java.show.outline
+nnoremap <space>p :ShowOutline<cr>
+
+" space-h = show quick type hierarchy
+eclipseuiaction OpenHierarchy org.eclipse.jdt.ui.edit.text.java.open.hierarchy
+nnoremap <space>h :OpenHierarchy<cr>
+
+" space-H = focus type hierarchy
+eclipseaction OpenTypeHierarchy org.eclipse.jdt.ui.edit.text.java.open.type.hierarchy
+nnoremap <space>H :OpenTypeHierarchy<cr>
+
+" space-r = re-run last junit test
+eclipseaction ReRunJUnit org.eclipse.jdt.junit.junitShortcut.rerunLast
+nnoremap <space>r :ReRunJUnit<cr>
+
+
+" select enclosing text
+" doesn't work, not a vrapper selection. Have to stick with s-a-up in insert mode
+"eclipseaction SelectEnclosing org.eclipse.jdt.ui.edit.text.java.select.enclosing
+"nnoremap <cr> :SelectEnclosing<cr>

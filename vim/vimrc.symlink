@@ -1,75 +1,77 @@
 " Don't worry about compatibility with Vi
 set nocompatible
 
-filetype off                   " required!
-
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+filetype off
 
 " let Vundle manage Vundle, required!
-Bundle 'gmarik/vundle'
+set rtp+=~/.vim/bundle/vundle
+call vundle#begin()
+Plugin 'gmarik/vundle'
 
-" original repos on github
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-git'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'tpope/vim-dispatch'
-Bundle 'scrooloose/nerdtree'
-Bundle 'jistr/vim-nerdtree-tabs'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'Raimondi/delimitMate'
-Bundle 'majutsushi/tagbar'
-Bundle 'ervandew/supertab'
-Bundle 'kien/ctrlp.vim'
-Bundle 'ervandew/ag'
-Bundle 'elzr/vim-json'
-Bundle 'collinpeters/dbext.vim'
-" find vim-expand-region better than 'gcmt/wildfire.vim'
-Bundle 'terryma/vim-expand-region'
-" window control
-Bundle 'christoomey/vim-tmux-navigator'
-" JavaScript
-Bundle 'jelera/vim-javascript-syntax'
-Bundle 'pangloss/vim-javascript'
-Bundle 'nathanaelkane/vim-indent-guides'
-"Bundle 'Valloric/YouCompleteMe'
-"Bundle 'marijnh/tern_for_vim'
-" JS - for linting
-Bundle 'scrooloose/syntastic'
-" vim-scripts
-Bundle 'Align'
-Bundle 'SQLComplete.vim'
-" color schemes 
-Bundle 'nanotech/jellybeans.vim'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'noahfrederick/vim-hemisu'
-Bundle 'vim-scripts/xoria256.vim'
-Bundle 'vim-scripts/peaksea'
-Bundle 'wesgibbs/vim-irblack'
-Bundle 'vim-scripts/mayansmoke'
-Bundle 'therubymug/vim-pyte'
+" ==========================
+" PLUGINS
+" ==========================
 " ui related
-Bundle 'bling/vim-airline'
-Bundle 'edkolev/tmuxline.vim'
-Bundle 'airblade/vim-gitgutter'
-" other
-Bundle 'ardagnir/eventloop.vim'
-Bundle 'ardagnir/pterosaur'
+Plugin 'bling/vim-airline'
+Plugin 'edkolev/tmuxline.vim'
+Plugin 'airblade/vim-gitgutter'
+" syntax
+Plugin 'plasticboy/vim-markdown'
+"
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-git'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-dispatch'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'Raimondi/delimitMate'
+Plugin 'majutsushi/tagbar'
+Plugin 'terryma/vim-expand-region'
+Plugin 'SirVer/ultisnips'							" code snippets
+Plugin 'honza/vim-snippets' 						" snippets for ultisnips
+" completion and searching
+"Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Shougo/neocomplete.vim'
+Plugin 'ervandew/supertab'
+Plugin 'kien/ctrlp.vim'
+Plugin 'ervandew/ag'
+" database
+Plugin 'collinpeters/dbext.vim'
+Plugin 'krisajenkins/vim-postgresql-syntax'
+" window control
+Plugin 'christoomey/vim-tmux-navigator'
+" JavaScript
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'pangloss/vim-javascript'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'elzr/vim-json'
+Plugin 'scrooloose/syntastic'
 
-Bundle 'plasticboy/vim-markdown'
+Plugin 'Align'
+Plugin 'SQLComplete.vim'
+" color schemes 
+Plugin 'wesgibbs/vim-irblack'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'altercation/vim-colors-solarized'
+"Plugin 'noahfrederick/vim-hemisu'
+"Plugin 'vim-scripts/xoria256.vim'
+"Plugin 'vim-scripts/peaksea'
+"Plugin 'vim-scripts/mayansmoke'
+"Plugin 'therubymug/vim-pyte'
 
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
 filetype plugin indent on     " required!
 
+" ==========================
+" UI SETUP
+" ==========================
+" colorscheme ir_black
+syntax on " Syntax highlighting on
 set encoding=utf-8
-
-" 16 colors option for solarized to look right
-"set t_Co=256
-
-" Syntax highlighting
-syntax on
-
-" Dark background
+set t_Co=256 
 set background=dark
 "if has('gui_running')
 "	set background=light
@@ -77,39 +79,32 @@ set background=dark
 "	set background=dark
 "endif
 
-" Favourite colorscheme
-" colorscheme jellybeans
+colorscheme jellybeans
 " let g:jellybeans_overrides = {
 " \    'Normal': { 'guibg': '222222',
 " \               'ctermbg': ''},
 " \    'LineNr': { 'guibg': '222222',
 " \               'ctermbg': ''},
 " \}
-"colorscheme solarized
-"colorscheme distinguished
-"colorscheme dante
-"colorscheme manxome
-"colorscheme molokai
-colorscheme ir_black
 
-" This isn't working for some reason
+" cursor lines
 set cursorline
 set cursorcolumn
-hi CursorLine guibg=Grey11 ctermbg=235 	" highlight bg color of current line
-hi CursorColumn guibg=Grey11 ctermbg=235   " highlight cursor
+hi CursorLine guibg=Grey11 ctermbg=235 		" highlight bg color of current line
+hi CursorColumn guibg=Grey11 ctermbg=235	" highlight cursor
+
+" ==========================
+" CONFIGURATION
+" ==========================
 
 " Jump to the last position when reopening a file
 if has("autocmd")
 	au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
-" Remap leader to comma
-"let mapleader = ","
-let mapleader = "\<Space>"
-" <Space>o to open a new file:
-nnoremap <Leader>o :CtrlP<CR>
-"" <Space>w to save file (a lot faster than :w<Enter>):
-nnoremap <Leader>w :w<CR>
+let mapleader = "\<Space>" 				" Remap leader to comma
+nnoremap <Leader>o :CtrlP<CR> 			" <Space>o to open a new file:
+nnoremap <Leader>w :w<CR> 				" <Space>w to save file (a lot faster than :w<Enter>):
 " Copy & paste to system clipboard with <Space>p and <Space>y:
 vmap <Leader>y "+y
 vmap <Leader>d "+d
@@ -117,13 +112,10 @@ nmap <Leader>p "+p
 nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
-" Enter visual mode with <space><space>
-nmap <Leader><Leader> V
-" Enter for expand region
-map <Cr> <Plug>(expand_region_expand)
+nmap <Leader><Leader> V 				" Enter visual mode with <space><space>
+map <Cr> <Plug>(expand_region_expand) 	" Enter for expand region
 
-" jj is the same as escape in edit mode (killer!!)
-inoremap jj <ESC>
+inoremap jj <ESC> 						" jj is the same as escape in edit mode (killer!!)
 
 " the ';' is the same as ':'  i.e. use ;w to save the file (no need for shift)
 "noremap ; :
@@ -164,7 +156,7 @@ set wildmode=list:longest,full " command <Tab> completion, list matches, then lo
 set tabstop=4                  " Tab stop of 4 characters
 set shiftwidth=4               " Number of spaces to use for each step of (auto)indent
 set nobackup                   " Don't make backup files
-set ai                         " Automatic indents
+set autoindent                 " Automatic indents
 set nowrap                     " Don't wrap by default
 set hlsearch                   " highlight search matches
 set scrolloff=3                " Have 3 lines of offset (or buffer) when scrolling
@@ -176,24 +168,13 @@ set showtabline=2              " Show the tab line if there are two or more tabs
 set autochdir                  " Change the working directory to that of the current file
 set splitbelow 				   " split below
 set splitright 				   " vertical split right
-"set lazyredraw                 " do not update screen while executing macros
+set lazyredraw                 " do not update screen while executing macros
 
 if has('cmdline_info')
 	set ruler                  	" show the ruler
 	set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " a ruler on steroids
 	set showcmd                	" show partial commands in status line and selected characters/lines in visual mode
 endif
-
-"if has('statusline')
-"	" Broken down into easily includeable segments
-"	set statusline=%<%t\                        " Filename w/o path
-"	set statusline+=%w%h%m%r                    " Options
-"	set statusline+=%{fugitive#statusline()}    " Git Hotness
-"	set statusline+=\ [%{&ff}/%Y]               " File type
-"	set statusline+=\ [%{eclim#project#util#ProjectStatusLine()}]      " Eclim
-"	"set statusline+=\ [%{expand('%:p:h')}]      " Path of file
-"	set statusline+=%=%-14.(b%n-%l,%c%V%)\ %p%% " Right aligned file nav info (overrides ruler)
-"endif
 
 " Set font for GUI vims
 if has('gui_running')
@@ -210,9 +191,12 @@ if has('gui_running')
 	endif
 endif
 
-" ------------
-" PLUGINS
-" ------------
+" When in insert mode, turn off cursorline
+:autocmd InsertEnter,InsertLeave * set cul!
+
+" ==========================
+" PLUGIN CONFIGURATION
+" ==========================
 
 " Turn off quote concealing on JSON
 let g:vim_json_syntax_conceal = 0
@@ -221,15 +205,12 @@ let g:vim_json_syntax_conceal = 0
 ":nmap <silent> <F7> :NERDTreeToggle<CR> " Toggle the NerdTree on F7
 map <silent> <F7> :NERDTreeTabsToggle<CR>
 nmap <leader>nt :NERDTreeFind<CR> 		" Select current file in NerdTree
+let g:nerdtree_tabs_smart_startup_focus=2 " always focus file on vim start
 
 " Ctags
 set tags=./tags;/,$HOME/.vimtags 							" This will look in the current directory for 'tags', and work up the tree towards root until one is found.
 "map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR> " C-\ - Open the definition in a new tab
 "map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>      " A-] - Open the definition in a vertical split
-
-" EasyTags
-"let g:easytags_updatetime_min=5000
-let g:easytags_updatetime_autodisable=1
 
 " TagBar
 nmap <F8> :TagbarToggle<CR>
@@ -244,12 +225,14 @@ let g:ctrlp_custom_ignore = {
     \ }
 let g:ctrlp_working_path_mode = 2
 
+" completion configuration
 " Supertab
 "let g:SuperTabDefaultCompletionType = "<c-x><c-u>"
 let g:SuperTabDefaultCompletionType = 'context'
-let g:SuperTabClosePreviewOnPopupClose = 1 	" Automatically close the scratch window
+"let g:SuperTabClosePreviewOnPopupClose = 1 	" Automatically close the scratch window
+" let g:neocomplete#enable_at_startup = 1
 " Vim tab completion
-set completeopt=menuone,longest
+set completeopt=menuone,longest,preview
 
 " Eclim
 " Pass to YouCompleteMe
@@ -258,10 +241,6 @@ let g:EclimCompletionMethod = 'omnifunc'
 let g:EclimLocateFileScope = 'workspace'
 " Fallback to 'ag' (silver searcher) for non-project files
 let g:EclimLocateFileNonProjectScope = 'ag'
-" Emulate F3 in Eclipse
-nnoremap <silent> <F3> :JavaSearchContext<CR>
-" ,i to do an import
-nnoremap <silent> <buffer> <leader>i :JavaImport<cr>
 
 " vim-airline
 set laststatus=2
@@ -278,11 +257,24 @@ let g:airline#extensions#tabline#show_buffers = 0
 " Vim markdown
 let g:vim_markdown_folding_disabled=1
 
-" Source external db_ext conf
-source ~/.vim/db_ext.conf
-:autocmd InsertEnter,InsertLeave * set cul!
+" Ultisnips
+"let g:UltiSnipsExpandTrigger="<tab>"
+"let g:UltiSnipsJumpForwardTrigger="<c-b>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsEditSplit="vertical" 		" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
-" Reload vimrc on save
-"if has("autocmd")
-"	autocmd bufwritepost .vimrc source $MYVIMRC
-"endif
+" Postgres stuff
+let g:sql_type_default = 'pgsql' " SQLComplete default type
+
+source ~/.vim/db_ext.conf " Source external db_ext conf
+
+" Highlight psql output via 'krisajenkins/vim-postgresql-syntax'
+function! DBextPostResult(db_type, buf_nr)
+	" If dealing with a Postgres database
+	if a:db_type == 'PGSQL'
+		set filetype=postgresql
+	endif
+endfunction

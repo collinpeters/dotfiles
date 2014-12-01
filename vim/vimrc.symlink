@@ -28,7 +28,7 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'Raimondi/delimitMate'
 Plugin 'majutsushi/tagbar'
-Plugin 'terryma/vim-expand-region'
+Plugin 'gcmt/wildfire.vim' "Plugin 'terryma/vim-expand-region'
 Plugin 'SirVer/ultisnips'							" code snippets
 Plugin 'honza/vim-snippets' 						" snippets for ultisnips
 " completion and searching
@@ -36,7 +36,7 @@ Plugin 'honza/vim-snippets' 						" snippets for ultisnips
 "Plugin 'Shougo/neocomplete.vim'
 Plugin 'ervandew/supertab'
 Plugin 'kien/ctrlp.vim'
-Plugin 'ervandew/ag'
+Plugin 'rking/ag.vim'
 " database
 Plugin 'collinpeters/dbext.vim'
 Plugin 'krisajenkins/vim-postgresql-syntax'
@@ -122,12 +122,6 @@ inoremap jj <ESC> 						" jj is the same as escape in edit mode (killer!!)
 
 " Clear the search. No more typing '/asdfawdsf' to clear the search
 nmap <silent> ,/ :nohlsearch<CR>
-
-" Easier window navigation without the ctrl-w
-"map <C-h> <C-w>h
-"map <C-j> <C-w>j
-"map <C-k> <C-w>k
-"map <C-l> <C-w>l
 
 " Wrapped lines goes down/up to next row, rather than next line in file (you've fooled me for the last time Vim!!!)
 nnoremap j gj
@@ -278,3 +272,5 @@ function! DBextPostResult(db_type, buf_nr)
 		set filetype=postgresql
 	endif
 endfunction
+
+nmap <leader>x <Plug>(wildfire-quick-select)

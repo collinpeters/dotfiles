@@ -111,7 +111,7 @@ if has("autocmd")
 	au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
-let mapleader = "\<Space>" 				" Remap leader to comma
+let mapleader = "\<Space>" 				" Remap leader to space
 nnoremap <Leader>o :CtrlP<CR> 			" <Space>o to open a new file:
 nnoremap <Leader>w :w<CR> 				" <Space>w to save file (a lot faster than :w<Enter>):
 " Copy & paste to system clipboard with <Space>p and <Space>y:

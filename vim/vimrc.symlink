@@ -97,6 +97,10 @@ set cursorline
 set cursorcolumn
 hi CursorLine guibg=Grey11 ctermbg=235 		" highlight bg color of current line
 hi CursorColumn guibg=Grey11 ctermbg=235	" highlight cursor
+" When in insert mode, turn off cursor lines
+:autocmd InsertEnter,InsertLeave * set cul!
+:autocmd InsertEnter,InsertLeave * set cuc!
+
 
 " ==========================
 " CONFIGURATION

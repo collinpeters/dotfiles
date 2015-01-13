@@ -38,6 +38,8 @@ Plugin 'honza/vim-snippets' 						" snippets for ultisnips
 "Plugin 'Shougo/neocomplete.vim'
 Plugin 'ervandew/supertab'
 Plugin 'kien/ctrlp.vim'
+"Plugin 'ctrlpvim/ctrlp.vim' 						" Active fork of plugin 'kien/ctrlp.vim'
+Plugin 'JazzCore/ctrlp-cmatcher' 					" better matching algorithm for ctrl-p
 Plugin 'rking/ag.vim'
 " database
 Plugin 'collinpeters/dbext.vim'

@@ -204,7 +204,7 @@ let g:vim_json_syntax_conceal = 0
 ":nmap <silent> <F7> :NERDTreeToggle<CR> " Toggle the NerdTree on F7
 map <silent> <F7> :NERDTreeTabsToggle<CR>
 nmap <leader>nt :NERDTreeFind<CR> 		" Select current file in NerdTree
-let g:nerdtree_tabs_smart_startup_focus=2 " always focus file on vim start
+let g:nerdtree_tabs_open_on_gui_startup=0 	" Don't open on gvim start
 
 " Ctags
 set tags=./tags;/,$HOME/.vimtags 							" This will look in the current directory for 'tags', and work up the tree towards root until one is found.

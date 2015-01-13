@@ -28,7 +28,9 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'Raimondi/delimitMate'
 Plugin 'majutsushi/tagbar'
-Plugin 'gcmt/wildfire.vim' "Plugin 'terryma/vim-expand-region'
+Plugin 'gorkunov/smartpairs.vim' 
+	"Plugin 'gcmt/wildfire.vim' 
+	"Plugin 'terryma/vim-expand-region'
 Plugin 'SirVer/ultisnips'							" code snippets
 Plugin 'honza/vim-snippets' 						" snippets for ultisnips
 " completion and searching

@@ -122,7 +122,6 @@ nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
 nmap <Leader><Leader> V 				" Enter visual mode with <space><space>
-map <Cr> <Plug>(expand_region_expand) 	" Enter for expand region
 
 inoremap jj <ESC> 						" jj is the same as escape in edit mode (killer!!)
 
@@ -193,9 +192,6 @@ if has('gui_running')
 		set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 13
 	endif
 endif
-
-" When in insert mode, turn off cursorline
-:autocmd InsertEnter,InsertLeave * set cul!
 
 " ==========================
 " PLUGIN CONFIGURATION

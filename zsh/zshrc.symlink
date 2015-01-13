@@ -45,3 +45,5 @@ unset config_files
 
 # Now source oh-my-zsh
 source ~/.oh-my-zsh/oh-my-zshrc
+
+stty -ixon

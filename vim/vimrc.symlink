@@ -212,8 +212,8 @@ set tags=./tags;/,$HOME/.vimtags 							" This will look in the current director
 "map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>      " A-] - Open the definition in a vertical split
 
 " TagBar
-nmap <F8> :TagbarToggle<CR>
-let g:tagbar_autofocus=1
+"nmap <F8> :TagbarToggle<CR>
+"let g:tagbar_autofocus=1
 
 " Ctrl-P 
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
@@ -223,6 +223,7 @@ let g:ctrlp_custom_ignore = {
 	\ 'file': '\.class$\|\.exe$\|\.swp$\|\.so$\|\.dll$\|TEST.*.xml$\|\Test.txt$\|\.jasper$\|\.jrxml$\|\.swf$\|\.png$\|\.gif$\|\configs.xml$\|\link-report.xml$\|\.fla',
     \ }
 let g:ctrlp_working_path_mode = 2
+let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
 
 " completion configuration
 " Supertab
@@ -278,4 +279,6 @@ function! DBextPostResult(db_type, buf_nr)
 	endif
 endfunction
 
-nmap <leader>x <Plug>(wildfire-quick-select)
+nmap - <Plug>(choosewin)
+let g:choosewin_overlay_enable = 1
+let g:choosewin_blink_on_land = 0

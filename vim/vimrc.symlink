@@ -64,6 +64,7 @@ Plugin 'altercation/vim-colors-solarized'
 "Plugin 'vim-scripts/peaksea'
 "Plugin 'vim-scripts/mayansmoke'
 "Plugin 'therubymug/vim-pyte'
+Plugin 't9md/vim-choosewin.git'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required

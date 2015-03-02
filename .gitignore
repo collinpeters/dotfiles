@@ -3,5 +3,7 @@ sublime2/User/Package Control.last-run
 git/gitconfig.symlink
 cache/
 **/.netrwhist
-vim/vim.symlink/bundle/
 vim/vim.symlink/eclim
+vim/vim.symlink/autoload/
+vim/vim.symlink/plugged/
+

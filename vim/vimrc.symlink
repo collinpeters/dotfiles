@@ -3,72 +3,78 @@ set nocompatible
 
 filetype off
 
-" let Vundle manage Vundle, required!
-set rtp+=~/.vim/bundle/vundle
-call vundle#begin()
-Plugin 'gmarik/vundle'
+" vim-plug
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+call plug#begin('~/.vim/plugged')
 
 " ==========================
 " PLUGINS
 " ==========================
 " ui related
-Plugin 'bling/vim-airline'
-Plugin 'edkolev/tmuxline.vim'
-Plugin 'airblade/vim-gitgutter'
-" syntax
-Plugin 'plasticboy/vim-markdown'
-"
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-git'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'tpope/vim-dispatch'
-Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'Raimondi/delimitMate'
-Plugin 'majutsushi/tagbar'
-Plugin 'gorkunov/smartpairs.vim' 
-	"Plugin 'gcmt/wildfire.vim' 
-	"Plugin 'terryma/vim-expand-region'
-Plugin 'SirVer/ultisnips'							" code snippets
-Plugin 'honza/vim-snippets' 						" snippets for ultisnips
-" completion and searching
-"Plugin 'Valloric/YouCompleteMe'
-"Plugin 'Shougo/neocomplete.vim'
-Plugin 'ervandew/supertab'
-Plugin 'kien/ctrlp.vim'
-"Plugin 'ctrlpvim/ctrlp.vim' 						" Active fork of plugin 'kien/ctrlp.vim'
-Plugin 'JazzCore/ctrlp-cmatcher' 					" better matching algorithm for ctrl-p
-"Plugin 'dyng/ctrlsf.vim' 							" nice search using ack/ag
-Plugin 'rking/ag.vim'
-" database
-Plugin 'collinpeters/dbext.vim'
-Plugin 'krisajenkins/vim-postgresql-syntax'
-" window control
-Plugin 'christoomey/vim-tmux-navigator'
-" JavaScript
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'pangloss/vim-javascript'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'elzr/vim-json'
-Plugin 'scrooloose/syntastic'
+Plug 'bling/vim-airline'
+Plug 'edkolev/tmuxline.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'scrooloose/nerdtree'
+Plug 'jistr/vim-nerdtree-tabs'
 
-Plugin 'Align'
-Plugin 'SQLComplete.vim'
+" window control
+Plug 'christoomey/vim-tmux-navigator'
+Plug 't9md/vim-choosewin'
+
+" syntax
+Plug 'plasticboy/vim-markdown'
+
+" editing
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-git'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-dispatch'
+Plug 'scrooloose/nerdcommenter'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'Raimondi/delimitMate'
+Plug 'majutsushi/tagbar'
+Plug 'gorkunov/smartpairs.vim' 
+	"Plug 'gcmt/wildfire.vim' 
+	"Plug 'terryma/vim-expand-region'
+Plug 'SirVer/ultisnips'							" code snippets
+Plug 'honza/vim-snippets' 						" snippets for ultisnips
+
+" completion and searching
+"Plug 'Valloric/YouCompleteMe'
+"Plug 'Shougo/neocomplete.vim'
+Plug 'ervandew/supertab'
+Plug 'kien/ctrlp.vim'
+"Plug 'ctrlpvim/ctrlp.vim' 						" Active fork of plugin 'kien/ctrlp.vim'
+Plug 'JazzCore/ctrlp-cmatcher' 					" better matching algorithm for ctrl-p
+"Plug 'dyng/ctrlsf.vim' 							" nice search using ack/ag
+Plug 'rking/ag.vim'
+
+" database
+Plug 'collinpeters/dbext.vim'
+Plug 'krisajenkins/vim-postgresql-syntax'
+Plug 'SQLComplete.vim'
+
+" JavaScript
+Plug 'jelera/vim-javascript-syntax'
+Plug 'pangloss/vim-javascript'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'elzr/vim-json'
+Plug 'scrooloose/syntastic'
+
+Plug 'Align'
+
 " color schemes 
-Plugin 'wesgibbs/vim-irblack'
-Plugin 'nanotech/jellybeans.vim'
-Plugin 'altercation/vim-colors-solarized'
-"Plugin 'noahfrederick/vim-hemisu'
-"Plugin 'vim-scripts/xoria256.vim'
-"Plugin 'vim-scripts/peaksea'
-"Plugin 'vim-scripts/mayansmoke'
-"Plugin 'therubymug/vim-pyte'
-Plugin 't9md/vim-choosewin.git'
+Plug 'nanotech/jellybeans.vim'
+"Plug 'wesgibbs/vim-irblack'
+"Plug 'altercation/vim-colors-solarized'
+"Plug 'noahfrederick/vim-hemisu'
+"Plug 'vim-scripts/xoria256.vim'
+"Plug 'vim-scripts/peaksea'
+"Plug 'vim-scripts/mayansmoke'
+"Plug 'therubymug/vim-pyte'
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
+call plug#end()            " required
 filetype plugin indent on     " required!
 
 " ==========================
@@ -277,6 +283,14 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 " Postgres stuff
 let g:sql_type_default = 'pgsql' " SQLComplete default type
+
+" ----- scrooloose/syntastic settings -----
+let g:syntastic_error_symbol = '✘'
+let g:syntastic_warning_symbol = "▲"
+augroup mySyntastic
+	au!
+	au FileType tex let b:syntastic_mode = "passive"
+augroup END
 
 source ~/.vim/db_ext.conf " Source external db_ext conf
 

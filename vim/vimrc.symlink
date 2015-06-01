@@ -23,6 +23,7 @@ Plug 't9md/vim-choosewin'
 
 " syntax
 Plug 'plasticboy/vim-markdown'
+Plug 'ekalinin/Dockerfile.vim'
 
 " editing
 Plug 'tpope/vim-fugitive'
@@ -31,7 +32,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-dispatch'
 Plug 'scrooloose/nerdcommenter'
 Plug 'Lokaltog/vim-easymotion'
-Plug 'Raimondi/delimitMate'
+Plug 'jiangmiao/auto-pairs' "Plug 'Raimondi/delimitMate'
 Plug 'majutsushi/tagbar'
 Plug 'gorkunov/smartpairs.vim' 
 	"Plug 'gcmt/wildfire.vim' 
@@ -44,9 +45,9 @@ Plug 'honza/vim-snippets' 						" snippets for ultisnips
 "Plug 'Shougo/neocomplete.vim'
 Plug 'ervandew/supertab'
 Plug 'kien/ctrlp.vim'
-"Plug 'ctrlpvim/ctrlp.vim' 						" Active fork of plugin 'kien/ctrlp.vim'
 Plug 'JazzCore/ctrlp-cmatcher' 					" better matching algorithm for ctrl-p
-"Plug 'dyng/ctrlsf.vim' 							" nice search using ack/ag
+"Plug 'ctrlpvim/ctrlp.vim' 						" Active fork of plugin 'kien/ctrlp.vim'
+Plug 'dyng/ctrlsf.vim' 							" nice code search using ack/ag
 Plug 'rking/ag.vim'
 
 " database
@@ -65,6 +66,7 @@ Plug 'Align'
 
 " color schemes 
 Plug 'nanotech/jellybeans.vim'
+Plug 'NLKNguyen/papercolor-theme'
 "Plug 'wesgibbs/vim-irblack'
 "Plug 'altercation/vim-colors-solarized'
 "Plug 'noahfrederick/vim-hemisu'
@@ -120,10 +122,6 @@ endif
 
 " Remap leader to space
 let mapleader = "\<Space>"
-
-" <Leader>o to open a new file:
-nnoremap <Leader>o :CtrlP<CR>
-"nnoremap <Leader>f :CtrlSF 
 
 " <Leader>w to save file (a lot faster than :w<Enter>):
 nnoremap <Leader>w :w<CR>
@@ -231,13 +229,15 @@ set tags=./tags;/,$HOME/.vimtags 							" This will look in the current director
 "let g:tagbar_autofocus=1
 
 " Ctrl-P 
+" <Leader>o to open a new file:
+nnoremap <Leader>o :CtrlP<CR>
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
 let g:ctrlp_use_caching = 0
 let g:ctrlp_custom_ignore = {
     \ 'dir': '\.git$\|\.settings$\|\.metadata$\|target\|fckeditor',
 	\ 'file': '\.class$\|\.exe$\|\.swp$\|\.so$\|\.dll$\|TEST.*.xml$\|\Test.txt$\|\.jasper$\|\.jrxml$\|\.swf$\|\.png$\|\.gif$\|\configs.xml$\|\link-report.xml$\|\.fla',
     \ }
-let g:ctrlp_working_path_mode = 2
+let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
 
 " completion configuration
@@ -306,3 +306,13 @@ endfunction
 nmap - <Plug>(choosewin)
 let g:choosewin_overlay_enable = 1
 let g:choosewin_blink_on_land = 0
+
+" Gif config
+"map  / <Plug>(easymotion-sn)
+"omap / <Plug>(easymotion-tn)
+
+" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
+" Without these mappings, `n` & `N` works fine. (These mappings just provide
+" different highlight method and have some other features )
+"map  n <Plug>(easymotion-next)
+"map  N <Plug>(easymotion-prev)

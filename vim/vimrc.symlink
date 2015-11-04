@@ -37,8 +37,8 @@ Plug 'majutsushi/tagbar'
 Plug 'gorkunov/smartpairs.vim' 
 	"Plug 'gcmt/wildfire.vim' 
 	"Plug 'terryma/vim-expand-region'
-Plug 'SirVer/ultisnips'							" code snippets
-Plug 'honza/vim-snippets' 						" snippets for ultisnips
+"Plug 'SirVer/ultisnips'							" code snippets
+"Plug 'honza/vim-snippets' 						" snippets for ultisnips
 
 " completion and searching
 "Plug 'Valloric/YouCompleteMe'

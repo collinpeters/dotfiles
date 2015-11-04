@@ -1,2 +1,2 @@
-# unset the debian 'ag=apt-get' so we can use the silver searcher
-unset ag
+# unset the debian alias 'ag=apt-get' so we can use the silver searcher
+unalias ag

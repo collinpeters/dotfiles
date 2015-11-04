@@ -51,7 +51,7 @@ Plug 'dyng/ctrlsf.vim' 							" nice code search using ack/ag
 Plug 'rking/ag.vim'
 
 " database
-Plug 'collinpeters/dbext.vim'
+Plug 'vim-scripts/dbext.vim'
 Plug 'krisajenkins/vim-postgresql-syntax'
 Plug 'SQLComplete.vim'
 
@@ -66,14 +66,8 @@ Plug 'Align'
 
 " color schemes 
 Plug 'nanotech/jellybeans.vim'
-Plug 'NLKNguyen/papercolor-theme'
-"Plug 'wesgibbs/vim-irblack'
-"Plug 'altercation/vim-colors-solarized'
-"Plug 'noahfrederick/vim-hemisu'
-"Plug 'vim-scripts/xoria256.vim'
-"Plug 'vim-scripts/peaksea'
-"Plug 'vim-scripts/mayansmoke'
-"Plug 'therubymug/vim-pyte'
+Plug 'altercation/vim-colors-solarized'
+Plug 'vim-scripts/xoria256.vim'
 
 " All of your Plugins must be added before the following line
 call plug#end()            " required
@@ -92,7 +86,6 @@ set background=dark
 "	set background=dark
 "endif
 
-" colorscheme ir_black
 colorscheme jellybeans
 " let g:jellybeans_overrides = {
 " \    'Normal': { 'guibg': '222222',

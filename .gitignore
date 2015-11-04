@@ -6,4 +6,4 @@ cache/
 vim/vim.symlink/eclim
 vim/vim.symlink/autoload/
 vim/vim.symlink/plugged/
-
+oh-my-zsh

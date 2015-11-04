@@ -2,7 +2,11 @@
 #
 # bootstrap installs things.
 
-DOTFILES_ROOT="`pwd`"
+# dir of script
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}"   )" && pwd   )
+# dotfiles root is one up
+DOTFILES_ROOT="$DIR/.."
+cd $DOTFILES_ROOT
 
 set -e
 
@@ -47,6 +51,18 @@ setup_gitconfig () {
     success 'gitconfig'
   fi
 }
+
+setup_oh_my_zsh () {
+  if ! [ -d "$DOTFILES_ROOT/oh-my-zsh" ]
+  then
+	  info 'checking out oh-my-zsh'
+	  git clone git@github.com:robbyrussell/oh-my-zsh.git
+  fi
+
+  # Manually create symlink for core oh-my-zsh
+  ln -s "$DOTFILES_ROOT/oh-my-zsh" ~/.oh-my-zsh
+}
+
 
 link_files () {
   ln -s $1 $2
@@ -121,6 +137,7 @@ install_dotfiles () {
 }
 
 setup_gitconfig
+setup_oh_my_zsh
 install_dotfiles
 
 # If we're on a Mac, let's install and setup homebrew.
@@ -134,6 +151,9 @@ then
     fail "error installing dependencies"
   fi
 fi
+
+info "installing vim-plug"
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 echo ''
 echo '  All installed!'

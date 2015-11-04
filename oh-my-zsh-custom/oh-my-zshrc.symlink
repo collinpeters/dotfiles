@@ -81,4 +81,8 @@ alias vpnup="nmcli connection up id InTouch"
 export TERM=xterm-256color
 [ -n "$TMUX" ] && export TERM=screen-256color
 
+# temporary fix home & end for now https://github.com/robbyrussell/oh-my-zsh/issues/3061
+bindkey "${terminfo[khome]}" beginning-of-line      # [Home] - Go to beginning of line
+bindkey "${terminfo[kend]}"  end-of-line            # [End] - Go to end of line
+
 #archey

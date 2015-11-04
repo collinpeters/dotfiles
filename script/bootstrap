@@ -168,7 +168,7 @@ let g:dbext_rows_affected = 1
 let g:dbext_default_use_sep_result_buffer = 1	\" Each buffer has its own results window
 let g:dbext_default_display_cmd_line = 0 		\" Do NOT display cmd as well
 let g:dbext_default_history_file = '\$HOME/.dbext_sql_history.txt'
-let g:dbext_default_profile='intouch_devel'
+let g:dbext_default_profile='local'
 
 let g:dbext_default_profile_local = 'type=PGSQL:user=mcrtdbms:dbname=intouch_db:host=127.0.0.1'
 " > ~/.vim/db_ext.conf

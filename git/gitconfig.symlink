@@ -1,0 +1,49 @@
+[alias]
+	st = status
+	ls = ls-files
+	co = checkout
+	df = diff
+	dc = diff --cached
+	oldest-ancestor = !zsh -c 'diff -u <(git rev-list --first-parent "${1:-master}") <(git rev-list --first-parent "${2:-HEAD}") | sed -ne \"s/^ //p\" | head -1' -
+	lg = log --decorate --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	tagsbydate = for-each-ref --format '%(refname) %(taggerdate)' refs/tags
+	wtf = !$ZSH/bin/git-wtf
+	rank-contributors = !$ZSH/bin/git-rank-contributors
+	count = !git shortlog -sn
+[core]
+	excludesfile = ~/.gitignore
+	editor = vim
+	whitespace = cr-at-eol
+[giggle]
+	main-window-maximized = false
+	main-window-geometry = 1511x930+268+63
+	main-window-view = FileView
+	history-view-vpane-position = 524
+	file-view-vpane-position = 580
+	file-view-hpane-position = 310
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	ui = true
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+[merge]
+	tool = vimdiff
+[push]
+	default = simple
+[mergetool]
+	keepBackup = false
+[difftool]
+	prompt = false

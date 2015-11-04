@@ -6,4 +6,5 @@ cache/
 vim/vim.symlink/eclim
 vim/vim.symlink/autoload/
 vim/vim.symlink/plugged/
+vim/vim.symlink/db_ext.conf
 oh-my-zsh

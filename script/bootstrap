@@ -155,5 +155,30 @@ fi
 info "installing vim-plug"
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
+if [ ! -a ~/.vim/db_ext.conf ]; then
+	info "creating shell ~/.vim/dbext.conf"
+	echo "
+\" dbext options
+let g:dbext_default_type   = 'PGSQL'			\" Default db type
+let g:dbext_default_user   = 'mcrtdbms'			\" Default username
+let g:dbext_default_buffer_lines = 20
+let g:dbext_default_prompt_for_parameters=0     \" Turn off parameter prompt
+let g:dbext_suppress_version_warning=1
+let g:dbext_rows_affected = 1
+let g:dbext_default_use_sep_result_buffer = 1	\" Each buffer has its own results window
+let g:dbext_default_display_cmd_line = 0 		\" Do NOT display cmd as well
+let g:dbext_default_history_file = '\$HOME/.dbext_sql_history.txt'
+let g:dbext_default_profile='intouch_devel'
+
+let g:dbext_default_profile_local = 'type=PGSQL:user=mcrtdbms:dbname=intouch_db:host=127.0.0.1'
+" > ~/.vim/db_ext.conf
+fi
+
+if [ ! -a ~/.pgpass ]; then
+	info "creating shell ~/.pgpass"
+	echo "127.0.0.1:5432:*:username:password" > ~/.pgpass
+	chmod 600 ~/.pgpass
+fi
+
 echo ''
 echo '  All installed!'

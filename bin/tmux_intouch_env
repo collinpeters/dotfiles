@@ -37,5 +37,8 @@ tmux split-window -h -p 50 'ssh $USER@db.intouch.slave'
 # Login to the Connector
 tmux new-window -t $SESSION:6 -n 'Connector' 'ssh -A $USER@app.connector'
 
+# Select the first window
+tmux select-window -t $SESSION:1
+
 # Start tmux and attach to our session
 tmux -2 attach-session -t $SESSION

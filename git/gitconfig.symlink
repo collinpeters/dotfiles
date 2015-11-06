@@ -41,8 +41,6 @@
 	untracked = cyan
 [merge]
 	tool = vimdiff
-[push]
-	default = simple
 [mergetool]
 	keepBackup = false
 [difftool]

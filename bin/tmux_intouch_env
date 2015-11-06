@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# Session name
+SESSION=$USER
+
+# if the session is already running, just attach to it.
+tmux has-session -t $SESSION
+if [ $? -eq 0 ]; then
+    echo "Session $SESSION already exists. Attaching."
+    sleep 1
+    tmux -2 attach -t $SESSION
+    exit 0;
+fi
+
+# Create a new session 
+tmux new-session -d -s $SESSION
+
+# Rename first window for apache
+tmux rename-window -t $SESSION:1 'Apache'
+
+# Login to main Tomcat (resource server)
+tmux new-window -t $SESSION:2 -n 'Tomcat' 'ssh -A $USER@app.resource'
+
+# Login to Auth
+tmux new-window -t $SESSION:3 -n 'Auth Server' 'ssh -A $USER@app.auth'
+
+# Login to UI
+tmux new-window -t $SESSION:4 -n 'UI Server' 'ssh -A $USER@app.web_client'
+
+# Login to PostgreSQL Master
+tmux new-window -t $SESSION:5 -n 'Postgres' 'ssh -A intouch@db.intouch.master'
+tmux select-pane -t $SESSION:5
+
+# Login to PostgreSQL Slave
+tmux split-window -h -p 50 'ssh $USER@db.intouch.slave'
+
+# Login to the Connector
+tmux new-window -t $SESSION:6 -n 'Connector' 'ssh -A $USER@app.connector'
+
+# Start tmux and attach to our session
+tmux -2 attach-session -t $SESSION

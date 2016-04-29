@@ -2,6 +2,7 @@
 
 # aliases
 alias mci="mvn clean install"
+alias mcv="mvn clean verify"
 alias mcist="mvn clean install -DskipTests"
 alias mciflex="mvn --projects :intouchV2-flex-parent,:intouchV3-flex-parent,:intouch-distribution -amd clean install"
 alias mcil='cd ~/code/i/intouch; mvn clean install --projects :intouch-flex-resources,:intouch-distribution; cd -' 

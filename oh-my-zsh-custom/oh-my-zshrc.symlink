@@ -80,7 +80,7 @@ JIRA_URL=https://intouch.atlassian.net
 JIRA_RAPID_BOARD="true"
 
 # start vpn
-alias vpnup="nmcli connection up id InTouch"
+alias vpnup="nmcli connection up id 'InTouch DCC'"
 
 export TERM=xterm-256color
 [ -n "$TMUX" ] && export TERM=screen-256color

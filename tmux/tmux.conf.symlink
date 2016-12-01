@@ -27,7 +27,7 @@ bind -n C-\ if-shell "$is_vim" "send-keys C-\\" "select-pane -l"
 bind C-l send-keys 'C-l'
 
 # use vim motion keys while in copy mode
-setw -g mode-keys vi
+set-window-option -g mode-keys vi
 
 # use the vim resize keys.
 # the number at the end is how much the pane will be resized,
@@ -54,16 +54,19 @@ set -g base-index 1
 set -g pane-base-index 1
 
 # Don't automatically rename windows
-setw -g automatic-rename off
+set-window-option -g automatic-rename off
 set-option -g allow-rename off
 
+set-option -g set-remain-on-exit off
+set-window-option -g remain-on-exit off
+
 # Allow selection of pane using mouse
-# setw -g mode-mouse on
+# set-window-option -g mode-mouse on
 # set-option -g mouse-select-pane on
 # set-option -g mouse-select-window on
 
 # Set window notifications
-setw -g monitor-activity on
+set-window-option -g monitor-activity on
 set -g visual-activity on
 
 # 10k lines of history
@@ -95,8 +98,8 @@ set-window-option -g window-status-bg default
 set-window-option -g window-status-current-fg colour166 #orange
 set-window-option -g window-status-current-bg default
 #set-window-option -g window-status-current-attr bright
-setw -g window-status-format "#[fg=color7]#[bg=color14] #I #[bg=color14]#[fg=white] #W "
-setw -g window-status-current-format "#[bg=black]#[fg=yellow] #I #[fg=black]#[bg=colour14] #W "
+set-window-option -g window-status-format "#[fg=color7]#[bg=color14] #I #[bg=color14]#[fg=white] #W "
+set-window-option -g window-status-current-format "#[bg=black]#[fg=yellow] #I #[fg=black]#[bg=colour14] #W "
 
 
 # pane border

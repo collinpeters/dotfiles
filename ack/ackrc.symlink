@@ -1,4 +1,5 @@
 --type-set=properties=.properties
+--type-set=yml=.yml
 --type-set=mxml=.mxml
 --type-set=as=.as
 --type-set=tag=.tag

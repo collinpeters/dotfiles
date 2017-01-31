@@ -47,3 +47,7 @@ unset config_files
 source ~/.oh-my-zshrc
 
 stty -ixon
+
+export USE_NATIVE_DOCKER=true
+
+[[ -s "/home/collin/.gvm/scripts/gvm" ]] && source "/home/collin/.gvm/scripts/gvm"

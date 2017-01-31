@@ -17,76 +17,81 @@ Plug 'edkolev/tmuxline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
-
-" window control
-Plug 'christoomey/vim-tmux-navigator'
-Plug 't9md/vim-choosewin'
-
-" syntax
+" 
+" " window control
+" Plug 'christoomey/vim-tmux-navigator'
+" Plug 't9md/vim-choosewin'
+" Plug 'drscott/vim-cycle-movements'
+" 
+" " syntax
 Plug 'plasticboy/vim-markdown'
-Plug 'ekalinin/Dockerfile.vim'
+" Plug 'ekalinin/Dockerfile.vim'
+Plug 'avakhov/vim-yaml'
+Plug 'pearofducks/ansible-vim'
+Plug 'andreshazard/vim-logreview'
 
 " editing
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-git'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-dispatch'
-Plug 'scrooloose/nerdcommenter'
-Plug 'Lokaltog/vim-easymotion'
-Plug 'jiangmiao/auto-pairs' "Plug 'Raimondi/delimitMate'
-Plug 'majutsushi/tagbar'
-Plug 'gorkunov/smartpairs.vim' 
-	"Plug 'gcmt/wildfire.vim' 
-	"Plug 'terryma/vim-expand-region'
-"Plug 'SirVer/ultisnips'							" code snippets
-"Plug 'honza/vim-snippets' 						" snippets for ultisnips
-
-" completion and searching
-"Plug 'Valloric/YouCompleteMe'
-"Plug 'Shougo/neocomplete.vim'
-Plug 'ervandew/supertab'
-Plug 'kien/ctrlp.vim'
-Plug 'JazzCore/ctrlp-cmatcher' 					" better matching algorithm for ctrl-p
-"Plug 'ctrlpvim/ctrlp.vim' 						" Active fork of plugin 'kien/ctrlp.vim'
-Plug 'dyng/ctrlsf.vim' 							" nice code search using ack/ag
-Plug 'rking/ag.vim'
-
-" database
-Plug 'vim-scripts/dbext.vim'
-Plug 'krisajenkins/vim-postgresql-syntax'
-Plug 'SQLComplete.vim'
-
-" JavaScript
-Plug 'jelera/vim-javascript-syntax'
-Plug 'pangloss/vim-javascript'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'elzr/vim-json'
-Plug 'scrooloose/syntastic'
-
 Plug 'Align'
+Plug 'tpope/vim-fugitive'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+" Plug 'tpope/vim-git'
+" Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-dispatch'
+" Plug 'scrooloose/nerdcommenter'
+" Plug 'Lokaltog/vim-easymotion'
+" Plug 'Raimondi/delimitMate' " Plug 'jiangmiao/auto-pairs' 
+" Plug 'gorkunov/smartpairs.vim' 
+" Plug 'majutsushi/tagbar'
+" "Plug 'gcmt/wildfire.vim' 
+" "Plug 'terryma/vim-expand-region'
+" "Plug 'SirVer/ultisnips'							" code snippets
+" "Plug 'honza/vim-snippets' 						" snippets for ultisnips
+" 
+" " completion and searching
+" "Plug 'Valloric/YouCompleteMe'
+" "Plug 'Shougo/neocomplete.vim'
+" Plug 'ervandew/supertab'
+" Plug 'kien/ctrlp.vim'
+" Plug 'JazzCore/ctrlp-cmatcher' 					" better matching algorithm for ctrl-p
+" "Plug 'ctrlpvim/ctrlp.vim' 						" Active fork of plugin 'kien/ctrlp.vim'
+" Plug 'dyng/ctrlsf.vim' 							" nice code search using ack/ag
+" Plug 'rking/ag.vim'
+" 
+" " database
+Plug 'vim-scripts/dbext.vim'
+"Plug 'krisajenkins/vim-postgresql-syntax'
+Plug 'SQLComplete.vim'
+Plug 'lifepillar/pgsql.vim'
+
+" " JavaScript
+" Plug 'jelera/vim-javascript-syntax'
+" Plug 'pangloss/vim-javascript'
+" Plug 'nathanaelkane/vim-indent-guides'
+" Plug 'elzr/vim-json'
+" Plug 'scrooloose/syntastic'
 
 " color schemes 
 Plug 'nanotech/jellybeans.vim'
-Plug 'altercation/vim-colors-solarized'
-Plug 'vim-scripts/xoria256.vim'
+" Plug 'altercation/vim-colors-solarized'
+" Plug 'vim-scripts/xoria256.vim'
 
 " All of your Plugins must be added before the following line
 call plug#end()            " required
 filetype plugin indent on     " required!
 
-" ==========================
-" UI SETUP
-" ==========================
-syntax on " Syntax highlighting on
-set encoding=utf-8
-set t_Co=256 
-set background=dark
-"if has('gui_running')
-"	set background=light
-"else
-"	set background=dark
-"endif
-
+"-	" ==========================
+"-	" UI SETUP
+"-	" ==========================
+"-	syntax on " Syntax highlighting on
+"-	set encoding=utf-8
+"-	set t_Co=256 
+"-	set background=dark
+"-	"if has('gui_running')
+"-	"	set background=light
+"-	"else
+"-	"	set background=dark
+"-	"endif
+"-
 colorscheme jellybeans
 " let g:jellybeans_overrides = {
 " \    'Normal': { 'guibg': '222222',
@@ -94,7 +99,7 @@ colorscheme jellybeans
 " \    'LineNr': { 'guibg': '222222',
 " \               'ctermbg': ''},
 " \}
-
+"-
 " cursor lines
 set cursorline
 set cursorcolumn
@@ -105,14 +110,14 @@ hi CursorColumn guibg=Grey11 ctermbg=235	" highlight cursor
 :autocmd InsertEnter,InsertLeave * set cuc!
 
 
-" ==========================
-" CONFIGURATION
-" ==========================
-
-" Jump to the last position when reopening a file
-if has("autocmd")
-	au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-endif
+"-	" ==========================
+"-	" CONFIGURATION
+"-	" ==========================
+"-
+"-	" Jump to the last position when reopening a file
+"-	if has("autocmd")
+"-		au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+"-	endif
 
 " Remap leader to space
 let mapleader = "\<Space>"
@@ -128,14 +133,14 @@ nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
 
-" Enter visual mode with <space><space>
-nmap <Leader><Leader> V
-
-" jk is the same as escape in edit mode (killer!!)
-inoremap jk <ESC>
-
-" the ';' is the same as ':'  i.e. use ;w to save the file (no need for shift)
-nnoremap ; :
+"-	" Enter visual mode with <space><space>
+"-	nmap <Leader><Leader> V
+"-
+"-	" jk is the same as escape in edit mode (killer!!)
+"-	inoremap jk <ESC>
+"-
+"-	" the ';' is the same as ':'  i.e. use ;w to save the file (no need for shift)
+"-	nnoremap ; :
 
 " Clear the search. No more typing '/asdfawdsf' to clear the search
 nmap <silent> <Leader>/ :nohlsearch<CR>
@@ -148,7 +153,7 @@ nnoremap k gk
 vnoremap < <gv
 vnoremap > >gv
 
-" I said save!!
+"-	" I said save!!
 ca w!! w !sudo tee >/dev/null "%"
 
 " Options, options, options
@@ -157,12 +162,11 @@ set showmatch                  " Highlight matching brackets
 set ignorecase                 " Do case insensitive matching
 set smartcase                  " Do smart case matching
 set incsearch                  " Incremental search (find as you type)
-set autowrite                  " Automatically save before commands like :next and :make
-set hidden                     " Hide buffers when they are abandoned
+"-	set autowrite                  " Automatically save before commands like :next and :make
+"-	set hidden                     " Hide buffers when they are abandoned
 set wildignore+=*.class        " Ignore these files
 set wildmenu                   " Use the wildmenu
 set wildmode=list:longest,full " command <Tab> completion, list matches, then longest common part, then all.
-"set wildmode=longest:full,full
 set tabstop=4                  " Tab stop of 4 characters
 set shiftwidth=4               " Number of spaces to use for each step of (auto)indent
 set nobackup                   " Don't make backup files
@@ -174,7 +178,7 @@ set number                     " Show current line number
 set relativenumber             " Show relative line numbers
 set formatoptions=croql        " Format options
 set pastetoggle=<F2>           " Handle the paste toggle when pasting code
-set showtabline=2              " Show the tab line if there are two or more tabs
+set showtabline=1              " Show the tab line if there are two or more tabs
 set autochdir                  " Change the working directory to that of the current file
 set splitbelow 				   " new horizontal split is below, not above
 set splitright 				   " new vertical split is on right, not left 
@@ -200,56 +204,56 @@ if has('gui_running')
 		set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 13
 	endif
 endif
-
-" ==========================
-" PLUGIN CONFIGURATION
-" ==========================
-
-" Turn off quote concealing on JSON
-let g:vim_json_syntax_conceal = 0
-
+"-
+"-	" ==========================
+"-	" PLUGIN CONFIGURATION
+"-	" ==========================
+"-
+"-	" Turn off quote concealing on JSON
+"-	let g:vim_json_syntax_conceal = 0
+"-
 " NerdTree
 map <silent> <F7> :NERDTreeTabsToggle<CR>
 nmap <leader>nt :NERDTreeFind<CR> 		" Select current file in NerdTree
 let g:nerdtree_tabs_open_on_gui_startup=0 	" Don't open on gvim start
 
-" Ctags
-set tags=./tags;/,$HOME/.vimtags 							" This will look in the current directory for 'tags', and work up the tree towards root until one is found.
-"map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR> " C-\ - Open the definition in a new tab
-"map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>      " A-] - Open the definition in a vertical split
-
-" TagBar
-"nmap <F8> :TagbarToggle<CR>
-"let g:tagbar_autofocus=1
-
-" Ctrl-P 
-" <Leader>o to open a new file:
-nnoremap <Leader>o :CtrlP<CR>
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
-let g:ctrlp_use_caching = 0
-let g:ctrlp_custom_ignore = {
-    \ 'dir': '\.git$\|\.settings$\|\.metadata$\|target\|fckeditor',
-	\ 'file': '\.class$\|\.exe$\|\.swp$\|\.so$\|\.dll$\|TEST.*.xml$\|\Test.txt$\|\.jasper$\|\.jrxml$\|\.swf$\|\.png$\|\.gif$\|\configs.xml$\|\link-report.xml$\|\.fla',
-    \ }
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
-
-" completion configuration
-" Supertab
-"let g:SuperTabDefaultCompletionType = "<c-x><c-u>"
-let g:SuperTabDefaultCompletionType = 'context'
-"let g:SuperTabClosePreviewOnPopupClose = 1 	" Automatically close the scratch window
-" let g:neocomplete#enable_at_startup = 1
-" Vim tab completion
-set completeopt=menuone,longest,preview
-
-" Eclim
-" Pass to YouCompleteMe
-"let g:EclimCompletionMethod = 'omnifunc'
-" LocateFile should search workspace
-"let g:EclimLocateFileScope = 'workspace'
-" Fallback to 'ag' (silver searcher) for non-project files
-"let g:EclimLocateFileNonProjectScope = 'ag'
+"-	" Ctags
+"-	set tags=./tags;/,$HOME/.vimtags 							" This will look in the current directory for 'tags', and work up the tree towards root until one is found.
+"-	"map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR> " C-\ - Open the definition in a new tab
+"-	"map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>      " A-] - Open the definition in a vertical split
+"-
+"-	" TagBar
+"-	"nmap <F8> :TagbarToggle<CR>
+"-	"let g:tagbar_autofocus=1
+"-
+"-	" Ctrl-P 
+"-	" <Leader>o to open a new file:
+"-	nnoremap <Leader>o :CtrlP<CR>
+"-	let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+"-	let g:ctrlp_use_caching = 0
+"-	let g:ctrlp_custom_ignore = {
+"-		\ 'dir': '\.git$\|\.settings$\|\.metadata$\|target\|fckeditor',
+"-		\ 'file': '\.class$\|\.exe$\|\.swp$\|\.so$\|\.dll$\|TEST.*.xml$\|\Test.txt$\|\.jasper$\|\.jrxml$\|\.swf$\|\.png$\|\.gif$\|\configs.xml$\|\link-report.xml$\|\.fla',
+"-		\ }
+"-	let g:ctrlp_working_path_mode = 'ra'
+"-	let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
+"-
+"-	" completion configuration
+"-	" Supertab
+"-	"let g:SuperTabDefaultCompletionType = "<c-x><c-u>"
+"-	let g:SuperTabDefaultCompletionType = 'context'
+"-	"let g:SuperTabClosePreviewOnPopupClose = 1 	" Automatically close the scratch window
+"-	" let g:neocomplete#enable_at_startup = 1
+"-	" Vim tab completion
+"-	set completeopt=menuone,longest,preview
+"-
+"-	" Eclim
+"-	" Pass to YouCompleteMe
+"-	"let g:EclimCompletionMethod = 'omnifunc'
+"-	" LocateFile should search workspace
+"-	"let g:EclimLocateFileScope = 'workspace'
+"-	" Fallback to 'ag' (silver searcher) for non-project files
+"-	"let g:EclimLocateFileNonProjectScope = 'ag'
 
 " vim-airline
 set laststatus=2
@@ -263,29 +267,29 @@ let g:airline#extensions#whitespace#checks = [ 'trailing' ]
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 0
 
-" Vim markdown
-let g:vim_markdown_folding_disabled=1
-
-" Ultisnips
-"let g:UltiSnipsExpandTrigger="<tab>"
-"let g:UltiSnipsJumpForwardTrigger="<c-b>"
-"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-"let g:UltiSnipsEditSplit="vertical" 		" If you want :UltiSnipsEdit to split your window.
-"let g:UltiSnipsExpandTrigger="<c-j>"
-"let g:UltiSnipsJumpForwardTrigger="<c-j>"
-"let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
+"-	" Vim markdown
+"-	let g:vim_markdown_folding_disabled=1
+"-
+"-	" Ultisnips
+"-	"let g:UltiSnipsExpandTrigger="<tab>"
+"-	"let g:UltiSnipsJumpForwardTrigger="<c-b>"
+"-	"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"-	"let g:UltiSnipsEditSplit="vertical" 		" If you want :UltiSnipsEdit to split your window.
+"-	"let g:UltiSnipsExpandTrigger="<c-j>"
+"-	"let g:UltiSnipsJumpForwardTrigger="<c-j>"
+"-	"let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+"-
 " Postgres stuff
 let g:sql_type_default = 'pgsql' " SQLComplete default type
-
-" ----- scrooloose/syntastic settings -----
-let g:syntastic_error_symbol = '✘'
-let g:syntastic_warning_symbol = "▲"
-augroup mySyntastic
-	au!
-	au FileType tex let b:syntastic_mode = "passive"
-augroup END
-
+"-
+"-	" ----- scrooloose/syntastic settings -----
+"-	let g:syntastic_error_symbol = '✘'
+"-	let g:syntastic_warning_symbol = "▲"
+"-	augroup mySyntastic
+"-		au!
+"-		au FileType tex let b:syntastic_mode = "passive"
+"-	augroup END
+"-
 source ~/.vim/db_ext.conf " Source external db_ext conf
 
 " Highlight psql output via 'krisajenkins/vim-postgresql-syntax'
@@ -295,18 +299,18 @@ function! DBextPostResult(db_type, buf_nr)
 		set filetype=postgresql
 	endif
 endfunction
-
-" Chosewin
-nmap - <Plug>(choosewin)
-let g:choosewin_overlay_enable = 1
-let g:choosewin_blink_on_land = 0
-
-" Gif config
-"map  / <Plug>(easymotion-sn)
-"omap / <Plug>(easymotion-tn)
-
-" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
-" Without these mappings, `n` & `N` works fine. (These mappings just provide
-" different highlight method and have some other features )
-"map  n <Plug>(easymotion-next)
-"map  N <Plug>(easymotion-prev)
+"-
+"-	" Chosewin
+"-	nmap - <Plug>(choosewin)
+"-	let g:choosewin_overlay_enable = 1
+"-	let g:choosewin_blink_on_land = 0
+"-
+"-	" Gif config
+"-	"map  / <Plug>(easymotion-sn)
+"-	"omap / <Plug>(easymotion-tn)
+"-
+"-	" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
+"-	" Without these mappings, `n` & `N` works fine. (These mappings just provide
+"-	" different highlight method and have some other features )
+"-	"map  n <Plug>(easymotion-next)
+"-	"map  N <Plug>(easymotion-prev)

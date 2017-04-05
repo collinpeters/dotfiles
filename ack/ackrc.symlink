@@ -4,3 +4,4 @@
 --type-set=as=.as
 --type-set=tag=.tag
 --ignore-dir=.metadata
+--ignore-dir=target

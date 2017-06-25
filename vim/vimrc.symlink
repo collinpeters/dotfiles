@@ -29,9 +29,10 @@ Plug 'plasticboy/vim-markdown'
 Plug 'avakhov/vim-yaml'
 Plug 'pearofducks/ansible-vim'
 Plug 'andreshazard/vim-logreview'
+Plug 'martinda/Jenkinsfile-vim-syntax'
 
 " editing
-Plug 'Align'
+Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-fugitive'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 " Plug 'tpope/vim-git'
@@ -60,8 +61,9 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 " " database
 Plug 'vim-scripts/dbext.vim'
 "Plug 'krisajenkins/vim-postgresql-syntax'
-Plug 'SQLComplete.vim'
 Plug 'lifepillar/pgsql.vim'
+
+Plug 'fboender/bexec'
 
 " " JavaScript
 " Plug 'jelera/vim-javascript-syntax'
@@ -183,6 +185,10 @@ set autochdir                  " Change the working directory to that of the cur
 set splitbelow 				   " new horizontal split is below, not above
 set splitright 				   " new vertical split is on right, not left 
 set lazyredraw                 " do not update screen while executing macros
+
+" disable bell
+set vb
+set t_vb=
 
 if has('cmdline_info')
 	set ruler                  	" show the ruler
@@ -314,3 +320,7 @@ endfunction
 "-	" different highlight method and have some other features )
 "-	"map  n <Plug>(easymotion-next)
 "-	"map  N <Plug>(easymotion-prev)
+
+let g:bexec_filter_types = {
+        \ 'sql' : 'orient.sh',
+\ }

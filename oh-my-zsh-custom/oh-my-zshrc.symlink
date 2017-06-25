@@ -51,7 +51,7 @@ zstyle :omz:plugins:ssh-agent agent-forwarding on
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git debian git-flow github ssh-agent vi-mode vi-mode-custom bower jsontools common-aliases docker jira mvn maven postgres-custom sudo tmux vagrant vagrant-custom vundle ack vim-pager fasd aws npm node nvm ag)
+plugins=(git debian github ssh-agent vi-mode vi-mode-custom jsontools common-aliases docker jira postgres-custom sudo tmux vagrant vagrant-custom ack vim-pager fasd npm node nvm ag sdkman mvn maven you-should-use)
 
 source $ZSH/oh-my-zsh.sh
 

@@ -1,0 +1,136 @@
+" ----------------
+" options
+set visualbell noerrorbells    " stop the beeping!
+set number                     " Show current line number
+set relativenumber             " Show relative line numbers
+set hlsearch                   " highlight search matches
+set scrolloff=3                " Have 3 lines of offset (or buffer) when scrolling
+set ignorecase                 " Do case insensitive matching
+set smartcase                  " Do smart case matching
+set showmode                   " Show vim mode on the bottom
+set history=1000
+
+"set surround
+
+" easy system clipboard copy/paste
+vmap <Space>y "+y
+vmap <Space>d "+d
+nmap <Space>p "+p
+nmap <Space>P "+P
+vmap <Space>p "+p
+vmap <Space>P "+P
+
+" ----------------
+" actions
+
+" clear the search buffer
+nnoremap <Space>/ :nohlsearch<CR>
+" Reload .ideavimrc
+nnoremap <Space>vs :source ~/.ideavimrc<CR>
+" any action in idea
+nnoremap <Space>a :action GotoAction<CR>
+
+" navigate -> windows/dialogs
+nnoremap <Space>p :action VimFilePrevious<CR>
+"nnoremap <Space>o :action GotoClass<CR>
+"nnoremap <Space>O :action GotoFile<CR>
+nnoremap <Space>s :action GotoSymbol<CR>
+nnoremap <Space>h :action CallHierarchy<CR>
+nnoremap <Space>m :action FileStructurePopup<CR>
+nnoremap <Space>u :action FindUsages<CR>
+" navigate -> jumps
+nnoremap gd :action GotoDeclaration<CR>
+nnoremap gK :action GotoTypeDeclaration<CR>
+nnoremap gi :action GotoImplementation<CR>
+nnoremap gs :action GotoSuperMethod<CR>
+nnoremap <Space>gt :action GotoTest<CR>
+nnoremap <Space>gl :action GotoRelated<CR>
+" code
+nnoremap <Space>f :action ReformatCode<CR>
+"    ScrollFromSource is a plugin - https://plugins.jetbrains.com/plugin/7606-scroll-from-source
+nnoremap <Space>t :action ScrollFromSource<CR>
+" refactor
+nnoremap <Space>rr :action RenameElement<CR>
+" run/debug
+nnoremap <Space>b :action ToggleLineBreakpoint<CR>
+nnoremap <Space>xr :action Run<cr>
+nnoremap <Space>xR :action RunClass<cr>
+nnoremap <Space>xd :action Debug<CR>
+nnoremap <Space>xD :action DebugClass<CR>
+nnoremap <Space>xc :action Coverage<CR>
+"		"RunTargetAction
+"		" ChooseRunConfiguration
+"		"ChooseDebugConfiguration
+"		"Compile
+"		"CompileDirty
+"		"CompileProject
+" windows
+nnoremap <Space>wm :action ActivateMavenProjectsToolWindow<CR>
+nnoremap <Space>wd :action ActivateDebugToolWindow<CR>
+nnoremap <Space>wr :action ActivateRunToolWindow<CR>
+nnoremap <Space>wp :action ActivateProjectToolWindow<CR>
+
+" unimpaired mappings
+nnoremap [<Space> :action Back<CR>
+nnoremap ]<Space> :action Forward<CR>
+nnoremap [q :action PreviousOccurence<CR>
+nnoremap ]q :action NextOccurence<CR>
+nnoremap [m :action MethodUp<CR>
+nnoremap ]m :action MethodDown<CR>
+nnoremap [c :action VcsShowPrevChangeMarker<CR>
+nnoremap ]c :action VcsShowNextChangeMarker<CR>
+
+
+
+" -----------------------
+
+"		"nnoremap gje :action GoToErrorGroup<CR>
+"		"nnoremap <Space>fe :action GotoNextError<CR>
+"
+"		"nnoremap <Space>q :action CloseContent<CR>
+"		"nnoremap <Space>Q :action ReopenClosedTab<CR>
+"
+"		"nnoremap <Space>e :action SearchEverywhere<CR>
+"		"nnoremap <Space>E :action Switcher<CR>
+
+"		"nnoremap <Space>j :action RecentFiles<CR>
+"		"nnoremap <Space>h :action QuickJavaDoc<CR>
+"
+"		"nnoremap cS :action ChangeSignature<CR>
+"		"nnoremap cts :action ChangeTypeSignature<CR>
+
+
+"		" " nmap csw' :action Macro.surround_with_single_quote<CR>
+"
+"		" run
+"		"nnoremap <Space>r :action RunClass<CR>
+"		"nnoremap <Space>R :action Run<CR>
+"		"nnoremap <Space>d :action DebugClass<CR>
+"		"nnoremap <Space>D :action Debug<CR>
+"		"nnoremap <Space>c :action CheckStyleCurrentFileAction<CR>
+"
+"		" " built-in navigation to navigated items works better
+"		nnoremap <c-o> :action Back<CR>
+"		nnoremap <c-i> :action Forward<CR>
+"		" " but preserve ideavim defaults
+"		" nnoremap g<c-o> <c-o>
+"		" nnoremap g<c-i> <c-i>
+
+"		" " built in search looks better
+"		" nnoremap / :action Find<CR>
+"		" " but preserve ideavim search
+"		" nnoremap g/ /
+"
+"
+"		" ----------------
+"		" disabled stuff
+"
+"		"nnoremap / :action Find<CR>
+"		"nnoremap n :action FindNext<CR>
+"		"nnoremap N :action FindPrevious<CR>
+"
+"		" https://github.com/johnlindquist/AceJump
+"		" nnoremap ; :action AceJumpAction<CR>
+"		" nnoremap s :action AceAction<CR>
+"
+"		"nnoremap <Space>k :action HighlightUsagesInFile<CR>

@@ -1,7 +1,10 @@
 --type-set=properties=.properties
 --type-set=yml=.yml
+--type-set=graphml=.graphml
 --type-set=mxml=.mxml
 --type-set=as=.as
+--type-set=sh=.sh
 --type-set=tag=.tag
+--type-set=template=.template
 --ignore-dir=.metadata
 --ignore-dir=target

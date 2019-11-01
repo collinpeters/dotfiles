@@ -7,17 +7,4 @@ if [ $1 ]; then
 	SESSION=$1
 fi
 
-# if the session is already running, just attach to it.
-tmux has-session -t $SESSION
-if [ $? -eq 0 ]; then
-    echo "Session $SESSION already exists. Attaching."
-    sleep 1
-    tmux -2 attach -t $SESSION
-    exit 0;
-fi
-
-# Create a new session 
-tmux new-session -d -s $SESSION
-
-# Start tmux and attach to our session
-tmux -2 attach-session -t $SESSION
+tmux new-session -A -s $SESSION

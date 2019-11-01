@@ -1,6 +1,8 @@
 # Use ctrl-a instead of the hard to type ctrl-b
 set-option -g prefix C-a
 
+set -g default-terminal "tmux-256color" 
+
 # source config file
 bind r source-file ~/.tmux.conf
 

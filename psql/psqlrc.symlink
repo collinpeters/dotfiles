@@ -17,22 +17,28 @@
 
 --helpful queries. Run with :name in psql/vim(dbext)
 -- pgadmin server status queries (9.1)
-\set activity 'SELECT p.procpid AS pid, application_name, datname, usename, CASE WHEN client_port=-1 THEN ''local pipe'' WHEN length(client_hostname)>0 THEN client_hostname||'':''||client_port ELSE textin(inet_out(client_addr))||'':''||client_port END AS client, date_trunc(''second'', backend_start) AS backend_start, CASE WHEN current_query='''' OR current_query=''<IDLE>'' THEN ''''      ELSE date_trunc(''second'', query_start)::text END AS query_start, date_trunc(''second'', xact_start) AS xact_start, (SELECT min(l1.pid) FROM pg_locks l1 WHERE GRANTED AND (relation IN (SELECT relation FROM pg_locks l2 WHERE l2.pid=p.procpid AND NOT granted) OR transactionid IN (SELECT transactionid FROM pg_locks l3 WHERE l3.pid=p.procpid AND NOT granted))) AS blockedby, current_query AS query, CASE WHEN query_start IS NULL OR current_query LIKE ''<IDLE>%'' THEN false ELSE query_start < now() - ''10 seconds''::interval END AS slowquery FROM pg_stat_activity p ORDER BY 1 ASC;'
-\set locks 'SELECT pg_stat_get_backend_pid(svrid) AS pid, (SELECT datname FROM pg_database WHERE oid = pgl.database) AS dbname, coalesce(pgc.relname, pgl.relation::text) AS class, pg_get_userbyid(pg_stat_get_backend_userid(svrid)) as user, pgl.virtualxid::text, pgl.virtualtransaction::text AS transaction, pgl.mode, pgl.granted, date_trunc(''second'', pg_stat_get_backend_activity_start(svrid)) AS query_start, pg_stat_get_backend_activity(svrid) AS query FROM pg_stat_get_backend_idset() svrid, pg_locks pgl LEFT JOIN pg_class pgc ON pgl.relation=pgc.oid WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ORDER BY 1 ASC;'
+\set activity 'SELECT * FROM pg_stat_activity WHERE pid <> pg_backend_pid()'
+\set ps 'SELECT pid, application_name as source, age(now(),query_start) as running_for, query FROM pg_stat_activity WHERE state <> \'idle\' AND pid <> pg_backend_pid() ORDER BY 3 desc'
+
+\set locks 'SELECT l1.*, l2.virtualtransaction, l2.pid, l2.mode, l2.GRANTED FROM pg_locks l1 JOIN pg_locks l2 ON ( ( l1.locktype, l1.DATABASE, l1.relation, l1.page, l1.tuple, l1.virtualxid, l1.transactionid, l1.classid, l1.objid, l1.objsubid) IS NOT DISTINCT FROM ( l2.locktype, l2.DATABASE, l2.relation, l2.page, l2.tuple, l2.virtualxid, l2.transactionid, l2.classid, l2.objid, l2.objsubid)) WHERE NOT l1.GRANTED AND l2.GRANTED;'
 \set transactions 'SELECT transaction::text, gid, prepared, owner, database FROM pg_prepared_xacts ORDER BY 2 ASC;'
 
--- note: for pg9.1 (procpid instead of pid, current_query instead of query, etc...)
-\set uptime 'select now() - backend_start as uptime from pg_stat_activity where procpid = pg_backend_pid();'
+-- db info
+\set uptime 'select current_timestamp - pg_postmaster_start_time() as uptime'
+\set dbsize 'SELECT datname, pg_size_pretty(pg_database_size(datname)) db_size FROM pg_database ORDER BY db_size;'
+\set tablesize 'SELECT nspname || \'.\' || relname AS "relation", pg_size_pretty(pg_total_relation_size(C.oid)) AS "total_size" FROM pg_class C LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace) WHERE nspname NOT IN (\'pg_catalog\', \'information_schema\') AND C.relkind <> \'i\' AND nspname !~ \'^pg_toast\' ORDER BY pg_total_relation_size(C.oid) DESC'
+\set relationsize 'SELECT nspname || \'.\' || relname AS "relation", pg_size_pretty(pg_relation_size(C.oid)) AS "size" FROM pg_class C LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace) WHERE nspname NOT IN (\'pg_catalog\', \'information_schema\') ORDER BY pg_relation_size(C.oid) DESC'
+
 \set show_slow_queries 'SELECT (total_time / 1000 / 60) as total_minutes, (total_time/calls) as average_time, query FROM pg_stat_statements ORDER BY 1 DESC LIMIT 100;'
 \set settings 'select name, setting,unit,context from pg_settings;'
 \set conninfo 'select usename, count(*) from pg_stat_activity group by usename;'
-\set activity 'select datname, procpid, usename, application_name,client_addr, client_hostname, client_port, current_query, null as state from pg_stat_activity;'
-\set waits 'SELECT procpid, current_query, waiting, now() - query_start AS totaltime, backend_start FROM pg_stat_activity WHERE current_query !~ ''%IDLE%''::text AND waiting = true;'
-\set dbsize 'SELECT datname, pg_size_pretty(pg_database_size(datname)) db_size FROM pg_database ORDER BY db_size;'
-\set tablesize 'SELECT nspname || \'.\' || relname AS \"relation\", pg_size_pretty(pg_relation_size(C.oid)) AS "size" FROM pg_class C LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace) WHERE nspname NOT IN (\'pg_catalog\', \'information_schema\') ORDER BY pg_relation_size(C.oid) DESC LIMIT 40;'
 \set uselesscol 'SELECT nspname, relname, attname, typname, (stanullfrac*100)::int AS null_percent, case when stadistinct >= 0 then stadistinct else abs(stadistinct)*reltuples end AS \"distinct\", case 1 when stakind1 then stavalues1 when stakind2 then stavalues2 end AS \"values\" FROM pg_class c JOIN pg_namespace ns ON (ns.oid=relnamespace) JOIN pg_attribute ON (c.oid=attrelid) JOIN pg_type t ON (t.oid=atttypid) JOIN pg_statistic ON (c.oid=starelid AND staattnum=attnum) WHERE nspname NOT LIKE E\'pg\\\\_%\' AND nspname != \'information_schema\' AND relkind=\'r\' AND NOT attisdropped AND attstattarget != 0 AND reltuples >= 100 AND stadistinct BETWEEN 0 AND 1 ORDER BY nspname, relname, attname;'
 
-
+-- -- note: for pg9.1 (procpid instead of pid, current_query instead of query, etc...)
+-- \set activity 'select datname, procpid, usename, application_name,client_addr, client_hostname, client_port, current_query, null as state from pg_stat_activity;'
+-- \set waits 'SELECT procpid, current_query, waiting, now() - query_start AS totaltime, backend_start FROM pg_stat_activity WHERE current_query !~ ''%IDLE%''::text AND waiting = true;'
+-- 
+-- 
 -- 4 helpful queries from radek http://radek.cc/2009/08/15/psqlrc-tricks-table-sizes/
 \set trashindexes '( select s.schemaname as sch, s.relname as rel, s.indexrelname as idx, s.idx_scan as scans, pg_size_pretty(pg_relation_size(s.relid)) as ts, pg_size_pretty(pg_relation_size(s.indexrelid)) as "is" from pg_stat_user_indexes s join pg_index i on i.indexrelid=s.indexrelid left join pg_constraint c on i.indrelid=c.conrelid and array_to_string(i.indkey, '' '') = array_to_string(c.conkey, '' '') where i.indisunique is false and pg_relation_size(s.relid) > 1000000 and s.idx_scan < 100000 and c.confrelid is null order by s.idx_scan asc, pg_relation_size(s.relid) desc )'
 \set missingindexes '( select src_table, dst_table, fk_name, pg_size_pretty(s_size) as s_size, pg_size_pretty(d_size) as d_size, d from ( select distinct on (1,2,3,4,5) textin(regclassout(c.conrelid)) as src_table, textin(regclassout(c.confrelid)) as dst_table, c.conname as fk_name, pg_relation_size(c.conrelid) as s_size, pg_relation_size(c.confrelid) as d_size, array_upper(di.indkey::int[], 1) + 1 - array_upper(c.conkey::int[], 1) as d from pg_constraint c left join pg_index di on di.indrelid = c.conrelid and array_to_string(di.indkey, '' '') ~ (''^'' || array_to_string(c.conkey, '' '') || ''( |$)'') join pg_stat_user_tables st on st.relid = c.conrelid where c.contype = ''f'' order by 1,2,3,4,5,6 asc) mfk where mfk.d is distinct from 0 and mfk.s_size > 1000000 order by mfk.s_size desc, mfk.d desc )'
@@ -47,9 +53,9 @@
 \set index_size 'SELECT relname AS name, pg_size_pretty(sum(relpages*1024)) AS size FROM pg_class WHERE reltype=0 GROUP BY relname ORDER BY sum(relpages) DESC;'
 \set index_usage 'SELECT relname, CASE idx_scan WHEN 0 THEN ''Insufficient data'' ELSE (100 * idx_scan / (seq_scan + idx_scan))::text END percent_of_times_index_used, n_live_tup rows_in_table FROM pg_stat_user_tables ORDER BY n_live_tup DESC;'
 \set index_usage_adv 'SELECT * FROM (SELECT stat.relname AS table, stai.indexrelname AS index, CASE stai.idx_scan WHEN 0 THEN ''Insufficient data'' ELSE (100 * stai.idx_scan / (stat.seq_scan + stai.idx_scan))::text || ''%'' END hit_rate, CASE stat.idx_scan WHEN 0 THEN ''Insufficient data'' ELSE (100 * stat.idx_scan / (stat.seq_scan + stat.idx_scan))::text || ''%'' END all_index_hit_rate, ARRAY(SELECT pg_get_indexdef(idx.indexrelid, k + 1, true) FROM generate_subscripts(idx.indkey, 1) AS k ORDER BY k) AS cols, stat.n_live_tup rows_in_table FROM pg_stat_user_indexes AS stai JOIN pg_stat_user_tables AS stat ON stai.relid = stat.relid JOIN pg_index AS idx ON (idx.indexrelid = stai.indexrelid)) AS sub_inner ORDER BY rows_in_table DESC, hit_rate ASC;'
-\set locks 'select pg_stat_activity.procpid, pg_class.relname, pg_locks.transactionid, pg_locks.granted, substr(pg_stat_activity.current_query,1,30) as query_snippet, age(now(),pg_stat_activity.query_start) as "age" from pg_stat_activity,pg_locks left outer join pg_class on (pg_locks.relation = pg_class.oid) where pg_stat_activity.current_query <> ''<insufficient privilege>'' and pg_locks.pid=pg_stat_activity.procpid and pg_locks.mode = ''ExclusiveLock'' order by query_start;'
+
+\set locks2 'select pg_stat_activity.procpid, pg_class.relname, pg_locks.transactionid, pg_locks.granted, substr(pg_stat_activity.current_query,1,30) as query_snippet, age(now(),pg_stat_activity.query_start) as "age" from pg_stat_activity,pg_locks left outer join pg_class on (pg_locks.relation = pg_class.oid) where pg_stat_activity.current_query <> ''<insufficient privilege>'' and pg_locks.pid=pg_stat_activity.procpid and pg_locks.mode = ''ExclusiveLock'' order by query_start;'
 \set long_running_queries 'SELECT procpid, now() - pg_stat_activity.query_start AS duration, current_query AS query FROM pg_stat_activity WHERE pg_stat_activity.current_query <> ''''::text AND now() - pg_stat_activity.query_start > interval ''5 minutes'' ORDER BY now() - pg_stat_activity.query_start DESC;'
-\set ps 'select procpid, application_name as source, age(now(),query_start) as running_for, waiting, current_query as query from pg_stat_activity where current_query <> ''<insufficient privilege>'' and procpid <> pg_backend_pid() order by 3 desc;'
 \set seq_scans 'SELECT relname AS name, seq_scan as count FROM pg_stat_user_tables ORDER BY seq_scan DESC;'
 \set total_index_size 'SELECT pg_size_pretty(sum(relpages*1024)) AS size FROM pg_class WHERE reltype=0;'
 \set unused_indexes 'SELECT schemaname || ''.'' || relname AS table, indexrelname AS index, pg_size_pretty(pg_relation_size(i.indexrelid)) AS index_size, idx_scan as index_scans FROM pg_stat_user_indexes ui JOIN pg_index i ON ui.indexrelid = i.indexrelid WHERE NOT indisunique AND idx_scan < 50 AND pg_relation_size(relid) > 5 * 8192 ORDER BY pg_relation_size(i.indexrelid) / nullif(idx_scan, 0) DESC NULLS FIRST, pg_relation_size(i.indexrelid) DESC;'
@@ -57,4 +63,4 @@
 
 -- Development queries
 \set sp 'SHOW search_path;'
-\set slaves 'select application_name, pg_xlog_location_diff(sent_location, flush_location) as replay_delta, sync_priority, sync_state from pg_stat_replication;'
+-- \set slaves 'select application_name, pg_xlog_location_diff(sent_location, flush_location) as replay_delta, sync_priority, sync_state from pg_stat_replication;'

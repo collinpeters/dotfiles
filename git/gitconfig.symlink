@@ -46,3 +46,6 @@
 	keepBackup = false
 [difftool]
 	prompt = false
+[pager]
+	status = false
+	branch = false

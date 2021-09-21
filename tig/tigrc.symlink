@@ -1,0 +1,5 @@
+bind generic C !git commit -v
+bind status C !git commit -v
+bind main C !git commit -v
+
+set main-view-id-display = yes

@@ -47,8 +47,7 @@ nnoremap <Space>gt :action GotoTest<CR>
 nnoremap <Space>gl :action GotoRelated<CR>
 " code
 nnoremap <Space>f :action ReformatCode<CR>
-"    ScrollFromSource is a plugin - https://plugins.jetbrains.com/plugin/7606-scroll-from-source
-nnoremap <Space>t :action ScrollFromSource<CR>
+nnoremap <Space>t :action SelectInProjectView<CR>
 " refactor
 nnoremap <Space>rr :action RenameElement<CR>
 " run/debug

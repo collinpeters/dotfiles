@@ -17,19 +17,26 @@ Plug 'edkolev/tmuxline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
-" 
-" " window control
-" Plug 'christoomey/vim-tmux-navigator'
+Plug 'ryanoasis/vim-devicons'
+Plug 'NoahTheDuke/vim-just'
+
+" window control
+Plug 'christoomey/vim-tmux-navigator'
 " Plug 't9md/vim-choosewin'
 " Plug 'drscott/vim-cycle-movements'
-" 
-" " syntax
+
+" syntax
 Plug 'plasticboy/vim-markdown'
 " Plug 'ekalinin/Dockerfile.vim'
 Plug 'avakhov/vim-yaml'
 Plug 'pearofducks/ansible-vim'
 Plug 'andreshazard/vim-logreview'
 Plug 'martinda/Jenkinsfile-vim-syntax'
+"Plug 'vim-scripts/bash-support'
+Plug 'Townk/vim-autoclose'
+Plug 'mboughaba/i3config.vim'
+Plug 'wannesm/wmgraphviz.vim'
+Plug 'tpope/vim-sleuth'
 
 " editing
 Plug 'junegunn/vim-easy-align'
@@ -40,14 +47,14 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 " Plug 'tpope/vim-dispatch'
 " Plug 'scrooloose/nerdcommenter'
 " Plug 'Lokaltog/vim-easymotion'
-" Plug 'Raimondi/delimitMate' " Plug 'jiangmiao/auto-pairs' 
-" Plug 'gorkunov/smartpairs.vim' 
+" Plug 'Raimondi/delimitMate' " Plug 'jiangmiao/auto-pairs'
+" Plug 'gorkunov/smartpairs.vim'
 " Plug 'majutsushi/tagbar'
-" "Plug 'gcmt/wildfire.vim' 
+" "Plug 'gcmt/wildfire.vim'
 " "Plug 'terryma/vim-expand-region'
 " "Plug 'SirVer/ultisnips'							" code snippets
 " "Plug 'honza/vim-snippets' 						" snippets for ultisnips
-" 
+
 " " completion and searching
 " "Plug 'Valloric/YouCompleteMe'
 " "Plug 'Shougo/neocomplete.vim'
@@ -57,13 +64,13 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 " "Plug 'ctrlpvim/ctrlp.vim' 						" Active fork of plugin 'kien/ctrlp.vim'
 " Plug 'dyng/ctrlsf.vim' 							" nice code search using ack/ag
 " Plug 'rking/ag.vim'
-" 
+
 " " database
 Plug 'vim-scripts/dbext.vim'
-"Plug 'krisajenkins/vim-postgresql-syntax'
+Plug 'tpope/vim-dadbod'
+Plug 'krisajenkins/vim-postgresql-syntax'
 Plug 'lifepillar/pgsql.vim'
-
-Plug 'fboender/bexec'
+"Plug 'fboender/bexec'
 
 " " JavaScript
 " Plug 'jelera/vim-javascript-syntax'
@@ -72,7 +79,10 @@ Plug 'fboender/bexec'
 " Plug 'elzr/vim-json'
 " Plug 'scrooloose/syntastic'
 
-" color schemes 
+" Java
+"Plug 'artur-shaik/vim-javacomplete2'
+
+" color schemes
 Plug 'nanotech/jellybeans.vim'
 " Plug 'altercation/vim-colors-solarized'
 " Plug 'vim-scripts/xoria256.vim'
@@ -85,28 +95,20 @@ filetype plugin indent on     " required!
 "-	" UI SETUP
 "-	" ==========================
 "-	syntax on " Syntax highlighting on
-"-	set encoding=utf-8
-"-	set t_Co=256 
-"-	set background=dark
-"-	"if has('gui_running')
-"-	"	set background=light
-"-	"else
-"-	"	set background=dark
-"-	"endif
-"-
+set encoding=utf-8
+set t_Co=256
+set background=dark
+
+" transparent background
+hi Normal ctermbg=NONE
+let g:jellybeans_background_color_256='NONE'
 colorscheme jellybeans
-" let g:jellybeans_overrides = {
-" \    'Normal': { 'guibg': '222222',
-" \               'ctermbg': ''},
-" \    'LineNr': { 'guibg': '222222',
-" \               'ctermbg': ''},
-" \}
-"-
+
 " cursor lines
 set cursorline
 set cursorcolumn
-hi CursorLine guibg=Grey11 ctermbg=235 		" highlight bg color of current line
-hi CursorColumn guibg=Grey11 ctermbg=235	" highlight cursor
+"hi CursorLine guibg=Grey11 ctermbg=235 		" highlight bg color of current line
+"hi CursorColumn guibg=Grey11 ctermbg=235	" highlight cursor
 " When in insert mode, turn off cursor lines
 :autocmd InsertEnter,InsertLeave * set cul!
 :autocmd InsertEnter,InsertLeave * set cuc!
@@ -169,8 +171,9 @@ set incsearch                  " Incremental search (find as you type)
 set wildignore+=*.class        " Ignore these files
 set wildmenu                   " Use the wildmenu
 set wildmode=list:longest,full " command <Tab> completion, list matches, then longest common part, then all.
-set tabstop=4                  " Tab stop of 4 characters
-set shiftwidth=4               " Number of spaces to use for each step of (auto)indent
+set expandtab                  " Use spaces over tabs
+set tabstop=2                  " Tab stop of 4 characters
+set shiftwidth=2               " Number of spaces to use for each step of (auto)indent
 set nobackup                   " Don't make backup files
 set autoindent                 " Automatic indents
 set nowrap                     " Don't wrap by default
@@ -183,8 +186,9 @@ set pastetoggle=<F2>           " Handle the paste toggle when pasting code
 set showtabline=1              " Show the tab line if there are two or more tabs
 set autochdir                  " Change the working directory to that of the current file
 set splitbelow 				   " new horizontal split is below, not above
-set splitright 				   " new vertical split is on right, not left 
+set splitright 				   " new vertical split is on right, not left
 set lazyredraw                 " do not update screen while executing macros
+set textwidth=120
 
 " disable bell
 set vb
@@ -207,7 +211,7 @@ if has('gui_running')
 	elseif os == "Linux"
 		" Do Linux-specific stuff.
 		" set gfn=Ubuntu\ Mono\ 11
-		set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 13
+		set guifont=UbuntuMono\ Nerd\ Font\ Regular\ 13
 	endif
 endif
 "-
@@ -232,7 +236,7 @@ let g:nerdtree_tabs_open_on_gui_startup=0 	" Don't open on gvim start
 "-	"nmap <F8> :TagbarToggle<CR>
 "-	"let g:tagbar_autofocus=1
 "-
-"-	" Ctrl-P 
+"-	" Ctrl-P
 "-	" <Leader>o to open a new file:
 "-	nnoremap <Leader>o :CtrlP<CR>
 "-	let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
@@ -261,20 +265,26 @@ let g:nerdtree_tabs_open_on_gui_startup=0 	" Don't open on gvim start
 "-	" Fallback to 'ag' (silver searcher) for non-project files
 "-	"let g:EclimLocateFileNonProjectScope = 'ag'
 
+"autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+
 " vim-airline
 set laststatus=2
 let g:airline_powerline_fonts = 1
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-let g:airline_symbols.space = "\ua0"
-let g:airline_theme = "laederon"
+"  if !exists('g:airline_symbols')
+"    let g:airline_symbols = {}
+"  endif
+"  let g:airline_symbols.space = "\ua0"
+let g:airline_theme = "jellybeans"
 let g:airline#extensions#whitespace#checks = [ 'trailing' ]
+
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#show_buffers = 0
 
-"-	" Vim markdown
-"-	let g:vim_markdown_folding_disabled=1
+" Vim markdown
+let g:vim_markdown_folding_disabled = 1
 "-
 "-	" Ultisnips
 "-	"let g:UltiSnipsExpandTrigger="<tab>"
@@ -321,6 +331,15 @@ endfunction
 "-	"map  n <Plug>(easymotion-next)
 "-	"map  N <Plug>(easymotion-prev)
 
-let g:bexec_filter_types = {
-        \ 'sql' : 'orient.sh',
-\ }
+" bexec for Orient
+"let g:bexec_filter_types = {
+"        \ 'sql' : 'orient.sh',
+"\ }
+"let bexec_outputscroll=0
+
+nmap <F8> <Plug>(JavaComplete-Imports-SortImports)
+imap <F8> <Plug>(JavaComplete-Imports-SortImports)
+
+let g:orient_console_path = '/home/collin/Apps/orientdb-community-2.2.31/bin/console.sh'
+
+let g:vim_markdown_auto_insert_bullets = 0

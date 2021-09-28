@@ -3,3 +3,5 @@ bind status C !git commit -v
 bind main C !git commit -v
 
 set main-view-id-display = yes
+
+source ~/.dotfiles/tig/molokai-like-theme.tigrc

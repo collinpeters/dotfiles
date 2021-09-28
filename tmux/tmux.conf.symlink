@@ -3,8 +3,16 @@ set-option -g prefix C-a
 
 # advice from nvim healthchek
 set-option -sg escape-time 10
-set -ga terminal-overrides ",xterm-kitty:Tc"
-set-option -sa terminal-overrides ",xterm-kitty:Tc"
+
+# Undercurls - https://github.com/folke/lsp-colors.nvim
+set -g default-terminal "${TERM}"
+set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
+set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
+
+# 24 bit colors
+set -ga terminal-overrides ",${TERM}:Tc"
+set-option -sa terminal-overrides ",${TERM}:Tc"
+
 
 # source config file
 bind r source-file ~/.tmux.conf
@@ -23,7 +31,7 @@ bind l select-pane -R
 bind H swap-window -t -1
 bind L swap-window -t +1
 
-bind A switch-client -l
+bind . switch-client -l
 
 # Smart pane switching with awareness of Vim splits.
 # See: https://github.com/christoomey/vim-tmux-navigator
@@ -138,12 +146,8 @@ set-window-option -g clock-mode-colour colour64 #green
 # theme
 source-file ~/.dotfiles/tmux/tmux.laederon.conf
 
-# Undercurls - https://github.com/folke/lsp-colors.nvim
-set -g default-terminal "${TERM}"
-set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
-set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
-
-bind-key -r J run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/insight-brain"
-bind-key -r K run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/nexus-dependency-management"
-bind-key -r L run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/nexus-scm-client"
+bind-key -r H run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/insight-brain"
+bind-key -r J run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/nexus-dependency-management"
+bind-key -r K run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/nexus-scm-client"
+bind-key -r L run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/depshield"
 bind-key -r F run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/home/dotfiles"

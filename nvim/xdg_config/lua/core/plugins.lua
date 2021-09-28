@@ -62,8 +62,6 @@ return require('packer').startup(function()
   }
 --  use {'ray-x/navigator.lua', requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'}}
   use { "ray-x/lsp_signature.nvim" }
---  use { "ahmedkhalf/project.nvim" }
-  use { "nvim-telescope/telescope-project.nvim" }
   --use { "ThePrimeagen/harpoon", requires = {'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim'} }
   use 'liuchengxu/vista.vim' -- symbol navigation
 

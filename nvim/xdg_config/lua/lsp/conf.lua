@@ -183,9 +183,16 @@ function M.start_jdt()
 --   };
 -- }
 
+  local root_markers = {'.git'}
+	local root_dir = require('jdtls.setup').find_root(root_markers)
+	local home = os.getenv('HOME')
+	-- the "project id" is the root .git directory prefixed with its parent directory. This is to accomodate git worktrees
+	local project_id = vim.fn.fnamemodify(root_dir, ':p:h:h:t') .. '_' .. vim.fn.fnamemodify(root_dir, ':p:h:t')
+	local workspace_folder = home .. '/dev/lsp-workspace/' .. project_id
+
   local config = {}
   -- Run our custom jdtls.sh and give it a workspace based on the filename
-  config.cmd = {'jdtls.sh', '/home/collin/Code/workspace/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')}
+  config.cmd = {'jdtls.sh', workspace_folder}
   config.on_attach = jdtls_on_attach
   config.settings = {
     ['java.format.settings.url'] = "/home/collin/Code/sonatype/1/codestyle/sonatype-eclipse.xml"

@@ -27,6 +27,7 @@ set.splitbelow=true                -- new horizontal split is below, not above
 set.splitright=true                -- new vertical split is on right, not left
 set.tabstop=2                  -- Tab stop of 4 characters
 set.textwidth=120
+set.colorcolumn="+1"
 
 
 vim.opt.wildignore:append('*.class')        -- Ignore these files

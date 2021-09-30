@@ -58,8 +58,8 @@ local function on_attach(client, bufnr, attach_opts)
 
   map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
 
-  map('n', '<leader>gw', '<cmd>lua vim.lsp.buf.document_symbol()<CR>')
-  map('n', '<leader>gW', '<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
+  map('n', '<leader>m', '<cmd>Telescope lsp_document_symbols<CR>')
+  --map('n', '<leader>gW', '<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
 
   -- `code_action` is a superset of vim.lsp.buf.code_action and you'll be able to
   -- use this jdtls mapping also with other non-jdtls language servers

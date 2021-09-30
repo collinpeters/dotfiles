@@ -3,7 +3,7 @@ lua require('lsp.conf').setup()
 augroup lsp
 	au!
 	au FileType java lua require('lsp.conf').start_jdt()
-  au FileType sh lua require('lsp.conf').add_client({'bash-language-server', 'start'}, {name = 'bash-ls'})
+"  au FileType sh lua require('lsp.conf').add_client({'bash-language-server', 'start'}, {name = 'bash-ls'})
 
 	" TODO
   " au FileType haskell lua require('me.lsp.conf').start_hie()

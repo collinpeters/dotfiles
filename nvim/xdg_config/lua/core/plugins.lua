@@ -19,7 +19,6 @@ return require('packer').startup(function()
   use 'folke/lsp-colors.nvim' -- fix colorschemes that don't support lsp highlights
 
   -- ui
-  use {'akinsho/bufferline.nvim', requires = 'kyazdani42/nvim-web-devicons'}
   use { 'hoob3rt/lualine.nvim', requires = {'kyazdani42/nvim-web-devicons'}}
 
   -- formatting/syntax

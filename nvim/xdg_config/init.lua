@@ -6,7 +6,6 @@ require('core.colorscheme')
 
 -- Plugins
 require('plugin-configs.lspsaga')
-require('plugin-configs.bufferline')
 require('plugin-configs.lualine')
 require('plugin-configs.nvim-treesitter')
 require('plugin-configs.treesitter-just')

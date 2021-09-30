@@ -77,6 +77,8 @@ local function on_attach(client, bufnr, attach_opts)
   map('n', '<f9>', '<cmd>lua require"dap".continue()<CR>')
   --map('n', '<leader>lp', '<Cmd> require'me.dap'.toggle_breakpoint(nil, nil, vim.fn.input('Log point message: '), true)<CR>
 
+ map('n', "]d", '<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
+ map('n', "[d", '<Cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
 
   -- require('lsp_compl').attach(client, bufnr, attach_opts)
   -- api.nvim_buf_set_var(bufnr, "lsp_client_id", client.id)
@@ -95,8 +97,6 @@ local function on_attach(client, bufnr, attach_opts)
 -- end
 -- api.nvim_buf_set_keymap(bufnr, "n", "<space>", "<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
 -- api.nvim_buf_set_keymap(bufnr, "n", "crr", "<Cmd>lua vim.lsp.buf.rename(vim.fn.input('New Name: '))<CR>", opts)
--- api.nvim_buf_set_keymap(bufnr, "n", "]w", "<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
--- api.nvim_buf_set_keymap(bufnr, "n", "[w", "<Cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
 -- api.nvim_buf_set_keymap(bufnr, "i", "<c-n>", "<Cmd>lua require('lsp_compl').trigger_completion()<CR>", opts)
 -- vim.cmd('augroup lsp_aucmds')
 -- vim.cmd(string.format('au! * <buffer=%d>', bufnr))

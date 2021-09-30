@@ -64,6 +64,13 @@ return require('packer').startup(function()
   use { "ray-x/lsp_signature.nvim" }
   --use { "ThePrimeagen/harpoon", requires = {'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim'} }
   use 'liuchengxu/vista.vim' -- symbol navigation
+  use {
+    'lewis6991/gitsigns.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim'
+    },
+    -- tag = 'release' -- To use the latest release
+  }
 
   -- utility
   --use { 'kyazdani42/nvim-tree.lua', requires = 'kyazdani42/nvim-web-devicons' }

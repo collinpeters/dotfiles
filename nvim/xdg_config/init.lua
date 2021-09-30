@@ -17,7 +17,9 @@ require('plugin-configs.nvim-tree')
 require('plugin-configs.vista')
 require('plugin-configs.telescope')
 require('plugin-configs.telescope-fzf-native')
+require('plugin-configs.gitsigns')
 --require('plugin-configs.navigator')
 
 -- LSP
 require('lsp')
+-- Plugins

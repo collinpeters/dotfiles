@@ -23,12 +23,13 @@ return require('packer').startup(function()
 
   -- formatting/syntax
   use 'NoahTheDuke/vim-just'
-  use 'dense-analysis/ale'
   --use 'IndianBoy42/tree-sitter-just' -- disabled in favour of manual install, see plugin-configs/tree-sitter-just
 
   -- Development
   use 'neovim/nvim-lspconfig'
   use 'mfussenegger/nvim-jdtls'
+--	use 'mfussenegger/nvim-lint'
+	use '/tmp/nvim-lint'
   use {
     'mfussenegger/nvim-dap', requires = {
       'theHamsta/nvim-dap-virtual-text',

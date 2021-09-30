@@ -4,12 +4,12 @@ require('core.keymappings')
 require('core.settings')
 require('core.colorscheme')
 
--- Plugins
 require('plugin-configs.gitsigns')
 require('plugin-configs.lspsaga')
 require('plugin-configs.lualine')
 require('plugin-configs.luasnips')
 require('plugin-configs.nvim-cmp')
+require('plugin-configs.nvim-lint')
 require('plugin-configs.nvim-tree')
 require('plugin-configs.nvim-treesitter')
 require('plugin-configs.telescope')

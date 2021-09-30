@@ -41,12 +41,3 @@ set.wildmode="list:longest,full" -- command <Tab> completion, list matches, then
 
 --let g:dap_virtual_text = v:true
 --vim.g.dap_virtual_text=true
-
-vim.g.ale_java_checkstyle_config="/home/collin/Code/sonatype/1/codestyle/checkstyle-checks/src/main/resources/sonatype/checkstyle-configuration.xml"
-vim.g.ale_java_eclipselsp_path="/usr/share/java/jdtls"
-vim.g.ale_java_eclipselsp_config_path="/usr/share/java/jdtls/config_linux/"
-vim.g.ale_java_eclipselsp_workspace_path="/home/collin/Code/workspace/"
---vim.g.ale_linters = {'java': ['eclipselsp']}
--- vim.cmd [[
--- let b:ale_linters = ['eclipselsp']
--- ]]

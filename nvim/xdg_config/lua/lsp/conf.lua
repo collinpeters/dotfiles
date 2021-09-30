@@ -2,6 +2,8 @@ local jdtls = require 'jdtls'
 local api = vim.api
 local M = {}
 
+-- https://github.com/mfussenegger/nvim-jdtls/wiki/UI-Extensions
+-- use telescope for code actions etc...
 local function jdtls_setup_ui()
   local finders = require'telescope.finders'
   local sorters = require'telescope.sorters'

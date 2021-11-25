@@ -53,7 +53,7 @@ get_duration() {
 }
 
 KEY="7d98497c301e09ce71ede3de9637fd80"
-CITY="Houston, CA"
+CITY="Houston,CA"
 UNITS="metric"
 SYMBOL="°"
 

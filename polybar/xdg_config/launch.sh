@@ -20,15 +20,15 @@ CONNECTED=$(xrandr | grep " connected " | awk '{ print$1 }')
 if [ "$HOSTNAME" = "mandalay" ]; then
 	if [[ $CONNECTED = *"DP-0"* ]]; then
 		echo "Launching polybar on mandalay DP-0"
-		$POLYBAR -c /home/collin/.config/polybar/config-mandalay mandalay-dp0 &
+		$POLYBAR -c /home/collin/.config/polybar/config-mandalay-forest.ini mandalay-dp0 &
 	fi
 	if [[ $CONNECTED = *"DP-2"* ]]; then
 		echo "Launching polybar on mandalay DP-2"
-		$POLYBAR -c /home/collin/.config/polybar/config-mandalay mandalay-dp2 &
+		$POLYBAR -c /home/collin/.config/polybar/config-mandalay-forest.ini mandalay-dp2 &
 	fi
 	if [[ $CONNECTED = *"HDMI-0"* ]]; then
 		echo "Launching polybar on mandalay HDMI-0"
-		$POLYBAR -c /home/collin/.config/polybar/config-mandalay mandalay-hdmi0 &
+		$POLYBAR -c /home/collin/.config/polybar/config-mandalay-forest.ini mandalay-hdmi0 &
 	fi
 elif [ "$HOSTNAME" = "aria" ]; then
 	if [[ $CONNECTED = *"DP-0"* ]]; then

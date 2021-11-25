@@ -2,9 +2,20 @@
 
 # Ensure Java 11 for jdtls
 export JAVA_HOME="/home/collin/.sdkman/candidates/java/11.0.11-open/"
+#export JAVA_HOME="/home/collin/.sdkman/candidates/java/11.0.09-trava/"
 export PATH="$JAVA_HOME/bin:$PATH"
 
 export CONFIG_PATH="/home/collin/dev/lsp-config_linux"
+
+# fake yarn & webpack out
+function yarn() {
+  echo 'skipping yarn, beware of gremlins'
+}
+function webpack() {
+  echo 'skipping webpack, beware of gremlins'
+}
+export -f yarn
+export -f webpack
 
 # Use Arch provided jdtls
 #/usr/bin/jdtls "$@"

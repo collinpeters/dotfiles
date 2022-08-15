@@ -25,6 +25,7 @@
 
 window:
   dynamic_title: true
+  opacity: 0.95
 #window:
   # Window dimensions (changes require restart)
   #
@@ -115,9 +116,11 @@ font:
     #   - (Windows) Consolas
     #family: monospace
     family: UbuntuMono Nerd Font Mono
+    #family: SauceCodePro Nerd Font Mono
 
     # The `style` can be specified to pick a specific face.
-    #style: Regular
+    style: Regular
+    #style: Medium
 
   # Bold font face
   #bold:
@@ -153,7 +156,7 @@ font:
     #style: Bold Italic
 
   # Point size
-  size: 10.0
+  size: 11.0
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
@@ -360,7 +363,8 @@ font:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 0.95
+#background_opacity: 1.00
+#background_opacity: 0.95
 
 #selection:
   # This string contains all characters that are used as separators for
@@ -452,7 +456,7 @@ live_config_reload: true
 #
 # Terminal hints can be used to find text in the visible part of the terminal
 # and pipe it to other applications.
-#hints:
+hints:
   # Keys used for the hint labels.
   #alphabet: "jfkdls;ahgurieowpq"
 
@@ -480,13 +484,13 @@ live_config_reload: true
   #       Select the hint's text.
   #   - MoveViModeCursor
   #       Move the vi mode cursor to the beginning of the hint.
-  #enabled:
-  # - regex: "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)\
-  #           [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
-  #   command: xdg-open
-  #   post_processing: true
-  #   mouse:
-  #     enabled: true
+  enabled:
+   - regex: "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|news:|file:|git:|ssh:|ftp:)\
+             [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+     command: xdg-open
+     post_processing: true
+     mouse:
+       enabled: false
   #     mods: None
   #   binding:
   #     key: U

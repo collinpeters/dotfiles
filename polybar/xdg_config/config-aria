@@ -51,7 +51,7 @@ font-1 = "UbuntuMono Nerd Font:size=14:antialias=true;1"
 font-2 = "Fura Mono NF:size=14:antialias=true;1"
 
 modules-left = i3
-modules-center = music
+modules-center = spotify
 modules-right = xbacklight pulseaudio xkeyboard memory cpu openvpn wlan eth battery temperature date powermenu
 
 tray-position = right
@@ -407,3 +407,11 @@ format-underline = #268bd2
 format-prefix = "ﱘ "
 
 click-left = google-play-music-desktop-player
+
+[module/spotify]
+type = custom/script
+interval = 1
+format-prefix = "ﱘ "
+format = <label>
+exec = python /home/collin/Apps/spotify_status.py -f '{artist}: {song}'
+format-underline = #1db954

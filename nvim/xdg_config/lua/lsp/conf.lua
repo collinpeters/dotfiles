@@ -42,6 +42,10 @@ local function on_attach(client, bufnr, attach_opts)
 
   require "lsp_signature".on_attach()
 
+  vim.fn.sign_define('DapBreakpoint', {text='🔴', texthl='', linehl='', numhl=''})
+  vim.fn.sign_define('DapBreakpointRejected', {text='🔵', texthl='', linehl='', numhl=''})
+  vim.fn.sign_define('DapStopped', {text='⭐️', texthl='', linehl='', numhl=''})
+
   -- =========================================================
   -- general navigation actions for all LSP clients
   -- =========================================================
@@ -69,16 +73,30 @@ local function on_attach(client, bufnr, attach_opts)
   map("v", "<a-CR>", "<Esc><Cmd>lua require'jdtls'.code_action(true)<CR>")
   map("v", "<leader>r", "<Esc><Cmd>lua require'jdtls'.code_action(true, 'refactor')<CR>")
 
-  map('n', '<leader>b', '<cmd>lua require"dap".toggle_breakpoint()<CR>')
-  map('n', '<leader>B', '<Cmd>lua require"dap".toggle_breakpoint(vim.fn.input("Breakpoint Condition: "), nil, nil, true)<CR>')
+  -- debug
   map('n', '<f7>', '<cmd>lua require"dap".step_into()<CR>')
   map('n', '<f8>', '<cmd>lua require"dap".step_over()<CR>')
   map('n', '<shift><f8>', '<cmd>lua require"dap".step_out()<CR>')
   map('n', '<f9>', '<cmd>lua require"dap".continue()<CR>')
+  map('n', '<leader>xl', '<cmd>lua require"dap".run_last()<CR>') -- execute last
+  map('n', '<leader>b', '<cmd>lua require"dap".toggle_breakpoint()<CR>')
+  map('n', '<leader>B', '<Cmd>lua require"dap".toggle_breakpoint(vim.fn.input("Breakpoint Condition: "), nil, nil, true)<CR>')
   --map('n', '<leader>lp', '<Cmd> require'me.dap'.toggle_breakpoint(nil, nil, vim.fn.input('Log point message: '), true)<CR>
 
- map('n', "]d", '<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
- map('n', "[d", '<Cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
+  map('n', '<leader>dc', ':lua require"dap".disconnect({ terminateDebuggee = true });require"dap".close()<CR>')
+  map('n', '<leader>dr', ':lua require"dap".repl.toggle({}, "vsplit")<CR><C-w>l')
+  map('n', '<leader>di', ':lua require"dap.ui.variables".hover()<CR>')
+  map('n', '<leader>di', ':lua require"dap.ui.variables".visual_hover()<CR>')
+  map('n', '<leader>d?', ':lua require"dap.ui.variables".scopes()<CR>')
+  map('n', '<leader>de', ':lua require"dap".set_exception_breakpoints({"all"})<CR>')
+  map('n', '<leader>da', ':lua require"debugHelper".attach()<CR>')
+  map('n', '<leader>dA', ':lua require"debugHelper".attachToRemote()<CR>')
+  map('n', '<leader>di', ':lua require"dap.ui.widgets".hover()<CR>')
+  map('n', '<leader>d?', ':lua local widgets=require"dap.ui.widgets";widgets.centered_float(widgets.scopes)<CR>')
+  map('n', '<leader>dd', ':lua require"dapui".toggle()<CR>')
+
+  map('n', "]d", '<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
+  map('n', "[d", '<Cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
 
   -- require('lsp_compl').attach(client, bufnr, attach_opts)
   -- api.nvim_buf_set_var(bufnr, "lsp_client_id", client.id)
@@ -183,7 +201,7 @@ function M.start_jdt()
 --   };
 -- }
 
-  local root_markers = {'.git'}
+  local root_markers = {'.project', '.git'}
 	local root_dir = require('jdtls.setup').find_root(root_markers)
 	local home = os.getenv('HOME')
 	-- the "project id" is the root .git directory prefixed with its parent directory. This is to accomodate git worktrees
@@ -195,13 +213,22 @@ function M.start_jdt()
   config.cmd = {'jdtls.sh', workspace_folder}
   config.on_attach = jdtls_on_attach
   config.settings = {
-    ['java.format.settings.url'] = "/home/collin/Code/sonatype/1/codestyle/sonatype-eclipse.xml"
+    java = {
+      format = {
+        settings = {
+          url = home .. "/dev/work/codestyle/sonatype-eclipse.xml"
+        }
+      },
+      settings = {
+        url = home .. "/dev/work/org.eclipse.jdt.core.prefs"
+      }
+    }
   }
 
   local jar_patterns = {
-    '/home/collin/Code/nvim-infra/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar',
+    '/home/collin/dev/home/nvim-infra/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar',
 -- TODO   '/dev/dgileadi/vscode-java-decompiler/server/*.jar',
-    '/home/collin/Code/nvim-infra/vscode-java-test/server/*.jar'
+    '/home/collin/dev/home/nvim-infra/vscode-java-test/server/*.jar'
   }
   local bundles = {}
   for _, jar_pattern in ipairs(jar_patterns) do
@@ -232,9 +259,8 @@ function M.setup()
       name = "Debug (Attach) - Remote";
       hostName = "127.0.0.1";
       port = 5005;
-    },
+    }
   }
-  require("dapui").setup()
 --  require('jdtls.ui').pick_one_async = require('fzy').pick_one -- currently using telescope
 -- require('jdtls').jol_path = os.getenv('HOME') .. '/apps/jol.jar'
 -- require('me.lsp.conf').setup()

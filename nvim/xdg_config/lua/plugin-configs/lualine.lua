@@ -1,4 +1,6 @@
 require('lualine').setup{
-  options = {theme = 'ayu_dark'}
+  options = {theme = 'codedark'}
 }
 
+--vim.cmd('set termguicolors')
+--require('feline').setup()

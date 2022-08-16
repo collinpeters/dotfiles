@@ -1,8 +1,13 @@
 lua require('lsp.conf').setup()
 
+autocmd BufNewFile,BufRead pom.xml set filetype=xml.maven
+
 augroup lsp
 	au!
 	au FileType java lua require('lsp.conf').start_jdt()
+  "disable for now, don't always want to start jdt when editing pom
+	"au FileType xml.maven lua require('lsp.conf').start_jdt()
+
 "  au FileType sh lua require('lsp.conf').add_client({'bash-language-server', 'start'}, {name = 'bash-ls'})
 
 	" TODO

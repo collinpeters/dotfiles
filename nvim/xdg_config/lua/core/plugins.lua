@@ -19,8 +19,6 @@ return require('packer').startup(function()
   use 'tomasr/molokai'
   use 'tomasiser/vim-code-dark'
   use 'ful1e5/onedark.nvim'
-  use 'arcticicestudio/nord-vim'
-	use { 'metalelf0/jellybeans-nvim', requires = 'rktjmp/lush.nvim' }
   use 'folke/lsp-colors.nvim' -- fix colorschemes that don't support lsp highlights
   use 'martinsione/darkplus.nvim'
 

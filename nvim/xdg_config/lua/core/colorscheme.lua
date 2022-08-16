@@ -7,7 +7,6 @@
 --vim.cmd 'colorscheme codedark'
 vim.cmd 'colorscheme darkplus'
 
--- vim.cmd 'colorscheme nord'
 -- vim.cmd 'colorscheme molokai'
 
 vim.cmd 'hi Normal guibg=none ctermbg=none'

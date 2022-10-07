@@ -1,0 +1,27 @@
+" ignore mode on i
+bind I mode ignore
+
+set modeindicator true
+set modeindicatorshowkeys true
+
+# use firefox search
+unbind <C-f>
+
+set hintfiltermode vimperator-reflow
+
+" But also support Tridactyl search too.
+bind / fillcmdline find
+bind ? fillcmdline find -?
+bind n findnext 1
+bind N findnext -1
+
+" Use vim in tmux for editor.
+" set editorcmd terminal -e tmux -u new vim -S /home/andrew/.vim/tridactyl.vim
+
+autocmd DocStart mail.google.com mode ignore
+autocmd DocStart docs.google.com mode ignore
+autocmd DocStart policy.s mode ignore
+autocmd DocStart miro.com mode ignore
+
+blacklistadd servicenow.com
+

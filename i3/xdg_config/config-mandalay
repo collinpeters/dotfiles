@@ -192,7 +192,7 @@ for_window [instance="sun-awt-X11-XWindowPeer"] focus
 
 assign [class="jetbrains-idea"] workspace 2
 assign [class="Slack"] workspace 4
-assign [class="Trello"] workspace 4
+assign [class="Spotify"] workspace 5
 
 
 # background wallpaper rotation

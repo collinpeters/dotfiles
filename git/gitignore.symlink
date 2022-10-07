@@ -2,6 +2,13 @@
 #*~
 *.swp
 collin-private
+collin
 tree
 Justfile
 .metadata
+*.iml
+
+bazel-bin
+bazel-muse
+bazel-out
+bazel-testlogs

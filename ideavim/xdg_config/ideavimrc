@@ -1,0 +1,229 @@
+" the best leader
+let mapleader = " "
+
+" ----------------
+" options
+"set visualbell noerrorbells    " stop the beeping!
+set number                     " Show current line number
+set relativenumber             " Show relative line numbers
+set hlsearch                   " highlight search matches
+set scrolloff=3                " Have 3 lines of offset (or buffer) when scrolling
+set ignorecase                 " Do case insensitive matching
+set smartcase                  " Do smart case matching
+set showmode                   " Show vim mode on the bottom
+set history=1000
+
+
+" ----------------
+" Plugins (builtin)
+set NERDTree
+"set surround
+"set easymotion
+
+" ----------------
+" Plugins (install from marketplace)
+set which-key " https://github.com/TheBlob42/idea-which-key
+set notimeout " for which-key
+"map <leader>F <Plug>(easymotion-s)
+"map <leader>e <Plug>(easymotion-f)
+
+" easy system clipboard copy/paste
+vmap <leader>y "+y
+vmap <leader>d "+d
+nmap <leader>p "+p
+nmap <leader>P "+P
+vmap <leader>p "+p
+vmap <leader>P "+P
+let g:WhichKeyDesc_SystemPasteAfter = "<leader>p System paste after"
+let g:WhichKeyDesc_SystemPasteBefore = "<leader>P System paste before"
+
+" ----------------
+" actions
+
+" clear the search buffer
+nnoremap <leader>/ :nohlsearch<CR>
+let g:WhichKeyDesc_ClearHighlight = "<leader>/ Clear search highlight"
+
+" Reload .ideavimrc
+"nnoremap <leader>vs :source ~/.config/ideavim/ideavimrc<CR>
+nnoremap <leader>vs :action IdeaVim.ReloadVimRc.reload<CR>
+let g:WhichKeyDesc_Todo = "<leader>v Hmm... TODO"
+let g:WhichKeyDesc_ReloadIdeaVimRc = "<leader>vs Reload Ideavimrc"
+
+" but preserve ideavim search
+nnoremap g/ :action Find<CR>
+
+" ideavim over intellij overrides
+sethandler <c-j> a:vim
+sethandler <c-k> a:vim
+sethandler <c-h> a:vim
+
+" quick window nav
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+
+" open/search/find
+nnoremap <leader>oe :action SearchEverywhere<CR>
+nnoremap <leader>oa :action GotoAction<CR> " any action in idea
+nnoremap <leader>oc :action GotoClass<CR>
+nnoremap <leader>of :action GotoFile<CR>
+nnoremap <leader>og :action FindInPath<CR>
+nnoremap <leader>or :action RecentFiles<CR>
+let g:WhichKeyDesc_OpenSearchFind = "<leader>o Search"
+let g:WhichKeyDesc_OpenSearchFind_SearchEverywhere = "<leader>oe Search everywhere"
+let g:WhichKeyDesc_OpenSearchFind_SearchAction = "<leader>oa Search for action"
+let g:WhichKeyDesc_OpenSearchFind_SearchClass = "<leader>oc Search for class"
+let g:WhichKeyDesc_OpenSearchFind_SearchFile = "<leader>of Search for file"
+let g:WhichKeyDesc_OpenSearchFind_FindInPath = "<leader>og Grep in files"
+let g:WhichKeyDesc_OpenSearchFind_RecentFiles = "<leader>or Recent files"
+
+" navigate -> windows/dialogs
+nnoremap <leader>s :action GotoSymbol<CR>
+nnoremap <leader>h :action CallHierarchy<CR>
+nnoremap <leader>m :action FileStructurePopup<CR>
+nnoremap <leader>u :action FindUsages<CR>
+let g:WhichKeyDesc_GotoSymbol = "<leader>s Goto symbol"
+let g:WhichKeyDesc_CallHierarchy = "<leader>h Call hierarchy"
+let g:WhichKeyDesc_FileStructurePopup = "<leader>m File structure"
+let g:WhichKeyDesc_FindUsages = "<leader>u Find usages"
+
+" navigate -> goto/jumps
+nnoremap <leader>gd :action GotoDeclaration<CR>
+nnoremap <leader>gK :action GotoTypeDeclaration<CR>
+nnoremap <leader>gi :action GotoImplementation<CR>
+nnoremap <leader>gs :action GotoSuperMethod<CR>
+nnoremap <leader>gt :action GotoTest<CR>
+nnoremap <leader>gl :action GotoRelated<CR>
+let g:WhichKeyDesc_Goto = "<leader>g Goto"
+let g:WhichKeyDesc_GotoDeclaration = "<leader>gd Goto declaration"
+let g:WhichKeyDesc_GotoTypeDeclaration = "<leader>gK Goto type declaration"
+let g:WhichKeyDesc_GotoImplementation = "<leader>gi Goto implementation"
+let g:WhichKeyDesc_GotoSuperMethod = "<leader>gs Goto super method"
+let g:WhichKeyDesc_GotoTest = "<leader>gt Goto test"
+let g:WhichKeyDesc_GotoRelated = "<leader>gl Goto related"
+
+" code
+nnoremap <leader>f :action ReformatCode \| :action OptimizeImports<CR>
+let g:WhichKeyDesc_Format = "<leader>f Format code and organize imports"
+
+nnoremap <leader>t :NERDTreeFind<CR>
+let g:WhichKeyDesc_NERDTreeFind = "<leader>t Goto project window"
+
+" refactor
+nnoremap <leader>rr :action RenameElement<CR>
+let g:WhichKeyDesc_Refactor = "<leader>r Refactor"
+let g:WhichKeyDesc_Refactor_ToggleLineBreakpoint = "<leader>rr Rename element"
+
+" execute - run/debug
+nnoremap <leader>xb :action ToggleLineBreakpoint<CR>
+nnoremap <leader>xr :action Run<cr>
+"nnoremap <leader>xr :action ContextRun<cr>
+nnoremap <leader>xR :action RunClass<cr>
+nnoremap <leader>xd :action Debug<CR>
+"nnoremap <leader>xd :action ContextDebug<CR>
+nnoremap <leader>xD :action DebugClass<CR>
+nnoremap <leader>xc :action ChooseRunConfiguration<CR>
+nnoremap <leader>xC :action ChooseDebugConfiguration<CR>
+let g:WhichKeyDesc_RunDebug = "<leader>x Execute (Run/debug)"
+let g:WhichKeyDesc_RunDebug_ToggleLineBreakpoint = "<leader>xb Toggle breakpoint"
+let g:WhichKeyDesc_RunDebug_Run = "<leader>xr Run previous"
+let g:WhichKeyDesc_RunDebug_RunClass = "<leader>xR Run current class"
+let g:WhichKeyDesc_RunDebug_Debug = "<leader>xd Debug previous"
+let g:WhichKeyDesc_RunDebug_DebugClass = "<leader>xD Debug current class"
+let g:WhichKeyDesc_RunDebug_ChooseRunConfiguration = "<leader>xc Choose run configuration"
+let g:WhichKeyDesc_RunDebug_ChooseDebugConfiguration = "<leader>xC Choose debug configuration"
+
+" build
+nnoremap <leader>bc :action Compile<CR>
+nnoremap <leader>bd :action CompileDirty<CR>
+nnoremap <leader>bp :action CompileProject<CR>
+let g:WhichKeyDesc_Build = "<leader>b Build"
+let g:WhichKeyDesc_Build_Compile = "<leader>bc Compile file"
+let g:WhichKeyDesc_Build_CompileDirty = "<leader>bd Compile dirty files"
+let g:WhichKeyDesc_Build_CompileProject = "<leader>bp Compile project"
+
+" windows
+nnoremap <leader>wm :action ActivateMavenToolWindow<CR>
+nnoremap <leader>wd :action ActivateDebugToolWindow<CR>
+nnoremap <leader>wr :action ActivateRunToolWindow<CR>
+nnoremap <leader>wp :action NextProjectWindow<CR>
+nnoremap <leader>wP :action ManageRecentProjects<CR>
+let g:WhichKeyDesc_Window = "<leader>w Window control"
+let g:WhichKeyDesc_Window_NextProjectWindow = "<leader>wp Next project window"
+let g:WhichKeyDesc_Window_NextProjectWindow = "<leader>wP Recent projects window"
+
+" Move lines up and down
+nnoremap <C-Up>   :action MoveStatementUp<CR>
+nnoremap <C-Down> :action MoveStatementDown<CR>
+vnoremap <C-Up>   :action MoveStatementUp<CR>
+vnoremap <C-Down> :action MoveStatementDown<CR>
+
+" unimpaired mappings
+nnoremap [<leader> :action Back<CR>
+nnoremap ]<leader> :action Forward<CR>
+nnoremap [q :action PreviousOccurence<CR>
+nnoremap ]q :action NextOccurence<CR>
+nnoremap [m :action MethodUp<CR>
+nnoremap ]m :action MethodDown<CR>
+nnoremap [c :action VcsShowPrevChangeMarker<CR>
+nnoremap ]c :action VcsShowNextChangeMarker<CR>
+nnoremap [f :action GotoPreviousError<CR>
+nnoremap ]f :action GotoNextError<CR>
+nnoremap [e :action JumpToNextChange<CR>
+nnoremap ]e :action JumpToLastChange<CR>
+
+" Reselect visual selection after indenting
+vnoremap < <gv
+vnoremap > >gv
+
+
+""
+""
+""
+"" " -----------------------
+""
+"" "		"nnoremap gje :action GoToErrorGroup<CR>
+"" "		"nnoremap <leader>fe :action GotoNextError<CR>
+"" "
+"" "		"nnoremap <leader>q :action CloseContent<CR>
+"" "		"nnoremap <leader>Q :action ReopenClosedTab<CR>
+"" "
+""
+"" "		"nnoremap <leader>h :action QuickJavaDoc<CR>
+"" "
+"" "		"nnoremap cS :action ChangeSignature<CR>
+"" "		"nnoremap cts :action ChangeTypeSignature<CR>
+""
+""
+"" "		" " nmap csw' :action Macro.surround_with_single_quote<CR>
+"" "
+"" "		" run
+"" "		"nnoremap <leader>r :action RunClass<CR>
+"" "		"nnoremap <leader>R :action Run<CR>
+"" "		"nnoremap <leader>d :action DebugClass<CR>
+"" "		"nnoremap <leader>D :action Debug<CR>
+"" "		"nnoremap <leader>c :action CheckStyleCurrentFileAction<CR>
+"" "
+"" "		" " built-in navigation to navigated items works better
+"" "		nnoremap <c-o> :action Back<CR>
+"" "		nnoremap <c-i> :action Forward<CR>
+"" "		" " but preserve ideavim defaults
+"" "		" nnoremap g<c-o> <c-o>
+"" "		" nnoremap g<c-i> <c-i>
+""
+"" "
+"" "
+"" "		" ----------------
+"" "		" disabled stuff
+"" "
+"" "		"nnoremap / :action Find<CR>
+"" "		"nnoremap n :action FindNext<CR>
+"" "		"nnoremap N :action FindPrevious<CR>
+"" "
+"" "		" https://github.com/johnlindquist/AceJump
+"" "		" nnoremap ; :action AceJumpAction<CR>
+"" "		" nnoremap s :action AceAction<CR>
+"" "
+"" "		"nnoremap <leader>k :action HighlightUsagesInFile<CR>

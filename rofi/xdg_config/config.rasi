@@ -3,6 +3,8 @@ configuration {
 /* font: "Roboto Mono 12"; */
  dpi: 192;
  show-icons: true;
+ sort: true;
+ sorting-method: "fzf";
 
 /*	modi: "window,run,ssh";*/
 /*	font: "mono 12";*/

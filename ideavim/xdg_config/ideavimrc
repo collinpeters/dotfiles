@@ -53,7 +53,7 @@ let g:WhichKeyDesc_ReloadIdeaVimRc = "<leader>vs Reload Ideavimrc"
 " but preserve ideavim search
 nnoremap g/ :action Find<CR>
 
-" ideavim over intellij overrides
+" ideavim over intellij map overrides
 sethandler <c-j> a:vim
 sethandler <c-k> a:vim
 sethandler <c-h> a:vim
@@ -145,11 +145,14 @@ let g:WhichKeyDesc_Build_CompileDirty = "<leader>bd Compile dirty files"
 let g:WhichKeyDesc_Build_CompileProject = "<leader>bp Compile project"
 
 " windows
-nnoremap <leader>wm :action ActivateMavenToolWindow<CR>
+nnoremap <leader>wM :action ActivateMavenToolWindow<CR>
+nnoremap <leader>wm :action Maven.ReimportMavenProject<CR>
 nnoremap <leader>wd :action ActivateDebugToolWindow<CR>
 nnoremap <leader>wr :action ActivateRunToolWindow<CR>
 nnoremap <leader>wp :action NextProjectWindow<CR>
 nnoremap <leader>wP :action ManageRecentProjects<CR>
+nnoremap <leader>wh :action HideAllWindows<CR>
+nnoremap <leader>wt :action MoveEditorToOppositeTabGroup<CR>
 let g:WhichKeyDesc_Window = "<leader>w Window control"
 let g:WhichKeyDesc_Window_NextProjectWindow = "<leader>wp Next project window"
 let g:WhichKeyDesc_Window_NextProjectWindow = "<leader>wP Recent projects window"

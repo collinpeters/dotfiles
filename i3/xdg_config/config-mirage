@@ -164,8 +164,8 @@ bindsym XF86AudioLowerVolume exec "bash -c 'for i in `pactl list short sinks | c
 bindsym XF86AudioMute        exec "bash -c 'for i in `pactl list short sinks | cut -f 1`; do pamixer --toggle-mute --sink $i; done'"
 
 # Sreen brightness keyboard controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
+bindsym XF86MonBrightnessUp exec xbacklight -inc 10
+bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 
 for_window [class="Pavucontrol" instance="pavucontrol"] floating enable
 for_window [title="GpuTest.*"] floating enable

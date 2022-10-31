@@ -29,8 +29,7 @@ focus_follows_mouse no
 # ########
 
 # start a terminal
-#bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec urxvt
+bindsym $mod+Return exec alacritty
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -154,10 +153,10 @@ workspace 3 output $OUTPUT3
 
 # scratch running a persistent tmux instance
 for_window [title="scratchcli"] floating enable
-for_window [title="scratchcli"] resize set 1700 900
+for_window [title="scratchcli"] resize set 1400 900
 for_window [title="scratchcli"] move scratchpad
 for_window [title="scratchcli"] border pixel 5
-exec --no-startup-id urxvt -title scratchcli -n scratchcli -e tmux new-session -A -s scratchcli
+exec --no-startup-id alacritty --title scratchcli -e tmux new-session -A -s scratchcli
 
 # Volume keyboard controls
 bindsym XF86AudioRaiseVolume exec "bash -c 'for i in `pactl list short sinks | cut -f 1`; do pamixer --allow-boost --increase 5 --sink $i; done'"

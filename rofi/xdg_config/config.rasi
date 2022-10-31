@@ -1,5 +1,5 @@
 configuration {
-	modi: "drun,window,run,ssh,filebrowser";
+	modi: "drun,filebrowser,window,run,ssh";
 /* font: "Roboto Mono 12"; */
  dpi: 192;
  show-icons: true;
@@ -148,6 +148,7 @@ configuration {
       delay:  0;
   }
   filebrowser {
+      directory: "/home/collin";
       directories-first: true;
       sorting-method:    "name";
   }

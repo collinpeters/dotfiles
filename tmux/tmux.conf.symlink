@@ -27,9 +27,11 @@ bind j select-pane -D
 bind k select-pane -U
 bind l select-pane -R
 
-bind-key -n C-S-Left swap-window -t -1\; select-window -t -1
-bind-key -n C-S-Right swap-window -t +1\; select-window -t +1
+# move windows
+bind H swap-window -t -1\; select-window -t -1
+bind L swap-window -t +1\; select-window -t +1
 
+# switch to last client
 bind . switch-client -l
 
 # Smart pane switching with awareness of Vim splits.

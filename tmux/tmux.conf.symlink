@@ -13,7 +13,6 @@ set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{25
 set -ga terminal-overrides ",${TERM}:Tc"
 set-option -sa terminal-overrides ",${TERM}:Tc"
 
-
 # source config file
 bind r source-file ~/.tmux.conf
 
@@ -145,9 +144,3 @@ set-window-option -g clock-mode-colour colour64 #green
 
 # theme
 source-file ~/.dotfiles/tmux/tmux.laederon.conf
-
-bind-key -r H run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/insight-brain"
-bind-key -r J run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/nexus-dependency-management"
-bind-key -r K run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/nexus-scm-client"
-bind-key -r L run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/depshield"
-bind-key -r F run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/home/dotfiles"

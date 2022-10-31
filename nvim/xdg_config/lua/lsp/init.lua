@@ -1,3 +1,11 @@
---
--- No lua augroups equivalent yet - https://github.com/nanotee/nvim-lua-guide#defining-autocommands
-vim.cmd('source ~/.config/nvim/lua/lsp/lsp.vim')
+local function register_language_server(pattern, callback)
+    vim.api.nvim_create_autocmd({ "FileType" }, {
+        pattern = pattern,
+        callback = callback,
+        desc = "Start language server: " .. pattern
+    })
+end
+
+-- JAVA
+local jdtls = require("lsp.configs.jdtls")
+register_language_server('java', jdtls.start)

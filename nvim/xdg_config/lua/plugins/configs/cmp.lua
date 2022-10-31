@@ -1,3 +1,16 @@
+local _cmp, cmp = pcall(require, "cmp")
+if not _cmp then
+  print("Failed to load cmp.lua")
+  return
+end
+
+local _luasnip, luasnip = pcall(require, "luasnip")
+if not _luasnip then
+  print("Failed to load luasnip from cmp.lua")
+  return
+end
+
+
 local fn = vim.fn
 
 local function t(str)

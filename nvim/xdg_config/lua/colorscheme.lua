@@ -5,9 +5,9 @@
 -- cmd 'colorscheme gruvbox-material'
 
 --vim.cmd 'colorscheme codedark'
-vim.cmd 'colorscheme darkplus'
-
--- vim.cmd 'colorscheme molokai'
+--vim.cmd 'colorscheme darkplus'
+vim.g.monokaipro_filter = "spectrum"
+vim.cmd 'colorscheme monokaipro'
 
 vim.cmd 'hi Normal guibg=none ctermbg=none'
 vim.cmd 'hi LineNr guibg=none ctermbg=none'

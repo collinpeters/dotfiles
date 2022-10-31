@@ -54,6 +54,7 @@ bindsym $mod+Shift+c reload
 #bindsym $mod+d focus child
 
 bindsym $mod+d 			exec --no-startup-id rofi -show drun
+bindsym $mod+p 			exec --no-startup-id bwmenu
 
 bindsym $mod+e layout toggle split
 

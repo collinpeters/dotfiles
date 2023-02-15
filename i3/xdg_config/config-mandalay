@@ -42,7 +42,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+a focus parent
 
 # focus BitWarden
-bindsym $mod+b [class="Bitwarden"] focus
+bindsym $mod+b exec firefox
 
 # focus Slack
 bindsym $mod+c [class="Slack"] focus

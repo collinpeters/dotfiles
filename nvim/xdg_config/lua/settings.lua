@@ -1,5 +1,8 @@
 local set = vim.opt
 
+-- disable mouse
+vim.opt.mouse=''
+
 --disabled, this fights project.nvim
 --set.autochdir=true                  -- Change the working directory to that of the current file
 set.autoindent=true                 -- Automatic indents
@@ -41,3 +44,7 @@ set.wildmode="list:longest,full" -- command <Tab> completion, list matches, then
 
 --let g:dap_virtual_text = v:true
 --vim.g.dap_virtual_text=true
+
+-- disable the auto-indent in yaml files (TODO move this somewhere better)
+local api = vim.api
+api.nvim_create_autocmd("FileType", { pattern = "yaml", command = [[setlocal indentkeys-=0#]] })

@@ -144,16 +144,17 @@ require("packer").startup(function(use)
   }
 
   -- utility
-  use {
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v2.x",
-    config = require('plugins.configs.neo-tree'),
-    requires = { 
-      "nvim-lua/plenary.nvim",
-      "kyazdani42/nvim-web-devicons",
-      "MunifTanjim/nui.nvim",
-    }
-  }
+  use 'preservim/nerdtree'
+  -- use {
+  --   "nvim-neo-tree/neo-tree.nvim",
+  --   branch = "v2.x",
+  --   config = require('plugins.configs.neo-tree'),
+  --   requires = { 
+  --     "nvim-lua/plenary.nvim",
+  --     "kyazdani42/nvim-web-devicons",
+  --     "MunifTanjim/nui.nvim",
+  --   }
+  -- }
   use { 'iberianpig/tig-explorer.vim', requires = 'rbgrouleff/bclose.vim' }
   use 'junegunn/fzf.vim'
   use 'christoomey/vim-tmux-navigator'

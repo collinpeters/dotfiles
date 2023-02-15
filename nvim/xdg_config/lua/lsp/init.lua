@@ -7,5 +7,5 @@ local function register_language_server(pattern, callback)
 end
 
 -- JAVA
-local jdtls = require("lsp.configs.jdtls")
-register_language_server('java', jdtls.start)
+--local jdtls = require("lsp.configs.jdtls")
+--register_language_server('java', jdtls.start)

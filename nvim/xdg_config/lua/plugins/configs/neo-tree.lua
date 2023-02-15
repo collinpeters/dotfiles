@@ -17,4 +17,9 @@ require("neo-tree").setup {
       with_expanders = true,
     },
   },
+  window = {
+    mappings = {
+      ["P"] = { "toggle_preview", config = { use_float = true } },
+    }
+  }
 }

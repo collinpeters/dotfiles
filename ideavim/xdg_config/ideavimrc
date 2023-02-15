@@ -177,6 +177,9 @@ nnoremap ]f :action GotoNextError<CR>
 nnoremap [e :action JumpToNextChange<CR>
 nnoremap ]e :action JumpToLastChange<CR>
 
+" git mappings
+nnoremap <leader>Gd :action Compare.SameVersion<CR>
+
 " Reselect visual selection after indenting
 vnoremap < <gv
 vnoremap > >gv

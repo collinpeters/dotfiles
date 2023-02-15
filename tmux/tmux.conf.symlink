@@ -31,8 +31,14 @@ bind l select-pane -R
 bind H swap-window -t -1\; select-window -t -1
 bind L swap-window -t +1\; select-window -t +1
 
+# 
+bind t choose-session
+
 # switch to last client
 bind . switch-client -l
+
+# Ctrl-A Ctrl-A to last window
+bind C-a last-window
 
 # Smart pane switching with awareness of Vim splits.
 # See: https://github.com/christoomey/vim-tmux-navigator
@@ -71,8 +77,12 @@ bind p paste-buffer
 bind -T copy-mode-vi 'v' send-keys -X begin-selection
 bind -T copy-mode-vi 'y' send-keys -X copy-selection
 
-# Ctrl-A Ctrl-A to last window
-bind C-a last-window
+# workspace keybinds
+bind -r A run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/home/dotfiles"
+bind -r B run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/sql"
+bind -r C run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/bin"
+bind -r D run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/insight-brain"
+bind -r E run-shell "/home/collin/.dotfiles/bin/tmux-sessionizer /home/collin/dev/work/hosted-data-services"
 
 # Don't use zero based indexing. Start with window 1 (instead of 0)
 set -g base-index 1

@@ -15,13 +15,7 @@
 	excludesfile = ~/.gitignore
 	editor = vim
 	whitespace = cr-at-eol
-[giggle]
-	main-window-maximized = false
-	main-window-geometry = 1511x930+268+63
-	main-window-view = FileView
-	history-view-vpane-position = 524
-	file-view-vpane-position = 580
-	file-view-hpane-position = 310
+  pager = delta
 [color]
 	diff = auto
 	status = auto
@@ -57,11 +51,18 @@
   reflog = delta
   show = delta
 [delta]
-  plus-style = "syntax #012800"
-  minus-style = "syntax #340001"
-  syntax-theme = Monokai Extended
-  navigate = true
-  line-numbers = true
+ syntax-theme = Monokai Extended
+ plus-style = "syntax #012800"
+ minus-style = "syntax #340001"
+ navigate = true
+ line-numbers = true
+ commit-decoration-style = blue ol
+ commit-style = raw
+ file-style = omit
+ hunk-header-style = file line-number syntax
+ hunk-header-decoration-style = blue box
+ hunk-header-file-style = red
+ hunk-header-line-number-style = "#067a00"
 [interactive]
   diffFilter = delta --color-only
 [init]

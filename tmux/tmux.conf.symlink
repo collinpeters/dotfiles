@@ -155,4 +155,4 @@ set-option -g display-panes-colour colour166 #orange
 set-window-option -g clock-mode-colour colour64 #green
 
 # theme
-source-file ~/.dotfiles/tmux/tmux.laederon.conf
+source-file ~/dev/home/dotfiles/tmux/tmux.laederon.conf

@@ -5,7 +5,7 @@
 # dir of script
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}"   )" && pwd   )
 # dotfiles root is one up
-DOTFILES_ROOT="$DIR/.."
+DOTFILES_ROOT=$(realpath "$DIR/..")
 cd $DOTFILES_ROOT
 
 set -e
@@ -30,28 +30,6 @@ fail () {
   exit
 }
 
-setup_gitconfig () {
-  if ! [ -f git/gitconfig.symlink ]
-  then
-    info 'setup gitconfig'
-
-    git_credential='cache'
-    if [ "$(uname -s)" == "Darwin" ]
-    then
-      git_credential='osxkeychain'
-    fi
-
-    user ' - What is your github author name?'
-    read -e git_authorname
-    user ' - What is your github author email?'
-    read -e git_authoremail
-
-    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" git/gitconfig.symlink.example > git/gitconfig.symlink
-
-    success 'gitconfig'
-  fi
-}
-
 setup_oh_my_zsh () {
   if ! [ -d "$DOTFILES_ROOT/oh-my-zsh" ]
   then
@@ -72,68 +50,81 @@ link_files () {
   success "linked $1 to $2"
 }
 
+# straight dotfiles
+# 1. straight symlink to home folder - no subfolder
+# 2. symlink to folder inside home folder - create sub-folder with _ prefix
 install_dotfiles () {
   echo 'installing dotfiles'
 
-  overwrite_all=false
-  backup_all=false
-  skip_all=false
+  OVERWRITE_ALL=false
+  BACKUP_ALL=false
+  SKIP_ALL=false
 
-  for source in `find $DOTFILES_ROOT/ -maxdepth 2 -name \*.symlink`
+  for SOURCE in `find $DOTFILES_ROOT/ -name \*.symlink`
   do
-    dest="$HOME/.`basename \"${source%.*}\"`"
+    FOLDER=$(realpath $(dirname $SOURCE))
+    PARENT_FOLDER=$(realpath $(dirname $(dirname $SOURCE)))
 
-    if [ -f $dest ] || [ -d $dest ]
+    if [ "$PARENT_FOLDER" = "$DOTFILES_ROOT" ]; then
+      DEST_FILENAME="$HOME/.`basename \"${SOURCE%.*}\"`"
+    else
+      FOLDER_NAME=$(basename $FOLDER)
+      DEST_FOLDER="$HOME/${FOLDER_NAME/_/.}"
+      mkdir -vp $DEST_FOLDER
+      DEST_FILENAME="$DEST_FOLDER/`basename \"${SOURCE%.*}\"`"
+    fi
+
+    if [ -f $DEST_FILENAME ] || [ -d $DEST_FILENAME ]
     then
 
-      overwrite=false
-      backup=false
-      skip=false
+      OVERWRITE=false
+      BACKUP=false
+      SKIP=false
 
-      if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]
+      if [ "$OVERWRITE_ALL" == "false" ] && [ "$BACKUP_ALL" == "false" ] && [ "$SKIP_ALL" == "false" ]
       then
-        user "File already exists: `basename $source`, what do you want to do? [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
-        read -n 1 action
+        user "File already exists: '$DEST_FILENAME', what do you want to do? [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
+        read -n 1 ACTION
 
-        case "$action" in
+        case "$ACTION" in
           o )
-            overwrite=true;;
+            OVERWRITE=true;;
           O )
-            overwrite_all=true;;
+            OVERWRITE_ALL=true;;
           b )
-            backup=true;;
+            BACKUP=true;;
           B )
-            backup_all=true;;
+            BACKUP_ALL=true;;
           s )
-            skip=true;;
+            SKIP=true;;
           S )
-            skip_all=true;;
+            SKIP_ALL=true;;
           * )
             ;;
         esac
       fi
 
-      if [ "$overwrite" == "true" ] || [ "$overwrite_all" == "true" ]
+      if [ "$OVERWRITE" == "true" ] || [ "$OVERWRITE_ALL" == "true" ]
       then
-        rm -rf $dest
-        success "removed $dest"
+        rm -rf $DEST_FILENAME
+        success "removed $DEST_FILENAME"
       fi
 
-      if [ "$backup" == "true" ] || [ "$backup_all" == "true" ]
+      if [ "$BACKUP" == "true" ] || [ "$BACKUP_ALL" == "true" ]
       then
-        mv $dest $dest\.backup
-        success "moved $dest to $dest.backup"
+        mv $DEST_FILENAME $DEST_FILENAME\.backup
+        success "moved $DEST_FILENAME to $DEST_FILENAME.backup"
       fi
 
-      if [ "$skip" == "false" ] && [ "$skip_all" == "false" ]
+      if [ "$SKIP" == "false" ] && [ "$SKIP_ALL" == "false" ]
       then
-        link_files $source $dest
+        link_files $SOURCE $DEST_FILENAME
       else
-        success "skipped $source"
+        success "skipped $SOURCE -> $DEST_FILENAME"
       fi
 
     else
-      link_files $source $dest
+      link_files $SOURCE $DEST_FILENAME
     fi
 
   done
@@ -142,118 +133,77 @@ install_dotfiles () {
 install_xdg_config () {
   echo 'installing xdg_config dotfiles'
 
-  overwrite_all=false
-  backup_all=false
-  skip_all=false
+  OVERWRITE_ALL=false
+  BACKUP_ALL=false
+  SKIP_ALL=false
 
   for path in `find $DOTFILES_ROOT/ -maxdepth 2 -name xdg_config`
   do
-    source=$(readlink -f $path)
-    xdg_folder_name=$(basename $(dirname $source))
-    dest="$HOME/.config/$xdg_folder_name"
+    SOURCE=$(readlink -f $path)
+    xdg_folder_name=$(basename $(dirname $SOURCE))
+    DEST="$HOME/.config/$xdg_folder_name"
 
-    if [ -d $dest ]
+    if [ -d $DEST ]
     then
 
-      overwrite=false
-      backup=false
-      skip=false
+      OVERWRITE=false
+      BACKUP=false
+      SKIP=false
 
-      if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]
+      if [ "$OVERWRITE_ALL" == "false" ] && [ "$BACKUP_ALL" == "false" ] && [ "$SKIP_ALL" == "false" ]
       then
-        user "Folder already exists: $dest, what do you want to do? [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
-        read -n 1 action
+        user "Folder already exists: $DEST, what do you want to do? [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
+        read -n 1 ACTION
 
-        case "$action" in
+        case "$ACTION" in
           o )
-            overwrite=true;;
+            OVERWRITE=true;;
           O )
-            overwrite_all=true;;
+            OVERWRITE_ALL=true;;
           b )
-            backup=true;;
+            BACKUP=true;;
           B )
-            backup_all=true;;
+            BACKUP_ALL=true;;
           s )
-            skip=true;;
+            SKIP=true;;
           S )
-            skip_all=true;;
+            SKIP_ALL=true;;
           * )
             ;;
         esac
       fi
 
-      if [ "$overwrite" == "true" ] || [ "$overwrite_all" == "true" ]
+      if [ "$OVERWRITE" == "true" ] || [ "$OVERWRITE_ALL" == "true" ]
       then
-        rm -rf $dest
-        success "removed $dest"
+        rm -rf $DEST
+        success "removed $DEST"
       fi
 
-      if [ "$backup" == "true" ] || [ "$backup_all" == "true" ]
+      if [ "$BACKUP" == "true" ] || [ "$BACKUP_ALL" == "true" ]
       then
-        mkdir $dest\.backup
-        cp -r $dest/* $dest\.backup
-        rm -rf $dest
-        success "moved $dest to $dest.backup"
+        mkdir $DEST\.backup
+        cp -r $DEST/* $DEST\.backup
+        rm -rf $DEST
+        success "moved $DEST to $DEST.backup"
       fi
 
-      if [ "$skip" == "false" ] && [ "$skip_all" == "false" ]
+      if [ "$SKIP" == "false" ] && [ "$SKIP_ALL" == "false" ]
       then
-        link_files $source $dest
+        link_files $SOURCE $DEST
       else
-        success "skipped $source"
+        success "skipped $SOURCE -> $DEST"
       fi
 
     else
-      link_files $source $dest
+      link_files $SOURCE $DEST
     fi
 
   done
 }
 
-setup_gitconfig
 setup_oh_my_zsh
 install_dotfiles
 install_xdg_config
-
-# If we're on a Mac, let's install and setup homebrew.
-if [ "$(uname -s)" == "Darwin" ]
-then
-  info "installing dependencies"
-  if source bin/dot > /tmp/dotfiles-dot 2>&1
-  then
-    success "dependencies installed"
-  else
-    fail "error installing dependencies"
-  fi
-fi
-
-#info "installing vim-plug"
-#curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-if [ ! -e ~/.vim/db_ext.conf ]; then
-	info "creating shell ~/.vim/dbext.conf"
-	echo "
-\" dbext options
-let g:dbext_default_type   = 'PGSQL'			\" Default db type
-let g:dbext_default_user   = 'mcrtdbms'			\" Default username
-let g:dbext_default_buffer_lines = 20
-let g:dbext_default_prompt_for_parameters=0     \" Turn off parameter prompt
-let g:dbext_suppress_version_warning=1
-let g:dbext_rows_affected = 1
-let g:dbext_default_use_sep_result_buffer = 1	\" Each buffer has its own results window
-let g:dbext_default_display_cmd_line = 0 		\" Do NOT display cmd as well
-let g:dbext_default_history_file = '\$HOME/.dbext_sql_history.txt'
-let g:dbext_default_profile='local'
-
-let g:dbext_default_profile_local = 'type=PGSQL:user=mcrtdbms:dbname=intouch_db:host=127.0.0.1'
-" > ~/.vim/db_ext.conf
-fi
-
-if [ ! -e ~/.pgpass ]; then
-	info "creating shell ~/.pgpass"
-	echo "127.0.0.1:5432:*:username:password" > ~/.pgpass
-	chmod 600 ~/.pgpass
-fi
 
 echo ''
 echo '  All installed!'

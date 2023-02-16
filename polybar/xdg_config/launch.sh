@@ -30,6 +30,11 @@ if [ "$HOSTNAME" = "mandalay" ]; then
 		echo "Launching polybar on mandalay HDMI-0"
 		$POLYBAR -c /home/collin/.config/polybar/config-mandalay-forest.ini mandalay-hdmi0 &
 	fi
+elif [ "$HOSTNAME" = "stratosphere" ]; then
+	if [[ $CONNECTED = *"eDP-1"* ]]; then
+		echo "Launching polybar on stratosphere eDP-1"
+		$POLYBAR -c /home/collin/.config/polybar/config-stratosphere stratosphere-edp1 &
+	fi
 elif [ "$HOSTNAME" = "aria" ]; then
 	if [[ $CONNECTED = *"DP-0"* ]]; then
 		echo "Launching polybar on aria DP-0"

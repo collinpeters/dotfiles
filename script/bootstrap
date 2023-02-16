@@ -204,6 +204,13 @@ install_xdg_config () {
   done
 }
 
+fix_permissions () {
+  for FILE in `cat .gitattributes | sed '/^[[:space:]]*$/d' | cut -f1 -d" "`; do
+    echo "Setting mode 600 on $FILE"
+    chmod 600 $FILE
+  done
+}
+
 install_xsession () {
   HOSTNAME=$(hostname)
   echo "Creating i3 xsession file for host $HOSTNAME"
@@ -220,14 +227,20 @@ DesktopNames=i3
 Keywords=tiling;wm;windowmanager;window;manager;
 EOF
 
-echo "Moving '$FILENAME' to /usr/share/xsessions (needs sudo)"
-sudo mv $FILENAME /usr/share/xsessions
+  echo "Moving '$FILENAME' to /usr/share/xsessions (needs sudo)"
+  sudo mv $FILENAME /usr/share/xsessions
+}
+
+install_desktop_files () {
+  ln -s $DOTFILES_ROOT/desktop_files $HOME/.local/share/applications/
 }
 
 setup_oh_my_zsh
 install_dotfiles
 install_xdg_config
 install_xsession
+install_desktop_files
+fix_permissions
 
 echo ''
 echo '  All installed!'

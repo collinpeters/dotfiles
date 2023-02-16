@@ -52,7 +52,10 @@ link_files () {
 
 # straight dotfiles
 # 1. straight symlink to home folder - no subfolder
-# 2. symlink to folder inside home folder - create sub-folder with _ prefix
+#    e.g. foo/bar.symlink will produce a symlink ~/.bar
+# 2. symlink to folder inside home folder - create sub-folder, optional with _ prefix
+#    e.g. foo/bar/baz.symlink will produce a symlink ~/bar/baz
+#    e.g. foo/_bar/baz.symlink will produce a symlink ~/.bar/baz
 install_dotfiles () {
   echo 'installing dotfiles'
 

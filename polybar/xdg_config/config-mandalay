@@ -430,7 +430,7 @@ format-underline = #4bffdc
 
 [module/updates-arch-combined]
 type = custom/script
-exec = ~/Code/polybar-scripts/polybar-scripts/updates-arch-combined/updates-arch-combined.sh
+exec = ~/dev/home/polybar-scripts/polybar-scripts/updates-aurhelper/updates-aurhelper.sh
 interval = 601
 format-underline = #f50a4d
 label =  %output%

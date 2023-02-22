@@ -8,10 +8,6 @@ cd `dirname "$0"`
 touch $LOG_FILE
 
 while true; do
-	# set current one off the hop
-	#feh --bg-scale /usr/share/backgrounds/current-background.jpg
-	#sleep 5m
-
 	# rotate in next one
 	RESULT=$(./bg-rotor.sh $PICTURES_FOLDER $SEEN_FOLDER)
 	echo ${RESULT} >> ${LOG_FILE}

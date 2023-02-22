@@ -213,9 +213,14 @@ fix_permissions () {
 
 install_xsession () {
   HOSTNAME=$(hostname)
-  echo "Creating i3 xsession file for host $HOSTNAME"
-  FILENAME="/tmp/i3-${HOSTNAME}.desktop"
-  cat << EOF > $FILENAME
+
+  TMP_FILENAME="/tmp/i3-${HOSTNAME}.desktop"
+  DEST_FILENAME="/usr/share/xsessions/i3-${HOSTNAME}.desktop"
+
+  if ! [ -a $DEST_FILENAME ]
+  then
+    echo "Creating i3 xsession file for host $HOSTNAME"
+    cat << EOF > $TMP_FILENAME
 [Desktop Entry]
 Name=i3 (${HOSTNAME})
 Comment=improved dynamic tiling window manager
@@ -227,12 +232,13 @@ DesktopNames=i3
 Keywords=tiling;wm;windowmanager;window;manager;
 EOF
 
-  echo "Moving '$FILENAME' to /usr/share/xsessions (needs sudo)"
-  sudo mv $FILENAME /usr/share/xsessions
+    echo "Moving '$TMP_FILENAME' to /usr/share/xsessions (needs sudo)"
+    sudo mv $TMP_FILENAME $DEST_FILENAME
+  fi
 }
 
 install_desktop_files () {
-  ln -s $DOTFILES_ROOT/desktop_files $HOME/.local/share/applications/
+  ln -sf $DOTFILES_ROOT/desktop_files $HOME/.local/share/applications/
 }
 
 setup_oh_my_zsh

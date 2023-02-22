@@ -68,5 +68,7 @@
 [init]
 	defaultBranch = main
 [user]
-	email = itscollin@pm.me
+	email = itscollin@proton.me
 	name = Collin Peters
+[includeIf "gitdir:~/dev/work/"]
+    path = ~/dev/work/.gitconfig_include

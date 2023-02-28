@@ -4,4 +4,4 @@ bind main C !git commit -v
 
 set main-view-id-display = yes
 
-source ~/.dotfiles/tig/molokai-like-theme.tigrc
+source ~/dev/home/dotfiles/tig/molokai-like-theme.tigrc

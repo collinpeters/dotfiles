@@ -16,6 +16,7 @@ killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
 CONNECTED=$(xrandr | grep " connected " | awk '{ print$1 }')
+AUTORANDR_CURRENT=$(autorandr --current)
 
 if [ "$HOSTNAME" = "mandalay" ]; then
 	if [[ $CONNECTED = *"DP-0"* ]]; then
@@ -31,10 +32,15 @@ if [ "$HOSTNAME" = "mandalay" ]; then
 		$POLYBAR -c /home/collin/.config/polybar/config-mandalay-forest.ini mandalay-hdmi0 &
 	fi
 elif [ "$HOSTNAME" = "stratosphere" ]; then
-	if [[ $CONNECTED = *"eDP-1"* ]]; then
-		echo "Launching polybar on stratosphere eDP-1"
-		$POLYBAR -c /home/collin/.config/polybar/config-stratosphere stratosphere-edp1 &
-	fi
+  if [[ $AUTORANDR_CURRENT = "triple-4k" ]]; then
+    echo "Launching polybar on stratosphere triple 4k"
+    $POLYBAR -c /home/collin/.config/polybar/config-stratosphere-triple-4k.ini stratosphere-left &
+    $POLYBAR -c /home/collin/.config/polybar/config-stratosphere-triple-4k.ini stratosphere-middle &
+    $POLYBAR -c /home/collin/.config/polybar/config-stratosphere-triple-4k.ini stratosphere-right &
+  else
+    echo "Launching polybar on stratosphere eDP-1"
+    $POLYBAR -c /home/collin/.config/polybar/config-stratosphere-laptop-only stratosphere-edp1 &
+  fi
 elif [ "$HOSTNAME" = "aria" ]; then
 	if [[ $CONNECTED = *"DP-0"* ]]; then
 		echo "Launching polybar on aria DP-0"

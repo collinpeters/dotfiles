@@ -63,7 +63,7 @@ install_dotfiles () {
   BACKUP_ALL=false
   SKIP_ALL=false
 
-  for SOURCE in `find $DOTFILES_ROOT/ -name \*.symlink`
+  for SOURCE in `find $DOTFILES_ROOT -name \*.symlink`
   do
     FOLDER=$(realpath $(dirname $SOURCE))
     PARENT_FOLDER=$(realpath $(dirname $(dirname $SOURCE)))
@@ -75,6 +75,32 @@ install_dotfiles () {
       DEST_FOLDER="$HOME/${FOLDER_NAME/_/.}"
       mkdir -vp $DEST_FOLDER
       DEST_FILENAME="$DEST_FOLDER/`basename \"${SOURCE%.*}\"`"
+    fi
+
+    # filter host specific files
+    HOST_SPECIFIC=0
+    WRONG_HOST=0
+    HOSTNAME=$(hostname)
+    # add/remove to this list as necessary
+    HOSTNAMES=(mandalay aria stratosphere mirage)
+    for HN in "${HOSTNAMES[@]}"
+    do
+      # check if this file has a hostname in it
+      if [[ $DEST_FILENAME == *"$HN"* ]]; then
+        HOST_SPECIFIC=1
+        # check if it is this host
+        if [[ $DEST_FILENAME != *"$HOSTNAME"* ]]; then
+          WRONG_HOST=1
+        fi
+      fi
+    done
+    # break out of outer for loop if it isn't the right host (completely ignore this file)
+    if [ $WRONG_HOST = 1 ]; then
+      continue
+    fi
+    if [ $HOST_SPECIFIC = 1 ]; then
+      # strip `-HOSTNAME` from destination file
+      DEST_FILENAME=`echo $DEST_FILENAME | sed "s/-$HOSTNAME//g"`
     fi
 
     if [ -f $DEST_FILENAME ] || [ -d $DEST_FILENAME ]

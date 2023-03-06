@@ -32,7 +32,7 @@ if [ "$HOSTNAME" = "mandalay" ]; then
 		$POLYBAR -c /home/collin/.config/polybar/config-mandalay-forest.ini mandalay-right &
 	fi
 elif [ "$HOSTNAME" = "stratosphere" ]; then
-  if [[ $AUTORANDR_CURRENT = "triple-4k" ]]; then
+  if [[ $AUTORANDR_CURRENT = "stratosphere-triple-4k" ]]; then
     echo "Launching polybar on stratosphere triple 4k"
     $POLYBAR -c /home/collin/.config/polybar/config-stratosphere-triple-4k.ini stratosphere-left &
     $POLYBAR -c /home/collin/.config/polybar/config-stratosphere-triple-4k.ini stratosphere-middle &

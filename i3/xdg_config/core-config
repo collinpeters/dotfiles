@@ -19,7 +19,7 @@ workspace 3 output $OUTPUT3
 # ########
 
 # start a terminal
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec alacritty --option font.size=$ALACRITTY_FONT_SIZE
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -145,7 +145,7 @@ for_window [title="scratchcli"] floating enable
 for_window [title="scratchcli"] resize set 90ppt 90ppt
 for_window [title="scratchcli"] move scratchpad
 for_window [title="scratchcli"] border pixel 5
-exec --no-startup-id alacritty --title scratchcli -e tmux new-session -A -s scratchcli
+exec --no-startup-id alacritty --title scratchcli -e tmux new-session -A -s scratchcli --option font.size=$ALACRITTY_FONT_SIZE
 
 # Volume keyboard controls
 bindsym XF86AudioRaiseVolume exec "bash -c 'for i in `pactl list short sinks | cut -f 1`; do pamixer --allow-boost --increase 5 --sink $i; done'"

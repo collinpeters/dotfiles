@@ -13,5 +13,8 @@ set $OUTPUT3 DP-5
 # is used in the bar {} block below.
 font pango:UbuntuMono Nerd Font 11
 
+# Font for alacritty terminal
+set $ALACRITTY_FONT_SIZE 11
+
 # Load the core config
 include core-config

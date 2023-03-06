@@ -264,7 +264,9 @@ EOF
 }
 
 install_desktop_files () {
-  ln -sf $DOTFILES_ROOT/desktop_files $HOME/.local/share/applications/
+  echo "Setting up desktop files"
+  rm -rf $HOME/.local/share/applications/desktop_files
+  link_files $DOTFILES_ROOT/desktop_files $HOME/.local/share/applications/
 }
 
 setup_oh_my_zsh

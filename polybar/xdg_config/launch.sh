@@ -44,7 +44,7 @@ elif [ "$HOSTNAME" = "stratosphere" ]; then
 elif [ "$HOSTNAME" = "aria" ]; then
 	if [[ $CONNECTED = *"DP-0"* ]]; then
 		echo "Launching polybar on aria DP-0"
-		$POLYBAR -c /home/collin/.config/polybar/config-aria aria-dp0 &
+		$POLYBAR -c /home/collin/.config/polybar/config-aria.ini aria-only &
 	fi
 elif [ "$HOSTNAME" = "mirage" ]; then
 	if [[ $CONNECTED = *"eDP-1"* ]]; then

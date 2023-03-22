@@ -3,7 +3,7 @@
 set $scripts ~/.config/i3/scripts
 
 # Set monitor layout
-#exec --no-startup-id autorandr --change
+exec --no-startup-id autorandr --change
 
 set $OUTPUT1 HDMI-0
 set $OUTPUT2 DP-2

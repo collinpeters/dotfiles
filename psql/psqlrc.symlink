@@ -1,6 +1,8 @@
 -- replace nulls
 \pset null ¤
 
+\set QUIET ON
+
 -- show execution times
 \timing
 
@@ -14,6 +16,7 @@
 \pset linestyle unicode
 \pset border 2
 --\pset format unaligned
+
 
 --helpful queries. Run with :name in psql/vim(dbext)
 -- pgadmin server status queries (9.1)

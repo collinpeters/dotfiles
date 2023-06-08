@@ -23,6 +23,4 @@ autocmd DocStart docs.google.com mode ignore
 autocmd DocStart policy.s mode ignore
 autocmd DocStart miro.com mode ignore
 autocmd DocStart app.sketchup.com mode ignore
-
-blacklistadd servicenow.com
-
+autocmd DocStart sonatype.atlassian.net mode ignore

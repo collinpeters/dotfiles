@@ -163,11 +163,16 @@ require("packer").startup(function(use)
   use 'famiu/bufdelete.nvim'
   use 'rmagatti/auto-session'
 
-  -- database
+  -- Database
   use {
-    'collinpeters/dbext.vim',
-    config = require('plugins.configs.dbext')
+    "tpope/vim-dadbod",
+    requires = {
+      "kristijanhusak/vim-dadbod-completion",
+    },
+    config = require('plugins.configs.dadbod').setup(),
   }
-  use 'krisajenkins/vim-postgresql-syntax'
-  use 'lifepillar/pgsql.vim'
+  use {
+    'lifepillar/pgsql.vim',
+    config = require('plugins.configs.pgsql')
+  }
 end)

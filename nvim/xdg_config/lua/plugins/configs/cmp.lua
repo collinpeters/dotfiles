@@ -112,3 +112,12 @@ cmp.setup {
 -- })
 -- local capabilities = vim.lsp.protocol.make_client_capabilities()
 -- capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+-- Database completion
+vim.api.nvim_exec(
+  [[
+      autocmd FileType sql setlocal omnifunc=vim_dadbod_completion#omni
+      autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
+  ]],
+  false
+)

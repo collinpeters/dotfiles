@@ -105,6 +105,14 @@ wk.register({
     m =  { '<cmd>Telescope lsp_document_symbols<CR>', '[LSP] Document symbols'},
     gW = { '<cmd>lua vim.lsp.buf.workspace_symbol()<CR>', '[LSP] Workspace symbols'},
   },
+
+
+  ["<leader>s"] = {
+    name = "[SQL/Database]",
+    bp = { "<Cmd>lua require'utils.db-select'.select()<Cr>", "[SQL] Database buffer connection prompt" },
+    e =  { '<cmd><Plug>(DBExe)<CR>', '[SQL] Execute query'},
+--    e =  { '<cmd>DB<CR>', '[SQL] Execute query'},
+  },
 -- |
 -- |
 -- |   -- `code_action` is a superset of vim.lsp.buf.code_action and you'll be able to

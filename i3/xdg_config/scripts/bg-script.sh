@@ -1,7 +1,10 @@
 #!/bin/bash
 # execute background rotation script and track log
 
-source bg-config.sh
+# dir of script
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}"   )" && pwd   )
+
+source ${DIR}/bg-config.sh
 
 cd `dirname "$0"`
 

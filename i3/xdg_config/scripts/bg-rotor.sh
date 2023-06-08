@@ -3,7 +3,10 @@
 # Specify source folder, and folder to move to once seen
 # When no pictures are left in source, moves all seen pictures back to source and keeps going
 
-source bg-config.sh
+# dir of script
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}"   )" && pwd   )
+
+source ${DIR}/bg-config.sh
 
 if [ ! -d "$UNSEEN_FOLDER" ]; then
 	echo "Pictures folder '${UNSEEN_FOLDER}' does not exist"

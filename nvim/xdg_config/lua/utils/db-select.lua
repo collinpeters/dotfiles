@@ -17,8 +17,9 @@ function M.select()
     prompt = "Select a database",
   }, function(db, idx)
     if db then
-      print("You selected " .. db .. " at index " .. idx)
-      vim.api.nvim_buf_set_var(0, 'db', 'postgresql://mtiq-admin@' .. databases[db] .. ':5432/mtiq')
+      local selection = databases[db]
+      print("You selected " .. selection.url)
+      vim.api.nvim_buf_set_var(0, 'db', 'postgresql://' .. selection.username .. '@' .. selection.url .. ':5432/' .. selection.database .. '')
     else
       print "You cancelled"
     end

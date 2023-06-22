@@ -24,3 +24,4 @@ autocmd DocStart policy.s mode ignore
 autocmd DocStart miro.com mode ignore
 autocmd DocStart app.sketchup.com mode ignore
 autocmd DocStart sonatype.atlassian.net mode ignore
+autocmd DocStart notion.so mode ignore

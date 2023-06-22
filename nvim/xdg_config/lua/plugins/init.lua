@@ -165,7 +165,7 @@ require("packer").startup(function(use)
 
   -- Database
   use {
-    "tpope/vim-dadbod",
+    "collinpeters/vim-dadbod", -- personal fork
     requires = {
       "kristijanhusak/vim-dadbod-completion",
     },

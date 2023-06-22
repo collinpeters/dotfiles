@@ -18,8 +18,8 @@ function M.select()
   }, function(db, idx)
     if db then
       local selection = databases[db]
-      print("You selected " .. selection.url)
-      vim.api.nvim_buf_set_var(0, 'db', 'postgresql://' .. selection.username .. '@' .. selection.url .. ':5432/' .. selection.database .. '')
+      print('You selected postgresql://' .. selection.username .. '@' .. selection.url .. ':5432/' .. selection.database)
+      vim.api.nvim_buf_set_var(0, 'db', 'postgresql://' .. selection.username .. '@' .. selection.url .. ':5432/' .. selection.database)
     else
       print "You cancelled"
     end

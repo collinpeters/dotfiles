@@ -106,12 +106,8 @@ wk.register({
     gW = { '<cmd>lua vim.lsp.buf.workspace_symbol()<CR>', '[LSP] Workspace symbols'},
   },
 
-
   ["<leader>s"] = {
     name = "[SQL/Database]",
-    bp = { "<Cmd>lua require'utils.db-select'.select()<Cr>", "[SQL] Database buffer connection prompt" },
-    e =  { '<cmd><Plug>(DBExe)<CR>', '[SQL] Execute query'},
---    e =  { '<cmd>DB<CR>', '[SQL] Execute query'},
   },
 -- |
 -- |
@@ -193,19 +189,27 @@ wk.setup {}
 
 
 -- old school mapping
-map = function(mode, key, value)
-  local opts = {noremap = true, silent = true}
-  vim.api.nvim_set_keymap(mode,key,value,opts);
+map = function(mode, key, value, description)
+  local opts = {noremap = true, silent = true, desc = description}
+  --vim.api.nvim_set_keymap(mode,key,value,opts);
+  vim.keymap.set(mode,key,value,opts);
 end
 
 
 -- Copy & paste to system clipboard with <leader>p and <leader>y:
-map('v', '<Leader>y', '"+y')
-map('v', '<Leader>d', '"+d')
-map('n', '<Leader>p', '"+p')
-map('n', '<Leader>P', '"+P')
-map('v', '<Leader>p', '"+p')
-map('v', '<Leader>P', '"+P')
+map('v', '<Leader>y', '"+y', 'Yank (Copy to system clipboard)')
+map('v', '<Leader>d', '"+d', 'Delete (Copy to system clipboard)')
+map('n', '<Leader>p', '"+p', 'Paste from system clipboard')
+map('n', '<Leader>P', '"+P', 'Paste above from system clipboard')
+map('v', '<Leader>p', '"+p', 'Paste from system clipboard')
+map('v', '<Leader>P', '"+P', 'Paste above from system clipboard')
+
+-- SQL/Database
+map('n', '<Leader>ss',  "<Cmd>lua require'utils.db-select'.select()<Cr>", "[SQL] Database Selection")
+map('n', '<Leader>se',  '<cmd><Plug>(DBExe)<CR>',                         '[SQL] Execute')
+map('n', '<Leader>sea', '<cmd><Plug>(DBExeAll)<CR>',                      '[SQL] Execute all')
+map('n', '<Leader>sel', '<cmd><Plug>(DBExeLine)<CR>',                     '[SQL] Execute line')
+map('v', '<Leader>sd',  '<cmd><Plug>(DBDescribe)<CR>',                    '[SQL] Describe Table')
 
 -- | -- undo breakpoints
 -- | map('i', '.', '.<c-g>u')

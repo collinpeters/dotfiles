@@ -39,7 +39,7 @@ elif [ "$HOSTNAME" = "stratosphere" ]; then
     $POLYBAR -c /home/collin/.config/polybar/config-stratosphere-triple-4k.ini stratosphere-right &
   else
     echo "Launching polybar on stratosphere eDP-1"
-    $POLYBAR -c /home/collin/.config/polybar/config-stratosphere-laptop-only stratosphere-edp1 &
+    $POLYBAR -c /home/collin/.config/polybar/config-stratosphere-single-1080.ini stratosphere-edp1 &
   fi
 elif [ "$HOSTNAME" = "aria" ]; then
 	if [[ $CONNECTED = *"DP-0"* ]]; then

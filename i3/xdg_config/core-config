@@ -10,6 +10,8 @@ focus_follows_mouse no
 hide_edge_borders smart
 default_border none
 
+workspace_layout stacking
+
 # lock these 3 workspaces to a display
 workspace 1 output $OUTPUT1
 workspace 2 output $OUTPUT2

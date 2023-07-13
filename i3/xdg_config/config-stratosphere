@@ -18,3 +18,8 @@ set $ALACRITTY_FONT_SIZE 11
 
 # Load the core config
 include core-config
+
+# Sonatype work specific keybinds (Stratosphere is work laptop)
+# need to define `mod`
+set $mod Mod4
+bindsym $mod+o exec "/home/collin/Apps/bash-otp/otp.sh sonatype-aws"

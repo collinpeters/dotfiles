@@ -113,10 +113,13 @@ require("packer").startup(function(use)
     },
   }
   use 'martinda/Jenkinsfile-vim-syntax'
-  use {
-    'stevearc/aerial.nvim',
-    config = require('plugins.configs.aerial')
-  }
+  use({
+    "stevearc/aerial.nvim",
+    config = function()
+      require("plugins.config.aerial").setup()
+    end,
+  })
+
   use 'RRethy/vim-illuminate'
 
   -- telescope extensions

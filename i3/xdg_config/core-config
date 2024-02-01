@@ -42,8 +42,7 @@ workspace 3 output $OUTPUT3
 # ########
 
 # start a terminal
-bindsym $mod+Return exec alacritty --option font.size=$ALACRITTY_FONT_SIZE
-#bindsym $mod+Return exec urxvt 
+bindsym $mod+Return exec alacritty -o font.size=$ALACRITTY_FONT_SIZE
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -197,7 +196,7 @@ for_window [title="scratchcli"] floating enable
 for_window [title="scratchcli"] resize set 90ppt 90ppt
 for_window [title="scratchcli"] move scratchpad
 for_window [title="scratchcli"] border pixel 5
-exec --no-startup-id alacritty --title scratchcli -e tmux new-session -A -s scratchcli --option font.size=$ALACRITTY_FONT_SIZE
+exec --no-startup-id alacritty -o font.size=$ALACRITTY_FONT_SIZE --title scratchcli -e tmux new-session -A -s scratchcli 
 
 # Zoom (😱)
 for_window [title="^zoom$" class="[zoom]*"] floating enable

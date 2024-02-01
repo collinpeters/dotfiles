@@ -1,5 +1,25 @@
 # vim: filetype=i3config
 
+# ############
+# STARTUP APPS
+# ############
+
+# dex will autostart XDG desktop entries
+exec --no-startup-id dex -ae i3
+
+# polybar
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+# dunst notification daemon
+exec --no-startup-id dunst
+
+# background wallpaper rotation
+exec --no-startup-id ~/.config/i3/scripts/bg-script.sh
+
+# ######
+# CONFIG
+# ######
+
 set $mod Mod4
 
 # Use Mouse+$mod to drag floating windows to their wanted position
@@ -23,6 +43,7 @@ workspace 3 output $OUTPUT3
 
 # start a terminal
 bindsym $mod+Return exec alacritty --option font.size=$ALACRITTY_FONT_SIZE
+#bindsym $mod+Return exec urxvt 
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -71,7 +92,8 @@ bindsym $mod+Ctrl+l move workspace to output right
 
 bindsym $mod+m workspace m:m
 
-bindsym $mod+p 			exec --no-startup-id bwmenu
+#bindsym $mod+p 			exec --no-startup-id bwmenu
+bindsym $mod+p exec "killall picom; sleep 0.2; picom"
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -143,14 +165,6 @@ mode "resize" {
 # disable caps lock
 exec --no-startup-id setxkbmap -option caps:none
 
-# scratch running a persistent tmux instance
-for_window [title="scratchcli"] floating enable
-for_window [title="scratchcli"] resize set 90ppt 90ppt
-for_window [title="scratchcli"] move scratchpad
-for_window [title="scratchcli"] border pixel 5
-#exec --no-startup-id alacritty --title scratchcli -e tmux new-session -A -s scratchcli --option font.size=$ALACRITTY_FONT_SIZE
-exec --no-startup-id alacritty --title scratchcli -e tmux new-session -A -s scratchcli
-
 # Volume keyboard controls
 bindsym XF86AudioRaiseVolume exec "bash -c 'for i in `pactl list short sinks | cut -f 1`; do pamixer --allow-boost --increase 5 --sink $i; done'"
 bindsym XF86AudioLowerVolume exec "bash -c 'for i in `pactl list short sinks | cut -f 1`; do pamixer --allow-boost --decrease 5 --sink $i; done'"
@@ -166,6 +180,10 @@ bindsym XF86AudioStop exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
 
+# ###############
+# APP ASSIGNMENTS
+# ###############
+
 # assign certain apps to be floating
 for_window [class="Pavucontrol" instance="pavucontrol"] floating enable
 
@@ -174,28 +192,13 @@ assign [class="jetbrains-idea"] workspace 2
 assign [class="Slack"] workspace 4
 assign [class="Spotify"] workspace 5
 
-# ############
-# STARTUP APPS
-# ############
+# scratch cli running a persistent tmux instance
+for_window [title="scratchcli"] floating enable
+for_window [title="scratchcli"] resize set 90ppt 90ppt
+for_window [title="scratchcli"] move scratchpad
+for_window [title="scratchcli"] border pixel 5
+exec --no-startup-id alacritty --title scratchcli -e tmux new-session -A -s scratchcli --option font.size=$ALACRITTY_FONT_SIZE
 
-# polybar
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-
-# picom compositor (formerly compton)
-exec_always --no-startup-id picom
-
-# dunst notification daemon
-exec --no-startup-id dunst
-
-# network manager applet
-exec --no-startup-id nm-applet
-
-# background wallpaper rotation
-exec --no-startup-id ~/.config/i3/scripts/bg-script.sh
-
-#exec --no-startup-id blueman-applet
-
-#exec --no-startup-id pasystray
-
-#exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent
-#exec --no-startup-id redshift-gtk
+# Zoom (😱)
+for_window [title="^zoom$" class="[zoom]*"] floating enable
+no_focus   [class="^zoom$" title="^zoom"]

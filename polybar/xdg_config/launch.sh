@@ -17,9 +17,7 @@ while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
 CONNECTED=$(xrandr | grep " connected " | awk '{ print$1 }')
 
-#sh "~/.config/polybar/launch-${HOSTNAME}.sh"
-source "$HOME/.config/polybar/launch-venetian.sh"
-
+source "$HOME/.config/polybar/launch-${HOSTNAME}.sh"
 
 # if [ "$HOSTNAME" = "mandalay" ]; then
 # elif [ "$HOSTNAME" = "stratosphere" ]; then

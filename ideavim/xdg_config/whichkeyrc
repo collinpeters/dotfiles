@@ -1,0 +1,9 @@
+
+let g:WhichKeyDesc_OpenSearchFind = "<leader>o Search"
+let g:WhichKeyDesc_OpenSearchFind_SearchEverywhere = "<leader>oe Search everywhere"
+let g:WhichKeyDesc_OpenSearchFind_SearchAction = "<leader>oa Search for action"
+let g:WhichKeyDesc_OpenSearchFind_SearchClass = "<leader>oc Search for class"
+let g:WhichKeyDesc_OpenSearchFind_SearchFile = "<leader>of Search for file"
+let g:WhichKeyDesc_OpenSearchFind_FindInPath = "<leader>og Grep in files"
+let g:WhichKeyDesc_OpenSearchFind_RecentFiles = "<leader>or Recent files"
+let g:WhichKeyDesc_OpenSearchFind_GotoSymbol = "<leader>os Goto symbol"

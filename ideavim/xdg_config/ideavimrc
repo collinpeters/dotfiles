@@ -66,28 +66,27 @@ nnoremap <c-k> <c-w>k
 
 " open/search/find
 nnoremap <leader>oe :action SearchEverywhere<CR>
-nnoremap <leader>oa :action GotoAction<CR> " any action in idea
+nnoremap <leader>oa :action GotoAction<CR>
 nnoremap <leader>oc :action GotoClass<CR>
 nnoremap <leader>of :action GotoFile<CR>
 nnoremap <leader>og :action FindInPath<CR>
 nnoremap <leader>or :action RecentFiles<CR>
-let g:WhichKeyDesc_OpenSearchFind = "<leader>o Search"
-let g:WhichKeyDesc_OpenSearchFind_SearchEverywhere = "<leader>oe Search everywhere"
-let g:WhichKeyDesc_OpenSearchFind_SearchAction = "<leader>oa Search for action"
-let g:WhichKeyDesc_OpenSearchFind_SearchClass = "<leader>oc Search for class"
-let g:WhichKeyDesc_OpenSearchFind_SearchFile = "<leader>of Search for file"
-let g:WhichKeyDesc_OpenSearchFind_FindInPath = "<leader>og Grep in files"
-let g:WhichKeyDesc_OpenSearchFind_RecentFiles = "<leader>or Recent files"
+nnoremap <leader>os :action GotoSymbol<CR>
+
+source whichkeyrc
 
 " navigate -> windows/dialogs
-nnoremap <leader>s :action GotoSymbol<CR>
-nnoremap <leader>h :action CallHierarchy<CR>
 nnoremap <leader>m :action FileStructurePopup<CR>
 nnoremap <leader>u :action FindUsages<CR>
-let g:WhichKeyDesc_GotoSymbol = "<leader>s Goto symbol"
-let g:WhichKeyDesc_CallHierarchy = "<leader>h Call hierarchy"
 let g:WhichKeyDesc_FileStructurePopup = "<leader>m File structure"
 let g:WhichKeyDesc_FindUsages = "<leader>u Find usages"
+
+" show (in sidebar)
+nnoremap <leader>sh :action CallHierarchy<CR>
+nnoremap <leader>st :action TypeHierarchy<CR>
+let g:WhichKeyDesc_OpenSidebar = "<leader>s Sidebar"
+let g:WhichKeyDesc_CallHierarchy = "<leader>sh Call hierarchy"
+let g:WhichKeyDesc_TypeHierarchy = "<leader>st Type hierarchy"
 
 " navigate -> goto/jumps
 nnoremap <leader>gd :action GotoDeclaration<CR>

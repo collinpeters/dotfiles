@@ -20,8 +20,12 @@ bind N findnext -1
 
 autocmd DocStart mail.google.com mode ignore
 autocmd DocStart docs.google.com mode ignore
-autocmd DocStart policy.s mode ignore
-autocmd DocStart miro.com mode ignore
 autocmd DocStart app.sketchup.com mode ignore
-autocmd DocStart sonatype.atlassian.net mode ignore
 autocmd DocStart notion.so mode ignore
+autocmd DocStart cad.onshape.com mode ignore
+
+autocmd DocStart miro.com mode ignore
+autocmd DocStart sonatype.atlassian.net mode ignore
+
+blacklistadd servicenow.com
+blacklistadd servicenow.com

@@ -25,7 +25,7 @@ nextPicture() {
 
 	cp $NEXT /usr/share/backgrounds/current-background.jpg
 
-	feh --bg-scale $NEXT
+	feh --bg-scale /usr/share/backgrounds/current-background.jpg
 	mv -f -v ${NEXT} ${SEEN_FOLDER}
 	echo ${NEXT}
 }

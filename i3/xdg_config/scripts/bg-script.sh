@@ -11,13 +11,16 @@ cd `dirname "$0"`
 touch $LOG_FILE
 
 while true; do
-	# let it stay for awhile
-	sleep 1h
+  # load current picture (in case of restart)
+  feh --bg-scale /usr/share/backgrounds/current-background.jpg
 
-	# rotate in next one
-	RESULT=$(./bg-rotor.sh $PICTURES_FOLDER $SEEN_FOLDER)
-	echo ${RESULT} >> ${LOG_FILE}
+  # let it stay for awhile
+  sleep 1h
 
-	# keep the log at 100 lines
-	tail -n 100 ${LOG_FILE} | sponge ${LOG_FILE}
+  # rotate in next one
+  RESULT=$(./bg-rotor.sh $PICTURES_FOLDER $SEEN_FOLDER)
+  echo ${RESULT} >> ${LOG_FILE}
+
+  # keep the log at 100 lines
+  tail -n 100 ${LOG_FILE} | sponge ${LOG_FILE}
 done

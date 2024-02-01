@@ -26,6 +26,7 @@ autocmd DocStart cad.onshape.com mode ignore
 
 autocmd DocStart miro.com mode ignore
 autocmd DocStart sonatype.atlassian.net mode ignore
+autocmd DocStart sonatype.slack.com mode ignore
 
 blacklistadd servicenow.com
 blacklistadd servicenow.com

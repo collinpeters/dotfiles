@@ -72,3 +72,5 @@
 	name = Collin Peters
 [includeIf "gitdir:~/dev/work/"]
     path = ~/dev/work/.gitconfig_include
+[url "git@github.com:"]
+  insteadOf = https://github.com/

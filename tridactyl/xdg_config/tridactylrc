@@ -20,6 +20,7 @@ bind N findnext -1
 
 autocmd DocStart mail.google.com mode ignore
 autocmd DocStart docs.google.com mode ignore
+autocmd DocStart proton.me mode ignore
 autocmd DocStart app.sketchup.com mode ignore
 autocmd DocStart notion.so mode ignore
 autocmd DocStart cad.onshape.com mode ignore

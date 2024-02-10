@@ -14,7 +14,7 @@ set $OUTPUT1 DP-0
 font pango:UbuntuMono Nerd Font 13
 
 # Font for alacritty terminal
-set $ALACRITTY_FONT_SIZE 13
+set $ALACRITTY_FONT_SIZE 12
 
 # Load the core config
 include core-config

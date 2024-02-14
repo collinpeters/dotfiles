@@ -17,13 +17,13 @@ set history=1000
 " ----------------
 " Plugins (builtin)
 set NERDTree
+set which-key
+set notimeout " for which-key
 "set surround
 "set easymotion
 
 " ----------------
 " Plugins (install from marketplace)
-set which-key " https://github.com/TheBlob42/idea-which-key
-set notimeout " for which-key
 "map <leader>F <Plug>(easymotion-s)
 "map <leader>e <Plug>(easymotion-f)
 

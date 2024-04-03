@@ -263,17 +263,10 @@ EOF
   fi
 }
 
-install_desktop_files () {
-  echo "Setting up desktop files"
-  rm -rf $HOME/.local/share/applications/desktop_files
-  link_files $DOTFILES_ROOT/desktop_files $HOME/.local/share/applications/
-}
-
 setup_oh_my_zsh
 install_dotfiles
 install_xdg_config
 install_xsession
-install_desktop_files
 fix_permissions
 
 echo ''

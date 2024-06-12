@@ -22,7 +22,7 @@ alert = #bd2c40
 
 
 [bar/mirage-edp1]
-monitor = ${env:MONITOR:eDP-1}
+monitor = ${env:MONITOR:eDP1}
 dpi = 96
 width = 100%
 height = 40

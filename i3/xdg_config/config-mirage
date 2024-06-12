@@ -5,7 +5,7 @@ set $scripts ~/.config/i3/scripts
 # Set monitor layout
 exec --no-startup-id autorandr --change
 
-set $OUTPUT1 eDP-1
+set $OUTPUT1 eDP1
 
 
 

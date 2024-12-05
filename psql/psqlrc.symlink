@@ -22,6 +22,10 @@
 -- pgadmin server status queries (9.1)
 \set activity 'SELECT * FROM pg_stat_activity WHERE pid <> pg_backend_pid()'
 \set ps 'SELECT pid, application_name as source, age(now(),query_start) as running_for, query FROM pg_stat_activity WHERE state <> \'idle\' AND pid <> pg_backend_pid() ORDER BY 3 desc'
+\set ps2 'SELECT pid, application_name as source, age(now(),query_start) as running_for, regexp_replace(query, \'ddps.*\\*\', \'ddps\', \'g\') AS query_without_comment FROM pg_stat_activity WHERE state <> \'idle\' AND pid <> pg_backend_pid() ORDER BY 3 desc'
+-- SELECT pid, application_name as source, age(now(),query_start) as running_for, regexp_replace(query, '/\*.*?\*/', '', 'g') AS query_without_comment
+-- /*ddps='mtiq-batch',dddbs='mtiq-db',ddh='mtiq-staging-1-db-us-east-2.cluster-ckxkxl7a0st8.us-east-2.rds.amazonaws.com',dddb='mtiq',dde='staging-1',ddpv='202410080649-10915-1832fd6f-01'*/ SELECT t0.system_configuration_property_id, t0.name, t0.value FROM t_jcava_51.system_configuration_property t0 WHERE (t0.name = $1) │
+
 
 \set locks 'SELECT l1.*, l2.virtualtransaction, l2.pid, l2.mode, l2.GRANTED FROM pg_locks l1 JOIN pg_locks l2 ON ( ( l1.locktype, l1.DATABASE, l1.relation, l1.page, l1.tuple, l1.virtualxid, l1.transactionid, l1.classid, l1.objid, l1.objsubid) IS NOT DISTINCT FROM ( l2.locktype, l2.DATABASE, l2.relation, l2.page, l2.tuple, l2.virtualxid, l2.transactionid, l2.classid, l2.objid, l2.objsubid)) WHERE NOT l1.GRANTED AND l2.GRANTED;'
 \set transactions 'SELECT transaction::text, gid, prepared, owner, database FROM pg_prepared_xacts ORDER BY 2 ASC;'

@@ -53,8 +53,8 @@ bindsym $mod+Shift+space floating toggle
 # focus the parent container
 bindsym $mod+a focus parent
 
-# focus the browser
-bindsym $mod+b exec firefox
+# open a new browser
+bindsym $mod+b exec x-www-browser
 
 # focus Slack
 bindsym $mod+c [class="Slack"] focus

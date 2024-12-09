@@ -14,6 +14,7 @@ return {
     { "<leader>del", "<Plug>(DBExeLine)<CR>", desc = "[DB/SQL] Execute line" },
     { "<leader>dea", "<Plug>(DBExeAll)<CR>", desc = "[DB/SQL] Execute all" },
     { "<leader>dd", "<Plug>(DBDescribeTable)<CR>", desc = "[DB/SQL] Describe Table", mode = "x" },
+    { "<leader>dc", "<Plug>(DBCountTable)<CR>", desc = "[DB/SQL] Count Table", mode = "x" },
   },
   cmd = {
     "DB",
@@ -29,13 +30,13 @@ return {
     vim.g.db_ui_execute_on_save = false
     vim.g.db_ui_use_nvim_notify = true
 
-
     -- Keymaps
       -- stylua: ignore start
     vim.keymap.set("x", "<Plug>(DBExe)", "db#op_exec()", { noremap = false, expr = true })
     vim.keymap.set("n", "<Plug>(DBExeLine)", "db#op_exec() . '_'", { noremap = false, expr = true })
     vim.keymap.set("n", "<Plug>(DBExeAll)", "db#op_exec() . ':<c-u>normal! mzggVG<cr>`z'", { noremap = false, expr = true })
     vim.keymap.set("x", "<Plug>(DBDescribeTable)", "DBDescribeTable()", { noremap = true, expr = true, })
+    vim.keymap.set("x", "<Plug>(DBCountTable)", "DBCountTable()", { noremap = true, expr = true, })
     -- stylua: ignore end
 
     --vim.keymap.set("x", "<leader>de", "<Plug>(DBExe)", {})

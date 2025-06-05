@@ -84,9 +84,13 @@ let g:WhichKeyDesc_FindUsages = "<leader>u Find usages"
 " show (in sidebar)
 nnoremap <leader>sh :action CallHierarchy<CR>
 nnoremap <leader>st :action TypeHierarchy<CR>
-let g:WhichKeyDesc_OpenSidebar = "<leader>s Sidebar"
+nnoremap <leader>ss :action ActivateStructureToolWindow<CR>
+nnoremap <leader>sd :action Diff.ShowDiff<CR>
+let g:WhichKeyDesc_OpenSidebar = "<leader>s Show"
 let g:WhichKeyDesc_CallHierarchy = "<leader>sh Call hierarchy"
+let g:WhichKeyDesc_TypeHierarchy = "<leader>ss Structure view"
 let g:WhichKeyDesc_TypeHierarchy = "<leader>st Type hierarchy"
+let g:WhichKeyDesc_TypeHierarchy = "<leader>sd Show diff"
 
 " navigate -> goto/jumps
 nnoremap <leader>gd :action GotoDeclaration<CR>
@@ -104,7 +108,7 @@ let g:WhichKeyDesc_GotoTest = "<leader>gt Goto test"
 let g:WhichKeyDesc_GotoRelated = "<leader>gl Goto related"
 
 " code
-nnoremap <leader>f :action ReformatCode \| :action OptimizeImports<CR>
+map <leader>f <Action>(ReformatCode)<Action>(OptimizeImports)
 let g:WhichKeyDesc_Format = "<leader>f Format code and organize imports"
 
 nnoremap <leader>t :NERDTreeFind<CR>

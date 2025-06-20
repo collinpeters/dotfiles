@@ -1,3 +1,5 @@
+#zmodload zsh/zprof
+
 # shortcut to this dotfiles path is $ZSH
 export ZSH=$HOME/dev/home/dotfiles
 
@@ -24,16 +26,21 @@ done
 # load everything but the path and completion files
 for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}
 do
-	# EXCLUDING OH-MY-ZSH!!
-	if [[ "$file" != *oh-my-zsh* ]] 
-	then
-		source $file
-	fi
+  # EXCLUDING OH-MY-ZSH!!
+  if [[ "$file" != *oh-my-zsh* ]] 
+  then
+    source $file
+  fi
 done
 
 # initialize autocomplete here, otherwise functions won't be loaded
-autoload -U compinit
-compinit
+# only check zcompdump to recompute once a day
+autoload -Uz compinit 
+if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+	compinit;
+else
+	compinit -C;
+fi;
 
 # load every completion after autocomplete loads
 for file in ${(M)config_files:#*/completion.zsh}
@@ -46,8 +53,10 @@ unset config_files
 # Now source oh-my-zsh
 source ~/.oh-my-zshrc
 
-stty -ixon
+# #stty -ixon
 
 # spaceship prompt
 SPACESHIP_MAVEN_SHOW=false
 SPACESHIP_GRADLE_SHOW=false
+
+#zprof

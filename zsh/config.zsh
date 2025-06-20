@@ -9,7 +9,9 @@ export CLICOLOR=true
 
 fpath=($ZSH/functions $fpath)
 
-autoload -U $ZSH/functions/*(:t)
+if [ -d "$ZSH/functions/" ]; then
+  autoload -U $ZSH/functions/*(:t)
+fi
 
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
@@ -35,7 +37,7 @@ setopt HIST_REDUCE_BLANKS
 
 # don't expand aliases _before_ completion has finished
 #   like: git comm-[tab]
-#setopt complete_aliases
+setopt complete_aliases
 
 zle -N newtab
 

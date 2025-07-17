@@ -33,7 +33,7 @@ default_floating_border normal
 hide_edge_borders both
 #smart_borders on
 
-workspace_layout stacking
+workspace_layout tabbed
 
 # lock these 3 workspaces to a display
 workspace 1 output $OUTPUT1
@@ -107,14 +107,16 @@ bindsym $mod+Shift+r restart
 
 bindsym $mod+s layout stacking
 
-bindsym $mod+u [title="scratchcli"] scratchpad show; [title="scratchcli"] move position center
+bindsym $mod+Shift+s exec "flameshot gui --delay 500"
+
+bindsym $mod+u [title="scratchcli"] scratchpad show; [title="scratchcli"] resize set 90ppt 90ppt; move position center
 
 # split in vertical orientation
 bindsym $mod+v split v
 # split in horizontal orientation
 bindsym $mod+Shift+v split h
 
-bindsym $mod+w layout tabbed
+bindsym $mod+t layout tabbed
 
 # focus workspace
 bindsym $mod+1 workspace 1

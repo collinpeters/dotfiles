@@ -306,7 +306,7 @@ let g:sql_type_default = 'pgsql' " SQLComplete default type
 "-		au FileType tex let b:syntastic_mode = "passive"
 "-	augroup END
 "-
-source ~/.vim/db_ext.conf " Source external db_ext conf
+"source ~/.vim/db_ext.conf " Source external db_ext conf
 
 " Highlight psql output via 'krisajenkins/vim-postgresql-syntax'
 function! DBextPostResult(db_type, buf_nr)

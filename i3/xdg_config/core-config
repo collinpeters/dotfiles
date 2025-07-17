@@ -44,6 +44,9 @@ workspace 3 output $OUTPUT3
 # BINDINGS
 # ########
 
+# lock
+bindsym $mod+Escape exec --no-startup-id dm-tool lock
+
 # start a terminal
 bindsym $mod+Return exec alacritty -o font.size=$ALACRITTY_FONT_SIZE
 

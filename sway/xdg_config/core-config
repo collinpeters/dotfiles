@@ -1,0 +1,237 @@
+# vim: filetype=i3config
+
+# ############
+# STARTUP APPS
+# ############
+
+# dex will autostart XDG desktop entries
+exec --no-startup-id dex -a -e sway
+
+# polybar
+# exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+# dunst notification daemon
+exec --no-startup-id dunst
+
+# background wallpaper rotation
+# exec --no-startup-id ~/.config/i3/scripts/bg-script.sh
+output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+
+# ######
+# CONFIG
+# ######
+
+### Display configuration
+output DP-1 scale 2
+output HDMI-A-1 scale 2
+
+### Idle configuration
+exec swayidle -w \
+         timeout 300 'swaylock -f -c 000000' \
+         timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+         before-sleep 'swaylock -f -c 000000'
+#
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+focus_follows_mouse no
+mouse_warping output
+
+default_border normal
+default_floating_border normal
+hide_edge_borders both
+#smart_borders on
+
+workspace_layout stacking
+
+# lock these 3 workspaces to a display
+workspace 1 output $OUTPUT1
+workspace 2 output $OUTPUT2
+workspace 3 output $OUTPUT3
+
+# ########
+# BINDINGS
+# ########
+
+# lock
+# bindsym $mod+Escape exec --no-startup-id dm-tool lock
+
+# start a terminal
+bindsym $mod+Return exec $term
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# open a new browser
+bindsym $mod+b exec x-www-browser
+
+# focus Slack
+bindsym $mod+c [class="Slack"] focus
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+
+# focus the child container
+#bindsym $mod+d focus child
+
+bindsym $mod+d exec --no-startup-id rofi -show drun
+
+bindsym $mod+e layout toggle split
+
+# exit sway (logs you out of your X session)
+bindsym $mod+Shift+e exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+bindsym $mod+$left focus left
+bindsym $mod+Shift+$left move left
+bindsym $mod+Ctrl+$left move workspace to output left
+
+bindsym $mod+$down focus down
+bindsym $mod+Shift+$down move down
+
+bindsym $mod+$up focus up
+bindsym $mod+Shift+$up move up
+
+bindsym $mod+$right focus right
+bindsym $mod+Shift+$right move right
+bindsym $mod+Ctrl+$right move workspace to output right
+
+bindsym $mod+m workspace m:m
+
+#bindsym $mod+p 			exec --no-startup-id bwmenu
+bindsym $mod+p exec "killall picom; sleep 0.2; picom"
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+bindsym $mod+r mode "resize"
+
+bindsym $mod+s layout stacking
+
+bindsym $mod+Shift+s exec "flameshot gui --delay 500"
+
+### Screenshot
+set $screenshot /usr/share/sway-contrib/grimshot
+bindsym {
+    # Capture the currently active output
+    Print       exec $screenshot --notify save output
+    # Capture the currently active window
+    Shift+Print   exec $screenshot --notify save active
+    # Select and capture a custom rectangular area
+    Ctrl+Print  exec $screenshot --notify save area
+}
+
+bindsym $mod+u [title="scratchcli"] scratchpad show; [title="scratchcli"] resize set 90ppt 90ppt; move position center
+
+# split in vertical orientation
+bindsym $mod+v split v
+# split in horizontal orientation
+bindsym $mod+Shift+v split h
+
+bindsym $mod+t layout tabbed
+
+# focus workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# move focused container to workspace and focus
+bindsym $mod+Shift+1 move container to workspace 1; workspace 1
+bindsym $mod+Shift+2 move container to workspace 2; workspace 2
+bindsym $mod+Shift+3 move container to workspace 3; workspace 3
+bindsym $mod+Shift+4 move container to workspace 4; workspace 4
+bindsym $mod+Shift+5 move container to workspace 5; workspace 5
+bindsym $mod+Shift+6 move container to workspace 6; workspace 6
+bindsym $mod+Shift+7 move container to workspace 7; workspace 7
+bindsym $mod+Shift+8 move container to workspace 8; workspace 8
+bindsym $mod+Shift+9 move container to workspace 9; workspace 9
+bindsym $mod+Shift+0 move container to workspace 10; workspace 10
+
+bindsym $mod+Shift+period exec systemctl suspend
+bindsym $mod+Ctrl+Shift+period exec systemctl hibernate
+
+
+# RESIZE MODE
+mode "resize" {
+        bindsym h resize shrink width 10 px or 5 ppt
+        bindsym j res+$righte grow height 10 px or 5 ppt
+        bindsym k resize shrink height 10 px or 5 ppt
+        bindsym l resize grow width 10 px or 5 ppt
+
+        bindsym Shift+$left resize shrink width 25 px or 10 ppt
+        bindsym Shift+$down resize grow height 25 px or 10 ppt
+        bindsym Shift+$up resize shrink height 25 px or 10 ppt
+        bindsym Shift+$right resize grow width 25 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+# ######
+# CONFIG
+# ######
+
+# disable caps lock
+#exec --no-startup-id setxkbmap -option caps:none
+
+# Volume keyboard controls
+bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
+bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
+bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
+bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+
+# Screen brightness keyboard controls
+bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+
+# ###############
+# APP ASSIGNMENTS
+# ###############
+
+# assign certain apps to be floating
+for_window [class="Pavucontrol" instance="pavucontrol"] floating enable
+
+# app workspace assignments
+assign [class="jetbrains-idea"] workspace 2
+assign [class="Slack"] workspace 4
+assign [class="Spotify"] workspace 5
+
+# scratch cli running a persistent tmux instance
+for_window [title="scratchcli"] floating enable
+for_window [title="scratchcli"] resize set 90ppt 90ppt
+for_window [title="scratchcli"] move scratchpad
+for_window [title="scratchcli"] border pixel 5
+exec --no-startup-id foot --title scratchcli -e tmux new-session -A -s scratchcli 
+
+# Zoom (😱)
+for_window [title="^zoom$" class="[zoom]*"] floating enable
+no_focus   [class="^zoom$" title="^zoom"]
+
+#
+# Status Bar:
+#
+bar {
+    swaybar_command waybar
+}
+
+include /etc/sway/config.d/*

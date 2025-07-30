@@ -3,7 +3,7 @@
 # bootstrap installs things.
 
 # dir of script
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}"   )" && pwd   )
+DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 # dotfiles root is one up
 DOTFILES_ROOT=$(realpath "$DIR/..")
 cd $DOTFILES_ROOT
@@ -12,40 +12,37 @@ set -e
 
 echo ''
 
-info () {
+info() {
   printf "  [ \033[00;34m..\033[0m ] $1"
 }
 
-user () {
+user() {
   printf "\r  [ \033[0;33m?\033[0m ] $1 "
 }
 
-success () {
+success() {
   printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
 }
 
-fail () {
+fail() {
   printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
   echo ''
   exit
 }
 
-setup_oh_my_zsh () {
-  if ! [ -d "$DOTFILES_ROOT/oh-my-zsh" ]
-  then
-	  info 'checking out oh-my-zsh'
-	  git clone git@github.com:robbyrussell/oh-my-zsh.git
+setup_oh_my_zsh() {
+  if ! [ -d "$DOTFILES_ROOT/oh-my-zsh" ]; then
+    info 'checking out oh-my-zsh'
+    git clone git@github.com:robbyrussell/oh-my-zsh.git
   fi
 
   # Manually create symlink for core oh-my-zsh
-  if ! [ -h ~/.oh-my-zsh ]
-  then
-  	ln -s "$DOTFILES_ROOT/oh-my-zsh" ~/.oh-my-zsh
+  if ! [ -h ~/.oh-my-zsh ]; then
+    ln -s "$DOTFILES_ROOT/oh-my-zsh" ~/.oh-my-zsh
   fi
 }
 
-
-link_files () {
+link_files() {
   ln -s $1 $2
   success "linked $1 to $2"
 }
@@ -56,25 +53,24 @@ link_files () {
 # 2. symlink to folder inside home folder - create sub-folder, optional with _ prefix
 #    e.g. foo/bar/baz.symlink will produce a symlink ~/bar/baz
 #    e.g. foo/_bar/baz.symlink will produce a symlink ~/.bar/baz
-install_dotfiles () {
+install_dotfiles() {
   echo 'installing dotfiles'
 
   OVERWRITE_ALL=false
   BACKUP_ALL=false
   SKIP_ALL=false
 
-  for SOURCE in `find $DOTFILES_ROOT -name \*.symlink`
-  do
+  for SOURCE in $(find $DOTFILES_ROOT -name \*.symlink); do
     FOLDER=$(realpath $(dirname $SOURCE))
     PARENT_FOLDER=$(realpath $(dirname $(dirname $SOURCE)))
 
     if [ "$PARENT_FOLDER" = "$DOTFILES_ROOT" ]; then
-      DEST_FILENAME="$HOME/.`basename \"${SOURCE%.*}\"`"
+      DEST_FILENAME="$HOME/.$(basename \"${SOURCE%.*}\")"
     else
       FOLDER_NAME=$(basename $FOLDER)
       DEST_FOLDER="$HOME/${FOLDER_NAME/_/.}"
       mkdir -vp $DEST_FOLDER
-      DEST_FILENAME="$DEST_FOLDER/`basename \"${SOURCE%.*}\"`"
+      DEST_FILENAME="$DEST_FOLDER/$(basename \"${SOURCE%.*}\")"
     fi
 
     # filter host specific files
@@ -83,8 +79,7 @@ install_dotfiles () {
     HOSTNAME=$(hostname)
     # add/remove to this list as necessary
     HOSTNAMES=(mandalay aria stratosphere mirage)
-    for HN in "${HOSTNAMES[@]}"
-    do
+    for HN in "${HOSTNAMES[@]}"; do
       # check if this file has a hostname in it
       if [[ $DEST_FILENAME == *"$HN"* ]]; then
         HOST_SPECIFIC=1
@@ -100,53 +95,53 @@ install_dotfiles () {
     fi
     if [ $HOST_SPECIFIC = 1 ]; then
       # strip `-HOSTNAME` from destination file
-      DEST_FILENAME=`echo $DEST_FILENAME | sed "s/-$HOSTNAME//g"`
+      DEST_FILENAME=$(echo $DEST_FILENAME | sed "s/-$HOSTNAME//g")
     fi
 
-    if [ -f $DEST_FILENAME ] || [ -d $DEST_FILENAME ]
-    then
+    if [ -f $DEST_FILENAME ] || [ -d $DEST_FILENAME ]; then
 
       OVERWRITE=false
       BACKUP=false
       SKIP=false
 
-      if [ "$OVERWRITE_ALL" == "false" ] && [ "$BACKUP_ALL" == "false" ] && [ "$SKIP_ALL" == "false" ]
-      then
+      if [ "$OVERWRITE_ALL" == "false" ] && [ "$BACKUP_ALL" == "false" ] && [ "$SKIP_ALL" == "false" ]; then
         user "File already exists: '$DEST_FILENAME', what do you want to do? [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
         read -n 1 ACTION
 
         case "$ACTION" in
-          o )
-            OVERWRITE=true;;
-          O )
-            OVERWRITE_ALL=true;;
-          b )
-            BACKUP=true;;
-          B )
-            BACKUP_ALL=true;;
-          s )
-            SKIP=true;;
-          S )
-            SKIP_ALL=true;;
-          * )
-            ;;
+        o)
+          OVERWRITE=true
+          ;;
+        O)
+          OVERWRITE_ALL=true
+          ;;
+        b)
+          BACKUP=true
+          ;;
+        B)
+          BACKUP_ALL=true
+          ;;
+        s)
+          SKIP=true
+          ;;
+        S)
+          SKIP_ALL=true
+          ;;
+        *) ;;
         esac
       fi
 
-      if [ "$OVERWRITE" == "true" ] || [ "$OVERWRITE_ALL" == "true" ]
-      then
+      if [ "$OVERWRITE" == "true" ] || [ "$OVERWRITE_ALL" == "true" ]; then
         rm -rf $DEST_FILENAME
         success "removed $DEST_FILENAME"
       fi
 
-      if [ "$BACKUP" == "true" ] || [ "$BACKUP_ALL" == "true" ]
-      then
+      if [ "$BACKUP" == "true" ] || [ "$BACKUP_ALL" == "true" ]; then
         mv $DEST_FILENAME $DEST_FILENAME\.backup
         success "moved $DEST_FILENAME to $DEST_FILENAME.backup"
       fi
 
-      if [ "$SKIP" == "false" ] && [ "$SKIP_ALL" == "false" ]
-      then
+      if [ "$SKIP" == "false" ] && [ "$SKIP_ALL" == "false" ]; then
         link_files $SOURCE $DEST_FILENAME
       else
         success "skipped $SOURCE -> $DEST_FILENAME"
@@ -159,65 +154,64 @@ install_dotfiles () {
   done
 }
 
-install_xdg_config () {
+install_xdg_config() {
   echo 'installing xdg_config dotfiles'
 
   OVERWRITE_ALL=false
   BACKUP_ALL=false
   SKIP_ALL=false
 
-  for path in `find $DOTFILES_ROOT/ -maxdepth 2 -name xdg_config`
-  do
+  for path in $(find $DOTFILES_ROOT/ -maxdepth 2 -name xdg_config); do
     SOURCE=$(readlink -f $path)
     xdg_folder_name=$(basename $(dirname $SOURCE))
     DEST="$HOME/.config/$xdg_folder_name"
 
-    if [ -d $DEST ]
-    then
+    if [ -d $DEST ]; then
 
       OVERWRITE=false
       BACKUP=false
       SKIP=false
 
-      if [ "$OVERWRITE_ALL" == "false" ] && [ "$BACKUP_ALL" == "false" ] && [ "$SKIP_ALL" == "false" ]
-      then
+      if [ "$OVERWRITE_ALL" == "false" ] && [ "$BACKUP_ALL" == "false" ] && [ "$SKIP_ALL" == "false" ]; then
         user "Folder already exists: $DEST, what do you want to do? [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
         read -n 1 ACTION
 
         case "$ACTION" in
-          o )
-            OVERWRITE=true;;
-          O )
-            OVERWRITE_ALL=true;;
-          b )
-            BACKUP=true;;
-          B )
-            BACKUP_ALL=true;;
-          s )
-            SKIP=true;;
-          S )
-            SKIP_ALL=true;;
-          * )
-            ;;
+        o)
+          OVERWRITE=true
+          ;;
+        O)
+          OVERWRITE_ALL=true
+          ;;
+        b)
+          BACKUP=true
+          ;;
+        B)
+          BACKUP_ALL=true
+          ;;
+        s)
+          SKIP=true
+          ;;
+        S)
+          SKIP_ALL=true
+          ;;
+        *) ;;
         esac
       fi
 
-      if [ "$OVERWRITE" == "true" ] || [ "$OVERWRITE_ALL" == "true" ]
-      then
+      if [ "$OVERWRITE" == "true" ] || [ "$OVERWRITE_ALL" == "true" ]; then
         rm -rf $DEST
         success "removed $DEST"
       fi
 
-      if [ "$BACKUP" == "true" ] || [ "$BACKUP_ALL" == "true" ]
-      then
+      if [ "$BACKUP" == "true" ] || [ "$BACKUP_ALL" == "true" ]; then
         mkdir $DEST\.backup
         cp -r $DEST/* $DEST\.backup
         rm -rf $DEST
         success "moved $DEST to $DEST.backup"
       fi
 
-      if [ "$SKIP" == "false" ] && [ "$SKIP_ALL" == "false" ]
-      then
+      if [ "$SKIP" == "false" ] && [ "$SKIP_ALL" == "false" ]; then
         link_files $SOURCE $DEST
       else
         success "skipped $SOURCE -> $DEST"
@@ -230,23 +224,22 @@ install_xdg_config () {
   done
 }
 
-fix_permissions () {
-  for FILE in `cat .gitattributes | sed '/^[[:space:]]*$/d' | cut -f1 -d" "`; do
+fix_permissions() {
+  for FILE in $(cat .gitattributes | sed '/^[[:space:]]*$/d' | cut -f1 -d" "); do
     echo "Setting mode 600 on $FILE"
     chmod 600 $FILE
   done
 }
 
-install_xsession () {
+install_xsession() {
   HOSTNAME=$(hostname)
 
   TMP_FILENAME="/tmp/i3-${HOSTNAME}.desktop"
   DEST_FILENAME="/usr/share/xsessions/i3-${HOSTNAME}.desktop"
 
-  if ! [ -a $DEST_FILENAME ]
-  then
+  if ! [ -a $DEST_FILENAME ]; then
     echo "Creating i3 xsession file for host $HOSTNAME"
-    cat << EOF > $TMP_FILENAME
+    cat <<EOF >$TMP_FILENAME
 [Desktop Entry]
 Name=i3 (${HOSTNAME})
 Comment=improved dynamic tiling window manager
@@ -263,10 +256,37 @@ EOF
   fi
 }
 
+install_wayland_session() {
+  HOSTNAME=$(hostname)
+
+  TMP_FILENAME="/tmp/sway-${HOSTNAME}.desktop"
+  DEST_FILENAME="/usr/share/wayland-sessions/sway-${HOSTNAME}.desktop"
+
+  if ! [ -a $DEST_FILENAME ]; then
+    echo "Creating sway wayland-session file for host $HOSTNAME"
+    cat <<EOF >$TMP_FILENAME
+[Desktop Entry]
+Name=sway (${HOSTNAME})
+Comment=improved dynamic tiling window manager
+Exec=sway -c /home/collin/.config/sway/config-${HOSTNAME}
+TryExec=sway
+Type=Application
+X-LightDM-DesktopName=sway (${HOSTNAME})
+DesktopNames=sway;wlroots
+Keywords=tiling;wm;windowmanager;window;manager;
+EOF
+
+    echo "Moving '$TMP_FILENAME' to /usr/share/wayland-sessions (needs sudo)"
+    echo "IMPORTANT - On an Nvidia system you need to edit this file to add the '--unsupported-gpu' flag"
+    sudo mv $TMP_FILENAME $DEST_FILENAME
+  fi
+}
+
 setup_oh_my_zsh
 install_dotfiles
 install_xdg_config
 install_xsession
+install_wayland_session
 fix_permissions
 
 echo ''

@@ -1,0 +1,24 @@
+{
+  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+  "vscode-neovim.neovimInitVimPaths.linux": "~/.config/nvim/init.lua",
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-17",
+      "path": "/home/collin/.sdkman/candidates/java/17.0.4-tem",
+    },
+  ],
+  "files.autoSave": "onWindowChange",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "workbench.editor.enablePreview": false,
+  "idf.hasWalkthroughBeenShown": true,
+  "idf.espIdfPath": "/home/collin/dev/home/esp/esp-idf",
+  "idf.toolsPath": "/home/collin/.espressif",
+  "idf.gitPath": "/usr/bin/git",
+  "idf.pythonInstallPath": "/usr/bin/python",
+  "workbench.startupEditor": "none",
+  "workbench.iconTheme": "catppuccin-macchiato",
+  "workbench.colorTheme": "Catppuccin Macchiato",
+  "editor.minimap.enabled": false
+}

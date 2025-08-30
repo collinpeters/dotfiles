@@ -67,10 +67,15 @@ install_dotfiles() {
     if [ "$PARENT_FOLDER" = "$DOTFILES_ROOT" ]; then
       DEST_FILENAME="$HOME/.$(basename \"${SOURCE%.*}\")"
     else
-      FOLDER_NAME=$(basename $FOLDER)
-      DEST_FOLDER="$HOME/${FOLDER_NAME/_/.}"
-      mkdir -vp $DEST_FOLDER
-      DEST_FILENAME="$DEST_FOLDER/$(basename \"${SOURCE%.*}\")"
+      # Get the relative path from dotfiles root, excluding the top-level category directory
+      RELATIVE_PATH=$(realpath --relative-to="$DOTFILES_ROOT" "$SOURCE")
+      # Remove the first directory component (category) and the .symlink extension
+      DEST_PATH=$(echo "$RELATIVE_PATH" | cut -d'/' -f2- | sed 's/\.symlink$//')
+      # Handle underscore prefix for hidden directories
+      DEST_PATH=$(echo "$DEST_PATH" | sed 's|^_|.|' | sed 's|/_|/.|g')
+      DEST_FILENAME="$HOME/$DEST_PATH"
+      # Create the destination directory structure
+      mkdir -vp "$(dirname "$DEST_FILENAME")"
     fi
 
     # filter host specific files

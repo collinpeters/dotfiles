@@ -1,6 +1,7 @@
 return {
   {
     "nvim-telescope/telescope.nvim",
+    vscode = false,
     opts = function(_, opts)
       local actions = require("telescope.actions")
       opts.defaults = {

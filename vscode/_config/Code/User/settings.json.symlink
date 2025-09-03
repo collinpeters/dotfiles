@@ -4,8 +4,8 @@
   "java.configuration.runtimes": [
     {
       "name": "JavaSE-17",
-      "path": "/home/collin/.sdkman/candidates/java/17.0.4-tem",
-    },
+      "path": "/home/collin/.sdkman/candidates/java/17.0.4-tem"
+    }
   ],
   "files.autoSave": "onWindowChange",
   "extensions.experimental.affinity": {
@@ -21,5 +21,8 @@
   "workbench.iconTheme": "catppuccin-macchiato",
   "workbench.colorTheme": "Catppuccin Macchiato",
   "editor.minimap.enabled": false,
-  "editor.lineNumbers": "relative"
+  "editor.lineNumbers": "relative",
+  "idf.showOnboardingOnInit": false,
+  "C_Cpp.autocompleteAddParentheses": true,
+  "idf.enableCCache": true,
 }

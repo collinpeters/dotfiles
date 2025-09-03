@@ -3,6 +3,7 @@
 -- Add any additional keymaps here
 
 -- disable LazyVim override of shift-h & shift-l for buffer switching
+-- defaults for top/bottom of file
 vim.keymap.del("n", "<S-h>")
 vim.keymap.del("n", "<S-l>")
 
@@ -17,6 +18,12 @@ vim.keymap.set("n", "<leader>P", '"+P', { desc = "System paste before" })
 vim.keymap.set("v", "<leader>p", '"+p', { desc = "System paste after" })
 vim.keymap.set("v", "<leader>P", '"+P', { desc = "System paste before" })
 
+-- delete snacks profile keymaps as they conflict with custom db keymaps
+vim.keymap.del("n", "<leader>dph")
+vim.keymap.del("n", "<leader>dpp")
+vim.keymap.del("n", "<leader>dps")
+
+-- VS Code - specifics for if we are in VS Code or NOT in VS Code
 -- stylua: ignore start
 if not vim.g.vscode then
   vim.keymap.set("n", "<leader>sx", require("telescope.builtin").resume, { noremap = true, silent = true, desc = "Resume" })

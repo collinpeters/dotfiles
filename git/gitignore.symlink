@@ -3,16 +3,18 @@
 *.swp
 collin-private
 collin
+private
 tree
 Justfile
 .metadata
 *.iml
 .run
 
-bazel-bin
-bazel-muse
-bazel-out
-bazel-testlogs
 .sdkmanrc
 AGENT.md
 .aider*
+CLAUDE.local.md
+.crush*
+opencode*
+.env
+local*.md

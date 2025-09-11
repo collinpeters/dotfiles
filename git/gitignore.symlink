@@ -18,3 +18,5 @@ CLAUDE.local.md
 opencode*
 .env
 local*.md
+
+*.bak

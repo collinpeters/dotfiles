@@ -71,85 +71,84 @@ the command was invoked again, just start with the steps.
 
 3. **Loop and for each unresolved thread**
 
-Post a total count of threads returned from above.
-Complete all of these steps for each thread BEFORE moving onto the next thread
+  Post a total count of threads returned from above.
+  For each thread, create a task for the steps. Complete the entire task list BEFORE moving onto the next thread
 
-1. **Analyze the entire thread conversation**
+  1. **Analyze the entire thread conversation**
 
-   For each unresolved thread from step 2, process ALL comments in chronological order to understand the full context:
-   - Sort comments by `createdAt` timestamp
-   - Identify the original reviewer concern (typically the first comment)
-   - Track the conversation flow between reviewer and author
-   - Determine the current actionable feedback (may not be the last comment)
+    For each unresolved thread from step 2, process ALL comments in chronological order to understand the full context:
+    - Sort comments by `createdAt` timestamp
+    - Identify the original reviewer concern (typically the first comment)
+    - Track the conversation flow between reviewer and author
+    - Determine the current actionable feedback (may not be the last comment)
 
-   You can use the `databaseId` field for additional REST API calls if needed:
+    You can use the `databaseId` field for additional REST API calls if needed:
 
-   ```bash
-   # Use the databaseId from the GraphQL response for REST API calls
-   gh api repos/{owner}/{repo}/pulls/comments/{databaseId}
-   ```
+    ```bash
+    # Use the databaseId from the GraphQL response for REST API calls
+    gh api repos/{owner}/{repo}/pulls/comments/{databaseId}
+    ```
 
-2. **Present the thread summary to the user**
+  2. **Present the thread summary to the user**
 
-   Post a summary of the entire thread conversation including:
-   - **Original concern**: What the reviewer initially flagged
-   - **Conversation summary**: Key points from the discussion
-   - **Current status**: What action is needed based on the latest non-bot feedback
-   - **Thread link**: Link to the full conversation for reference
+    Post a summary of the entire thread conversation including:
+    - **Original concern**: What the reviewer initially flagged
+    - **Conversation summary**: Key points from the discussion
+    - **Current status**: What action is needed based on the latest non-bot feedback
+    - **Thread link**: Link to the full conversation for reference
 
-3. **Read and check the relevant codes**
-   - Based on the thread analysis, identify the specific code location (`path`, `line`, `diffHunk`)
-   - Read the current state of the code in question
-   - Consider the entire conversation context when evaluating the feedback
-   - Think deeply whether to follow the suggestion based on the full discussion
+  3. **Read and check the relevant codes**
+    - Based on the thread analysis, identify the specific code location (`path`, `line`, `diffHunk`)
+    - Read the current state of the code in question
+    - Consider the entire conversation context when evaluating the feedback
+    - Think deeply whether to follow the suggestion based on the full discussion
 
-4. If you feel the suggestion is good and a fix is necessary then:
-   1. **Fix the issue**
-      - Make the necessary code changes based on the review feedback
-      - Ensure the fix addresses the reviewer's concerns
+  4. If you feel the suggestion is good and a fix is necessary then:
+    1. **Fix the issue**
+        - Make the necessary code changes based on the review feedback
+        - Ensure the fix addresses the reviewer's concerns
+    2. **Commit and push**
+        - Stage your changes
+        - Create a descriptive commit message
+        - Push to the feature branch
 
-   2. **Commit and push**
-      - Stage your changes
-      - Create a descriptive commit message
-      - Push to the feature branch
+  5. **Reply to the thread**
 
-5. **Reply to the thread**
+    Reply to the most appropriate comment in the thread (usually the original review comment).
+    Use the `databaseId` from the GraphQL response and include your signature. Always include the commit has of the fix
+    if available.
 
-   Reply to the most appropriate comment in the thread (usually the original review comment).
-   Use the `databaseId` from the GraphQL response and include your signature. Always include the commit has of the fix
-   if available.
+    ```bash
+    gh api -X POST repos/{owner}/{repo}/pulls/{pr_number}/comments/{original_comment_databaseId}/replies \
+        -f body="Fixed in commit {commit_sha}. {description_of_fix}
 
-   ```bash
-   gh api -X POST repos/{owner}/{repo}/pulls/{pr_number}/comments/{original_comment_databaseId}/replies \
-       -f body="Fixed in commit {commit_sha}. {description_of_fix}
+  Addressed the original concern about {original_issue} and the follow-up discussion regarding {discussion_points}.
 
-Addressed the original concern about {original_issue} and the follow-up discussion regarding {discussion_points}.
+  🤖 Generated with [Claude Code](https://claude.ai/code)
 
-🤖 Generated with [Claude Code](https://claude.ai/code)
+  Co-Authored-By: Claude <noreply@anthropic.com>"
+    ```
 
-Co-Authored-By: Claude <noreply@anthropic.com>"
-   ```
+    If fixed, include commit link and context from the thread discussion:
 
-   If fixed, include commit link and context from the thread discussion:
+    Example:
 
-   Example:
+    ```bash
+    gh api -X POST repos/nakamasato/github-actions-practice/pulls/2239/comments/2196280386/replies \
+        -f body="Fixed in commit 2b36629. The redundant existence check has been removed since main() already validates the metadata file.
 
-   ```bash
-   gh api -X POST repos/nakamasato/github-actions-practice/pulls/2239/comments/2196280386/replies \
-       -f body="Fixed in commit 2b36629. The redundant existence check has been removed since main() already validates the metadata file.
+  This addresses the original performance concern and the follow-up discussion about validation order.
 
-This addresses the original performance concern and the follow-up discussion about validation order.
+  🤖 Generated with [Claude Code](https://claude.ai/code)
 
-🤖 Generated with [Claude Code](https://claude.ai/code)
+  Co-Authored-By: Claude <noreply@anthropic.com>"
+    ```
 
-Co-Authored-By: Claude <noreply@anthropic.com>"
-   ```
+    Otherwise if not fixed, explain your reasoning considering the full thread context.
 
-   Otherwise if not fixed, explain your reasoning considering the full thread context.
+  6. Push the changes so the user can visually see in the GitHub UI right away
 
-6. Push the changes so the user can visually see in the GitHub UI right away
-
-7. Complete the todo/task for this comment and move on to the next one
+  7. Complete the todo/task for this comment and move on to the next one
 
 ## Notes
 

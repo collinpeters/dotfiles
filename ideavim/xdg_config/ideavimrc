@@ -73,7 +73,7 @@ nnoremap <leader>og :action FindInPath<CR>
 nnoremap <leader>or :action RecentFiles<CR>
 nnoremap <leader>os :action GotoSymbol<CR>
 
-source whichkeyrc
+source ~/.config/ideavim/whichkeyrc
 
 " navigate -> windows/dialogs
 nnoremap <leader>m :action FileStructurePopup<CR>

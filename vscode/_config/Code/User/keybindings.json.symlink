@@ -10,5 +10,9 @@
     "key": "space",
     "command": "vspacecode.space",
     "when": "sideBarFocus && !inputFocus && !whichkeyActive"
+  },
+  {
+    "key": "ctrl+`",
+    "command": "-workbench.action.selectTheme"
   }
 ]

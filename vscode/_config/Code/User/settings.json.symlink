@@ -1,10 +1,21 @@
 {
   "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
   "vscode-neovim.neovimInitVimPaths.linux": "~/.config/nvim/init.lua",
+  "redhat.telemetry.enabled": false,
   "java.configuration.runtimes": [
     {
       "name": "JavaSE-17",
-      "path": "/home/collin/.sdkman/candidates/java/17.0.4-tem"
+      "path": "/home/collin/.sdkman/candidates/java/17.0.11-tem"
+    },
+    {
+      "name": "JavaSE-21",
+      "path": "/home/collin/.sdkman/candidates/java/21-tem",
+      "default": true
+    },
+    {
+      "name": "JavaSE-24",
+      "path": "/home/collin/.sdkman/candidates/java/24-tem",
+      "default": true
     }
   ],
   "files.autoSave": "onWindowChange",
@@ -25,4 +36,7 @@
   "idf.showOnboardingOnInit": false,
   "C_Cpp.autocompleteAddParentheses": true,
   "idf.enableCCache": true,
+  "java.maven.downloadSources": true,
+  "java.eclipse.downloadSources": true,
+  "chat.mcp.autostart": "newAndOutdated"
 }

@@ -16,11 +16,16 @@ function M.select()
   }, function(db, idx)
     if db then
       local selection = databases[db]
+      if selection.dbtype == nil then
+        selection.dbtype = "postgresql"
+      end
       if selection.port == nil then
         selection.port = "5432"
       end
       print(
-        "You selected postgresql://"
+        "You selected "
+          .. selection.dbtype
+          .. "://"
           .. selection.username
           .. "@"
           .. selection.url
@@ -32,7 +37,8 @@ function M.select()
       vim.api.nvim_buf_set_var(
         0,
         "db",
-        "postgresql://"
+        selection.dbtype
+          .. "://"
           .. selection.username
           .. "@"
           .. selection.url

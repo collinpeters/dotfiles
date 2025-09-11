@@ -26,7 +26,7 @@ vim.keymap.del("n", "<leader>dps")
 -- VS Code - specifics for if we are in VS Code or NOT in VS Code
 -- stylua: ignore start
 if not vim.g.vscode then
-  vim.keymap.set("n", "<leader>sx", require("telescope.builtin").resume, { noremap = true, silent = true, desc = "Resume" })
+  -- Todo
 end
 
 if vim.g.vscode then
@@ -42,6 +42,19 @@ if vim.g.vscode then
   vim.keymap.set('n', '<leader>or', function() vscode.call('workbench.action.openRecent') end, { desc = 'Recent files' })
   vim.keymap.set('n', '<leader>os', function() vscode.call('workbench.action.gotoSymbol') end, { desc = 'Go to symbol' })
 
+  -- Navigate -> goto/jumps
+  -- Go to definition - LazyVim default: gd
+  -- Go to references - LazyVim default: gr
+  -- Go to implementation - LazyVim default: gI
+  -- Go to t[y]pe definition - LazyVim default: gy
+  -- Go to declaration - LazyVim default: gD
+  -- vim.keymap.set('n', '<leader>gd', function() vscode.call('editor.action.revealDefinition') end, { desc = 'Goto definition' })
+  -- vim.keymap.set('n', '<leader>gK', function() vscode.call('editor.action.goToTypeDefinition') end, { desc = 'Goto type definition' })
+  -- vim.keymap.set('n', '<leader>gi', function() vscode.call('editor.action.revealDefinition') end, { desc = 'Goto implementation' })
+  -- vim.keymap.set('n', '<leader>gs', function() vscode.call('editor.action.goToReferences') end, { desc = 'Goto super method' })
+  vim.keymap.set('n', '<leader>gt', function() vscode.call('java.test.goToTest') end, { desc = 'Goto test' })
+  -- vim.keymap.set('n', '<leader>gl', function() vscode.call('editor.action.goToReferences') end, { desc = 'Goto related' })
+
   -- Navigate -> windows/dialogs
   vim.keymap.set('n', '<leader>m', function() vscode.call('workbench.action.gotoSymbol') end, { desc = 'File structure' })
   vim.keymap.set('n', '<leader>u', function() vscode.call('references-view.findReferences') end, { desc = 'Find usages' })
@@ -51,14 +64,6 @@ if vim.g.vscode then
   vim.keymap.set('n', '<leader>st', function() vscode.call('references-view.showTypeHierarchy') end, { desc = 'Type hierarchy' })
   vim.keymap.set('n', '<leader>ss', function() vscode.call('outline.focus') end, { desc = 'Structure view' })
   vim.keymap.set('n', '<leader>sd', function() vscode.call('workbench.scm.focus') end, { desc = 'Show diff' })
-
-  -- Navigate -> goto/jumps
-  vim.keymap.set('n', '<leader>gd', function() vscode.call('editor.action.revealDefinition') end, { desc = 'Goto definition' })
-  vim.keymap.set('n', '<leader>gK', function() vscode.call('editor.action.goToTypeDefinition') end, { desc = 'Goto type definition' })
-  vim.keymap.set('n', '<leader>gi', function() vscode.call('editor.action.revealDefinition') end, { desc = 'Goto implementation' })
-  vim.keymap.set('n', '<leader>gs', function() vscode.call('editor.action.goToReferences') end, { desc = 'Goto super method' })
-  --vim.keymap.set('n', '<leader>gt', function() vscode.call('java.action.navigateToSuperImplementation') end, { desc = 'Goto test' })
-  vim.keymap.set('n', '<leader>gl', function() vscode.call('editor.action.goToReferences') end, { desc = 'Goto related' })
 
   -- Code formatting
   vim.keymap.set('n', '<leader>f', function() 
@@ -135,7 +140,5 @@ if vim.g.vscode then
   -- You'll need to install these as Neovim plugins separately
   -- Example with which-key.nvim:
   -- require("which-key").setup({})
-
-  print("VSCode-Neovim configuration loaded!")
 end
 -- stylua: ignore end

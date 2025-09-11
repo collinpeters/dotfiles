@@ -65,7 +65,7 @@ install_dotfiles() {
     PARENT_FOLDER=$(realpath $(dirname $(dirname $SOURCE)))
 
     if [ "$PARENT_FOLDER" = "$DOTFILES_ROOT" ]; then
-      DEST_FILENAME="$HOME/.$(basename \"${SOURCE%.*}\")"
+      DEST_FILENAME="$HOME/.$(basename "${SOURCE%.*}")"
     else
       # Get the relative path from dotfiles root, excluding the top-level category directory
       RELATIVE_PATH=$(realpath --relative-to="$DOTFILES_ROOT" "$SOURCE")

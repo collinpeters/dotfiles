@@ -13,6 +13,8 @@ Local tool preferences for Claude Code when working in this repository.
   - `git add`, `git commit`, `git push`, `git pull`, `git status`, `git diff`, `git checkout`, `git branch`, `git merge`
 - **Use MCP Git tools only for**: Complex operations that benefit from structured responses
   - Never use MCP Git tools for `git add` or `git commit`
+- **NEVER** use `git add .`. Always specify each file that is part of the work being done by name (including new files,
+  updated files, and deleted files)
 
 #### Git Worktrees
 

@@ -14,6 +14,16 @@ Local tool preferences for Claude Code when working in this repository.
 - **Use MCP Git tools only for**: Complex operations that benefit from structured responses
   - Never use MCP Git tools for `git add` or `git commit`
 
+#### Git Worktrees
+
+- **Prefer**: Use `wtp` (Worktree Plus) binary for Git worktree operations
+  - `wtp add <branch-name>` - Creates worktree with automatic path generation
+  - `wtp cd <branch-name>` - Navigate to existing worktree
+  - `wtp list` - List all worktrees
+  - `wtp remove <branch-name>` - Remove worktree and optionally branch
+- **Configuration**: Use `.wtp.yml` for development environment setup automation
+- **Benefits**: Automatic directory organization, zero-setup environments, shell integration
+
 ### File Operations
 
 - **Prefer**: Built-in file tools (Read, Write, Edit, MultiEdit) over IntelliJ MCP equivalents

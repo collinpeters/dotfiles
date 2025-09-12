@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "dunstify -i '~/Pictures/claude.ico' -a 'Claude' 'Claude is waiting for input'"
+            "command": "dunstify -i '~/.claude/claude-color.png' -a 'Claude' 'Claude is waiting for input'"
           }
         ]
       }

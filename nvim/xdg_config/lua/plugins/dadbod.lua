@@ -51,22 +51,22 @@ return {
 
       -- for dadbod-ui
       vim.g.dbs = {
-      -- stylua: ignore start
-      { name = "local iq", url = "postgres://iq-app@localhost/iq" },
-      { name = "local mtiq", url = "postgres://mtiq-app@localhost/mtiq" },
-      { name = "mtiq-dev-1-db RW", url = "postgres://mtiq-admin@mtiq-dev-1-db-us-east-2.cluster-ckxkxl7a0st8.us-east-2.rds.amazonaws.com/mtiq" },
-      { name = "mtiq-dev-1-db", url = "postgres://mtiq-admin@mtiq-dev-1-db-us-east-2.cluster-ro-ckxkxl7a0st8.us-east-2.rds.amazonaws.com/mtiq" },
-      { name = "mtiq-ci-1-db RW", url = "postgres://mtiq-admin@mtiq-ci-1-db-us-east-2.cluster-ckxkxl7a0st8.us-east-2.rds.amazonaws.com/mtiq" },
-      { name = "mtiq-ci-1-db", url = "postgres://mtiq-admin@mtiq-ci-1-db-us-east-2.cluster-ro-ckxkxl7a0st8.us-east-2.rds.amazonaws.com/mtiq" },
-      { name = "mtiq-staging-1-db RW", url = "postgres://mtiq-admin@mtiq-staging-1-db-us-east-2.cluster-ckxkxl7a0st8.us-east-2.rds.amazonaws.com/mtiq" },
-      { name = "mtiq-staging-1-db", url = "postgres://mtiq-admin@mtiq-staging-1-db-us-east-2.cluster-ro-ckxkxl7a0st8.us-east-2.rds.amazonaws.com/mtiq" },
-      { name = "mtiq-prod-us-1-db RW", url = "postgres://mtiq-admin@mtiq-prod-us-1-db-us-east-2.cluster-ciye03gbs87f.us-east-2.rds.amazonaws.com/mtiq" },
-      { name = "mtiq-prod-us-1-db", url = "postgres://mtiq-admin@mtiq-prod-us-1-db-us-east-2.cluster-ro-ciye03gbs87f.us-east-2.rds.amazonaws.com/mtiq" },
-      { name = "mtiq-prod-us-2-db RW", url = "postgres://mtiq-admin@mtiq-prod-us-2-db-us-east-2.cluster-ciye03gbs87f.us-east-2.rds.amazonaws.com/mtiq" },
-      { name = "mtiq-prod-us-2-db", url = "postgres://mtiq-admin@mtiq-prod-us-2-db-us-east-2.cluster-ro-ciye03gbs87f.us-east-2.rds.amazonaws.com/mtiq" },
-      { name = "mtiq-prod-internal-db RW", url = "postgres://mtiq-admin@mtiq-prod-internal-db-us-east-2.cluster-ciye03gbs87f.us-east-2.rds.amazonaws.com/mtiq" },
-      { name = "mtiq-prod-internal-db", url = "postgres://mtiq-admin@mtiq-prod-internal-db-us-east-2.cluster-ro-ciye03gbs87f.us-east-2.rds.amazonaws.com/mtiq" },
-      { name = "hds-staging-datamart", url = "mysql://iq-dev@hds-staging-us-east-2-datamart.cluster-ro-ccbtljn6jsbm.us-east-2.rds.amazonaws.com/insight_dm" },
+        -- stylua: ignore start
+        { name = "local iq", url = "postgres://iq-app@localhost/iq" },
+        { name = "local mtiq", url = "postgres://mtiq-app@localhost/mtiq" },
+        { name = "mtiq-dev-1-db RW", url = "postgres://mtiq-admin@mtiq-dev-1-db-us-east-2.cluster-ckxkxl7a0st8.us-east-2.rds.amazonaws.com/mtiq" },
+        { name = "mtiq-dev-1-db", url = "postgres://mtiq-admin@mtiq-dev-1-db-us-east-2.cluster-ro-ckxkxl7a0st8.us-east-2.rds.amazonaws.com/mtiq" },
+        { name = "mtiq-ci-1-db RW", url = "postgres://mtiq-admin@mtiq-ci-1-db-us-east-2.cluster-ckxkxl7a0st8.us-east-2.rds.amazonaws.com/mtiq" },
+        { name = "mtiq-ci-1-db", url = "postgres://mtiq-admin@mtiq-ci-1-db-us-east-2.cluster-ro-ckxkxl7a0st8.us-east-2.rds.amazonaws.com/mtiq" },
+        { name = "mtiq-staging-1-db RW", url = "postgres://mtiq-admin@mtiq-staging-1-db-us-east-2.cluster-ckxkxl7a0st8.us-east-2.rds.amazonaws.com/mtiq" },
+        { name = "mtiq-staging-1-db", url = "postgres://mtiq-admin@mtiq-staging-1-db-us-east-2.cluster-ro-ckxkxl7a0st8.us-east-2.rds.amazonaws.com/mtiq" },
+        { name = "mtiq-prod-us-1-db RW", url = "postgres://mtiq-admin@mtiq-prod-us-1-db-us-east-2.cluster-ciye03gbs87f.us-east-2.rds.amazonaws.com/mtiq" },
+        { name = "mtiq-prod-us-1-db", url = "postgres://mtiq-admin@mtiq-prod-us-1-db-us-east-2.cluster-ro-ciye03gbs87f.us-east-2.rds.amazonaws.com/mtiq" },
+        { name = "mtiq-prod-us-2-db RW", url = "postgres://mtiq-admin@mtiq-prod-us-2-db-us-east-2.cluster-ciye03gbs87f.us-east-2.rds.amazonaws.com/mtiq" },
+        { name = "mtiq-prod-us-2-db", url = "postgres://mtiq-admin@mtiq-prod-us-2-db-us-east-2.cluster-ro-ciye03gbs87f.us-east-2.rds.amazonaws.com/mtiq" },
+        { name = "mtiq-prod-internal-db RW", url = "postgres://mtiq-admin@mtiq-prod-internal-db-us-east-2.cluster-ciye03gbs87f.us-east-2.rds.amazonaws.com/mtiq" },
+        { name = "mtiq-prod-internal-db", url = "postgres://mtiq-admin@mtiq-prod-internal-db-us-east-2.cluster-ro-ciye03gbs87f.us-east-2.rds.amazonaws.com/mtiq" },
+        { name = "hds-staging-datamart", url = "mysql://iq-dev@hds-staging-us-east-2-datamart.cluster-ro-ccbtljn6jsbm.us-east-2.rds.amazonaws.com/insight_dm" },
         -- stylua: ignore end
       }
     end,

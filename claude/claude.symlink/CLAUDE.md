@@ -35,6 +35,11 @@ Local tool preferences for Claude Code when working in this repository.
 - **Configuration**: Use `.wtp.yml` for development environment setup automation
 - **Benefits**: Automatic directory organization, zero-setup environments, shell integration
 
+### GitHub Operations
+
+- Prefer the 'gh' GitHub CLI tool over the GitHub MCP
+- Always use the '--method' argument when using 'gh api', even for 'GET' operations
+
 ### File Operations
 
 - **Prefer**: Built-in file tools (Read, Write, Edit, MultiEdit) over IntelliJ MCP equivalents

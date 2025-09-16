@@ -45,3 +45,11 @@ vim.opt.wildmode = "list:longest,full" -- command <Tab> completion, list matches
 
 -- disable the auto-indent in yaml files (TODO move this somewhere better)
 vim.api.nvim_create_autocmd("FileType", { pattern = "yaml", command = [[setlocal indentkeys-=0#]] })
+
+-- disable markdown concealment (hiding of code block delimiters, etc.)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.conceallevel = 0
+  end,
+})

@@ -20,3 +20,5 @@ opencode*
 local*.md
 
 *.bak
+
+.wtp.yml

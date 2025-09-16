@@ -38,5 +38,5 @@
   "idf.enableCCache": true,
   "java.maven.downloadSources": true,
   "java.eclipse.downloadSources": true,
-  "chat.mcp.autostart": "newAndOutdated"
+  "chat.mcp.autostart": "newAndOutdated",
 }

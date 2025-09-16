@@ -1,8 +1,17 @@
 # CLAUDE.local.md
 
-Local tool preferences for Claude Code when working in this repository.
+## Code Generation Guidelines
+
+**IMPORTANT**: All generated text-based files must end with a trailing newline character. This ensures proper file formatting, better git diffs, and compliance with POSIX standards. When creating or modifying files:
+
+1. **Always verify** that files end with a newline character
+2. **Use bash commands** (e.g., `echo "" >> filename`) if the Write tool doesn't preserve trailing newlines
+3. **Check with hexdump** (`tail -c 5 filename | xxd`) to verify proper line endings
+4. **Apply to all text files** including: .rs, .java, .cpp, .c, .md, .yaml, .json, .sh, .bat, .env, etc.
 
 ## Tool Preferences
+
+Local tool preferences for Claude Code when working in this repository.
 
 ### Git Operations
 
@@ -34,7 +43,6 @@ Local tool preferences for Claude Code when working in this repository.
   - Editing files: Use `Edit` or `MultiEdit` tools instead of `mcp__intellij__replace_text_in_file`
   - Directory listing: Use `Bash` (ls) or `Glob` tools, NOT IntelliJ MCP for listing directories or files
 - **Use IntelliJ MCP tools only for**: IDE-specific features like symbol navigation, refactoring, code analysis
-- **NEVER** create a new file without a trailing posix newline. **ALWAYS** create a file with a trailing posix newline.
 
 ### Search Operations
 

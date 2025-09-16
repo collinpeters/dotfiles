@@ -61,7 +61,5 @@ SPACESHIP_GRADLE_SHOW=false
 
 #zprof
 
-. "$HOME/.local/share/../bin/env"
-
 # opencode
 export PATH=/home/collin/.opencode/bin:$PATH

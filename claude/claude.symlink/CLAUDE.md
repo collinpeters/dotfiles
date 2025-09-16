@@ -34,7 +34,7 @@ Local tool preferences for Claude Code when working in this repository.
   - Editing files: Use `Edit` or `MultiEdit` tools instead of `mcp__intellij__replace_text_in_file`
   - Directory listing: Use `Bash` (ls) or `Glob` tools, NOT IntelliJ MCP for listing directories or files
 - **Use IntelliJ MCP tools only for**: IDE-specific features like symbol navigation, refactoring, code analysis
-- **ALL** files created must have a proper posix trailing newline
+- **NEVER** create a new file without a trailing posix newline. **ALWAYS** create a file with a trailing posix newline.
 
 ### Search Operations
 

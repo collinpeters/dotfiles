@@ -9,6 +9,11 @@
 3. **Check with hexdump** (`tail -c 5 filename | xxd`) to verify proper line endings
 4. **Apply to all text files** including: .rs, .java, .cpp, .c, .md, .yaml, .json, .sh, .bat, .env, etc.
 
+To fix all files tracked by Git simply run this one-liner:
+```
+git ls-files -z | xargs -0 -I {} bash -c '[[ -s "{}" ]] && [[ "$(tail -c1 "{}" | od -c)" != *"\\n"* ]] && echo >> "{}"'
+```
+
 ## Tool Preferences
 
 Local tool preferences for Claude Code when working in this repository.

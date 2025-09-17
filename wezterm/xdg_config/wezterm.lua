@@ -26,5 +26,10 @@ config.window_padding = {
 
 config.hide_tab_bar_if_only_one_tab = true
 
+-- shift-enter for Claude
+config.keys = {
+	{ key = "Enter", mods = "SHIFT", action = wezterm.action({ SendString = "\x1b\r" }) },
+}
+
 -- Finally, return the configuration to wezterm:
 return config

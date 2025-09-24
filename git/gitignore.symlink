@@ -13,6 +13,7 @@ Justfile
 .sdkmanrc
 AGENT.md
 .aider*
+.gemini
 CLAUDE.local.md
 .crush*
 opencode*

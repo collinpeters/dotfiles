@@ -53,3 +53,8 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.conceallevel = 0
   end,
 })
+
+-- https://github.com/vscode-neovim/vscode-neovim/issues/2507#issuecomment-3059712058
+if vim.g.vscode then
+  vim.opt.cmdheight = 100
+end

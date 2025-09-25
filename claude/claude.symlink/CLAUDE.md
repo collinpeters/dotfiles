@@ -1,4 +1,4 @@
-# CLAUDE.local.md
+# CLAUDE.md
 
 ## Code Generation Guidelines
 

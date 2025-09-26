@@ -14,6 +14,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "~/.claude/statusline.sh"
+    "command": "bunx -y ccstatusline@latest",
+    "padding": 0
   }
 }

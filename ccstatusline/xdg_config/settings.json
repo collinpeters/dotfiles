@@ -1,0 +1,102 @@
+{
+  "version": 3,
+  "lines": [
+    [
+      {
+        "id": "4e790e16-3c86-4732-a635-6e173a5ec993",
+        "type": "current-working-dir",
+        "metadata": {
+          "segments": "3"
+        }
+      },
+      {
+        "id": "e013c40f-41b6-42d6-86be-839a9943ea76",
+        "type": "separator"
+      },
+      {
+        "id": "090c1852-9eae-433b-af9c-85519b41aca5",
+        "type": "model"
+      },
+      {
+        "id": "2",
+        "type": "separator"
+      },
+      {
+        "id": "5",
+        "type": "git-branch",
+        "color": "magenta"
+      },
+      {
+        "id": "6",
+        "type": "separator"
+      },
+      {
+        "id": "7",
+        "type": "git-changes",
+        "color": "yellow"
+      },
+      {
+        "id": "9701c9af-8823-49d3-9eb4-7c27ad02e854",
+        "type": "separator"
+      },
+      {
+        "id": "ad08c787-c373-4336-9f6a-22062a7df857",
+        "type": "git-worktree"
+      },
+      {
+        "id": "45ddb37c-538d-4fe2-a610-e2e425ec9647",
+        "type": "flex-separator"
+      },
+      {
+        "id": "eb106e91-a0b3-444f-84f7-6fab94b09dd5",
+        "type": "context-length"
+      },
+      {
+        "id": "6425f7d1-b2df-4b77-9ec3-c7271c6aa784",
+        "type": "separator"
+      },
+      {
+        "id": "80f8acf4-4ac1-495b-924c-4fc007e7d15a",
+        "type": "context-percentage-usable"
+      },
+      {
+        "id": "ac81bb82-f72b-4b3c-8943-a3bc2b437337",
+        "type": "separator"
+      },
+      {
+        "id": "fc088826-4208-40af-a5da-15387729759b",
+        "type": "block-timer",
+        "metadata": {
+          "display": "progress"
+        }
+      },
+      {
+        "id": "1068153f-b7cf-4741-b968-133c28fd51a0",
+        "type": "separator"
+      },
+      {
+        "id": "d8175908-c46a-4057-b346-a0fedc3f419c",
+        "type": "session-cost"
+      }
+    ],
+    [],
+    []
+  ],
+  "flexMode": "full-minus-40",
+  "compactThreshold": 60,
+  "colorLevel": 2,
+  "inheritSeparatorColors": false,
+  "globalBold": false,
+  "powerline": {
+    "enabled": false,
+    "separators": [
+      ""
+    ],
+    "separatorInvertBackground": [
+      false
+    ],
+    "startCaps": [],
+    "endCaps": [],
+    "autoAlign": false
+  }
+}

@@ -18,7 +18,7 @@
       "default": true
     }
   ],
-  "files.autoSave": "onWindowChange",
+  "files.autoSave": "onFocusChange",
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
   },
@@ -39,4 +39,24 @@
   "java.maven.downloadSources": true,
   "java.eclipse.downloadSources": true,
   "chat.mcp.autostart": "newAndOutdated",
+  "rust-analyzer.showSyntaxTree": true,
+  "rust-analyzer.testExplorer": true,
+  "rust-analyzer.statusBar.showStatusBar": {
+    "documentSelector": [
+      {
+        "language": "rust"
+      },
+      {
+        "pattern": "**/Cargo.toml"
+      },
+      {
+        "pattern": "**/Cargo.lock"
+      },
+      {
+        "scheme": "output",
+        "pattern": "extension-output-rust-lang.rust-analyzer*"
+      }
+    ]
+  },
+  "git.openRepositoryInParentFolders": "never",
 }

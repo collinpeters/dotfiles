@@ -60,10 +60,3 @@ SPACESHIP_MAVEN_SHOW=false
 SPACESHIP_GRADLE_SHOW=false
 
 #zprof
-
-# opencode
-export PATH=/home/collin/.opencode/bin:$PATH
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"

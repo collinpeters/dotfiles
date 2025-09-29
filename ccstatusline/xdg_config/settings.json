@@ -14,14 +14,6 @@
         "type": "separator"
       },
       {
-        "id": "090c1852-9eae-433b-af9c-85519b41aca5",
-        "type": "model"
-      },
-      {
-        "id": "2",
-        "type": "separator"
-      },
-      {
         "id": "5",
         "type": "git-branch",
         "color": "magenta"
@@ -38,14 +30,6 @@
       {
         "id": "9701c9af-8823-49d3-9eb4-7c27ad02e854",
         "type": "separator"
-      },
-      {
-        "id": "ad08c787-c373-4336-9f6a-22062a7df857",
-        "type": "git-worktree"
-      },
-      {
-        "id": "45ddb37c-538d-4fe2-a610-e2e425ec9647",
-        "type": "flex-separator"
       },
       {
         "id": "eb106e91-a0b3-444f-84f7-6fab94b09dd5",

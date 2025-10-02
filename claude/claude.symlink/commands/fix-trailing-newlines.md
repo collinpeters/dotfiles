@@ -12,8 +12,7 @@ description: Properly find and fix any missing POSIX compliant trailing newlines
 1. Run this bash script which will find and fix all missing posix-compliant trailing newlines.
 
    ```
-   git diff --name-only origin/main... | xargs -I {} sh -c 'f="{}"; if [ -f "$f" ]; then if file -bi -- "$f" | grep -q "^text/"; then if [ -s "$f" ]; then last=$(tail -c1 "$f" 2>/dev/null | od -An -t u1 | tr -dc "0-9"); if [ "${last:-0}" -ne 10 ]; then echo "fixing: $f"; printf "\n" >> "$f"; else echo "ok:     $f"; fi; else echo "empty:  $f"; fi; fi; fi'
-
+   git ls-files -z | xargs -0 perl -i -0777 -pe 's/\n*$/\n/'
    ```
 
    For each file that is found it will print the file name with path, plus:

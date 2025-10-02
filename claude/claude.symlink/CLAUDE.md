@@ -4,14 +4,14 @@
 
 **IMPORTANT**: All generated text-based files must end with a trailing newline character. This ensures proper file formatting, better git diffs, and compliance with POSIX standards. When creating or modifying files:
 
-1. **Always verify** that files end with a newline character
-2. **Use bash commands** (e.g., `echo "" >> filename`) if the Write tool doesn't preserve trailing newlines
-3. **Check with hexdump** (`tail -c 5 filename | xxd`) to verify proper line endings
-4. **Apply to all text files** including: .rs, .java, .cpp, .c, .md, .yaml, .json, .sh, .bat, .env, etc.
+To fix one specific file (or multiple specific files):
+```
+perl -i -0777 -pe 's/\n*$/\n/' file1.txt file2.txt
+```
 
 To fix all files tracked by Git simply run this one-liner:
 ```
-git ls-files -z | xargs -0 -I {} bash -c '[[ -s "{}" ]] && [[ "$(tail -c1 "{}" | od -c)" != *"\\n"* ]] && echo >> "{}"'
+git ls-files -z | xargs -0 perl -i -0777 -pe 's/\n*$/\n/'
 ```
 
 ## Tool Preferences

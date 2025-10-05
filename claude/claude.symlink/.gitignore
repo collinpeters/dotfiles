@@ -9,3 +9,5 @@ todos/
 config/
 hooks/
 .claude
+file-history
+history.jsonl

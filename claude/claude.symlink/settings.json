@@ -17,5 +17,6 @@
     "command": "bunx -y ccstatusline@latest",
     "padding": 0
   },
-  "spinnerTipsEnabled": false
+  "spinnerTipsEnabled": false,
+  "alwaysThinkingEnabled": true
 }

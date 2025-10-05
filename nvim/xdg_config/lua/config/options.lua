@@ -4,6 +4,7 @@
 
 -- Leader key
 vim.g.mapleader = " "
+vim.g.autoformat = false
 
 vim.opt.winbar = "%=%m %f"
 

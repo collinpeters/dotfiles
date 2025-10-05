@@ -41,7 +41,10 @@
       },
       {
         "id": "80f8acf4-4ac1-495b-924c-4fc007e7d15a",
-        "type": "context-percentage-usable"
+        "type": "context-percentage-usable",
+        "metadata": {
+          "inverse": "true"
+        }
       },
       {
         "id": "ac81bb82-f72b-4b3c-8943-a3bc2b437337",
@@ -51,7 +54,7 @@
         "id": "fc088826-4208-40af-a5da-15387729759b",
         "type": "block-timer",
         "metadata": {
-          "display": "progress"
+          "display": "progress-short"
         }
       },
       {

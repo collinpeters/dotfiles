@@ -3,6 +3,14 @@
   "lines": [
     [
       {
+        "id": "47cfd9a1-917b-4f26-bf6a-17521eec4f6c",
+        "type": "model"
+      },
+      {
+        "id": "a3a63c43-ea02-4837-a293-d084324fbbd6",
+        "type": "separator"
+      },
+      {
         "id": "4e790e16-3c86-4732-a635-6e173a5ec993",
         "type": "current-working-dir",
         "metadata": {

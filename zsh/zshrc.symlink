@@ -55,8 +55,4 @@ source ~/.oh-my-zshrc
 
 # #stty -ixon
 
-# spaceship prompt
-SPACESHIP_MAVEN_SHOW=false
-SPACESHIP_GRADLE_SHOW=false
-
 #zprof

@@ -13,7 +13,7 @@ local config = wezterm.config_builder()
 -- or, changing the font size and color scheme.
 config.font = wezterm.font("UbuntuMono Nerd Font")
 config.font_size = 12
-config.color_scheme = "tokyonight"
+config.color_scheme = 'Tokyo Night Moon'
 
 config.window_padding = {
 	left = 0,

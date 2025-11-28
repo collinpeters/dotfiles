@@ -1,19 +1,5 @@
 # CLAUDE.md
 
-## Code Generation Guidelines
-
-**IMPORTANT**: All generated text-based files must end with a trailing newline character. This ensures proper file formatting, better git diffs, and compliance with POSIX standards. When creating or modifying files:
-
-To fix one specific file (or multiple specific files):
-```
-perl -i -0777 -pe 's/\n*$/\n/' file1.txt file2.txt
-```
-
-To fix all files tracked by Git simply run this one-liner:
-```
-git ls-files -z | xargs -0 perl -i -0777 -pe 's/\n*$/\n/'
-```
-
 ## Tool Preferences
 
 Local tool preferences for Claude Code when working in this repository.
@@ -29,16 +15,6 @@ Local tool preferences for Claude Code when working in this repository.
   - Never use MCP Git tools for `git add` or `git commit`
 - **NEVER** use `git add .`. Always specify each file that is part of the work being done by name (including new files,
   updated files, and deleted files)
-
-#### Git Worktrees
-
-- **Prefer**: Use `wtp` (Worktree Plus) binary for Git worktree operations
-  - `wtp add <branch-name>` - Creates worktree with automatic path generation
-  - `wtp cd <branch-name>` - Navigate to existing worktree
-  - `wtp list` - List all worktrees
-  - `wtp remove <branch-name>` - Remove worktree and optionally branch
-- **Configuration**: Use `.wtp.yml` for development environment setup automation
-- **Benefits**: Automatic directory organization, zero-setup environments, shell integration
 
 ### GitHub Operations
 

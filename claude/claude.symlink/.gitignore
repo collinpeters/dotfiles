@@ -11,3 +11,5 @@ hooks/
 .claude
 file-history
 history.jsonl
+debug
+plans

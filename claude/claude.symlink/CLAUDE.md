@@ -45,6 +45,19 @@ Local tool preferences for Claude Code when working in this repository.
 - Prefer the 'gh' GitHub CLI tool over the GitHub MCP
 - Always use the '--method' argument when using 'gh api', even for 'GET' operations
 
+### Atlassian/Jira/Confluence Operations
+
+- When asked about Jira tickets always use the 'acli' Atlassian CLI tool
+- When asked about Confluence pages always use the 'acli' Atlassian CLI tool
+
+#### Examples
+**User**: "Show me details about CLM-36797"
+**You**: Use `acli jira workitem view CLM-36797`
+**User**: "What tickets are assigned to me?"
+**You**: Use `acli jira workitem list --jql "assignee = currentUser()"`
+**User**: "List all in-progress GUIDE tickets"
+**You**: Use `acli jira workitem list --jql "project = GUIDE AND status = 'In Progress'"`
+
 ### File Operations
 
 - **Prefer**: Built-in file tools (Read, Write, Edit, MultiEdit) over IntelliJ MCP equivalents

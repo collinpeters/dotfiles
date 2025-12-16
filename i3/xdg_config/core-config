@@ -48,7 +48,7 @@ workspace 3 output $OUTPUT3
 bindsym $mod+Escape exec --no-startup-id dm-tool lock
 
 # start a terminal
-bindsym $mod+Return exec wezterm
+bindsym $mod+Return exec alacritty
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -204,7 +204,7 @@ for_window [class="scratchcli"] floating enable
 for_window [class="scratchcli"] resize set 90ppt 90ppt
 for_window [class="scratchcli"] move scratchpad
 for_window [class="scratchcli"] border pixel 5
-exec --no-startup-id wezterm start --class scratchcli tmux new-session -A -s scratchcli
+exec --no-startup-id alacritty --class scratchcli -e tmux new-session -A -s scratchcli
 
 # Zoom (😱)
 for_window [title="^zoom$" class="[zoom]*"] floating enable

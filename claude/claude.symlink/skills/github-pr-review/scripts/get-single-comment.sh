@@ -7,6 +7,7 @@
 # Supported URL formats:
 #   - https://github.com/owner/repo/pull/123#discussion_r456789
 #   - https://github.com/owner/repo/pull/123/files#r456789
+#   - https://github.com/owner/repo/pull/123/changes#r456789
 #   - https://github.com/owner/repo/pull/123#pullrequestreview-456789
 
 set -e

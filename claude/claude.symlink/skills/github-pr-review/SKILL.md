@@ -46,6 +46,7 @@ Example: `https://github.com/owner/repo/pull/123`
 Example formats:
 - `https://github.com/owner/repo/pull/123#discussion_r456789`
 - `https://github.com/owner/repo/pull/123/files#r456789`
+- `https://github.com/owner/repo/pull/123/changes#r456789`
 
 ---
 
@@ -215,6 +216,7 @@ Extract the owner, repository, PR number, and comment ID from the user's input.
 Supported URL formats:
 - `https://github.com/{owner}/{repo}/pull/{pr_number}#discussion_r{comment_id}`
 - `https://github.com/{owner}/{repo}/pull/{pr_number}/files#r{comment_id}`
+- `https://github.com/{owner}/{repo}/pull/{pr_number}/changes#r{comment_id}`
 
 ### Step 2: Load the Specific PR Comment
 
@@ -387,6 +389,7 @@ Ensure URLs match one of these formats:
 - Basic PR: `https://github.com/owner/repo/pull/123`
 - Comment: `https://github.com/owner/repo/pull/123#discussion_r456789`
 - Files view: `https://github.com/owner/repo/pull/123/files#r456789`
+- Changes view: `https://github.com/owner/repo/pull/123/changes#r456789`
 
 ### No Unresolved Comments
 If no threads are returned, all comments may already be resolved. Verify on GitHub.

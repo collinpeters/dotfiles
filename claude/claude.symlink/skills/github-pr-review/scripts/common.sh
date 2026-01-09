@@ -7,12 +7,12 @@
 # Sets global variables: OWNER, REPO, PR_NUMBER, COMMENT_ID, REVIEW_ID
 parse_pr_url() {
     local pr_url="$1"
-    # Handle URLs with comment IDs: #discussion_r123456 or /files#r123456
-    if [[ "$pr_url" =~ ^https://github.com/([^/]+)/([^/]+)/pull/([0-9]+)(/files)?#(discussion_)?r([0-9]+)$ ]]; then
+    # Handle URLs with comment IDs: #discussion_r123456, /files#r123456, or /changes#r123456
+    if [[ "$pr_url" =~ ^https://github.com/([^/]+)/([^/]+)/pull/([0-9]+)(/(files|changes))?#(discussion_)?r([0-9]+)$ ]]; then
         OWNER=${BASH_REMATCH[1]}
         REPO=${BASH_REMATCH[2]}
         PR_NUMBER=${BASH_REMATCH[3]}
-        COMMENT_ID=${BASH_REMATCH[6]}
+        COMMENT_ID=${BASH_REMATCH[7]}
         REVIEW_ID=""
     # Handle URLs with review IDs: #pullrequestreview-123456
     elif [[ "$pr_url" =~ ^https://github.com/([^/]+)/([^/]+)/pull/([0-9]+)#pullrequestreview-([0-9]+)$ ]]; then

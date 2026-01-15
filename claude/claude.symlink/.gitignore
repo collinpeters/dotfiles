@@ -13,3 +13,6 @@ file-history
 history.jsonl
 debug
 plans
+telemetry/
+paste-cache/
+stats-cache.json

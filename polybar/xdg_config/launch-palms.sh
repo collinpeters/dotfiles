@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "Launching polybar on palms Virtual 1"
-$POLYBAR -c /home/collin/.config/polybar/config-palms.ini Virtual1 &
+echo "Launching polybar on palms eDP-1"
+$POLYBAR -c /home/collin/.config/polybar/config-palms.ini eDP-1 &
 
 VIRTUAL2=$(xrandr --query | grep "Virtual2 connected" | wc -l)
 if [ "$VIRTUAL2" -eq "1" ]; then

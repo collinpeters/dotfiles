@@ -21,19 +21,6 @@ Local tool preferences for Claude Code when working in this repository.
 - Prefer the 'gh' GitHub CLI tool over the GitHub MCP
 - Always use the '--method' argument when using 'gh api', even for 'GET' operations
 
-### Atlassian/Jira/Confluence Operations
-
-- When asked about Jira tickets always use the 'acli' Atlassian CLI tool
-- When asked about Confluence pages always use the 'acli' Atlassian CLI tool
-
-#### Examples
-**User**: "Show me details about CLM-36797"
-**You**: Use `acli jira workitem view CLM-36797`
-**User**: "What tickets are assigned to me?"
-**You**: Use `acli jira workitem list --jql "assignee = currentUser()"`
-**User**: "List all in-progress GUIDE tickets"
-**You**: Use `acli jira workitem list --jql "project = GUIDE AND status = 'In Progress'"`
-
 ### File Operations
 
 - **Prefer**: Built-in file tools (Read, Write, Edit, MultiEdit) over IntelliJ MCP equivalents
@@ -47,14 +34,6 @@ Local tool preferences for Claude Code when working in this repository.
 
 - **Prefer**: `Grep` and `Glob` tools for file searching over IntelliJ MCP search tools
 - **Use IntelliJ MCP search tools for**: Semantic code searches or IDE-indexed searches
-
-### Jira Integration
-
-- **Pull Request Descriptions**: When creating a PR that addresses a Jira ticket, the **full URL to the Jira ticket must be the first line** of the PR description
-  - Example: `https://sonatype.atlassian.net/browse/CLM-36144`
-  - This should appear before any other content including summary sections
-- **Jira Issue Creation**: The description field cannot be set when creating Jira sub-tasks (and possibly issues). The description must be set with a second API call after creation
-- **Jira Description Format**: Jira descriptions need to use ADF (Atlassian Document Format), not markdown. For complex descriptions, use plain text or simple markdown that converts cleanly
 
 ### General Principle
 

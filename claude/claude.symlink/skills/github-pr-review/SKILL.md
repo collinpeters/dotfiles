@@ -1,6 +1,6 @@
 ---
 name: github-pr-review
-description: "GitHub pull request review and resolution skill. Systematically reviews PR comments, analyzes code, applies fixes, commits changes, and replies to review threads. Use when reviewing PR comments, resolving PR feedback, addressing code review suggestions, or when user provides PR URLs."
+description: "GitHub pull request review and resolution skill. Systematically reviews PR comments, analyzes code, applies fixes, commits changes, and replies to review threads. Use when reviewing PR comments, resolving PR feedback, addressing code review suggestions, or when user provides PR URLs. Prefer this skill when doing any review of PR comments."
 allowed-tools: Read, Grep, Glob, Bash
 ---
 
@@ -64,7 +64,7 @@ Extract the owner, repository, and PR number from the user's input.
 Execute the list-comment-ids script:
 
 ```bash
-bash skills/github-pr-review/scripts/list-comment-ids.sh "https://github.com/{owner}/{repo}/pull/{pr_number}"
+bash ${CLAUDE_SKILL_DIR}/scripts/list-comment-ids.sh "https://github.com/{owner}/{repo}/pull/{pr_number}"
 ```
 
 This returns a JSON array of thread objects:
@@ -102,7 +102,7 @@ For each thread ID from Step 2, create and complete a task in your todo list. **
 Execute the get-comment-thread script:
 
 ```bash
-bash skills/github-pr-review/scripts/get-comment-thread.sh "THREAD_ID_FROM_STEP_2"
+bash ${CLAUDE_SKILL_DIR}/scripts/get-comment-thread.sh "THREAD_ID_FROM_STEP_2"
 ```
 
 This returns the complete thread data including all comments and metadata.
@@ -147,7 +147,7 @@ Based on the thread analysis:
 Execute the reply-to-comment script:
 
 ```bash
-bash skills/github-pr-review/scripts/reply-to-comment.sh "THREAD_ID_FROM_GET_COMMENT_THREAD" "YOUR_REPLY_MESSAGE"
+bash ${CLAUDE_SKILL_DIR}/scripts/reply-to-comment.sh "THREAD_ID_FROM_GET_COMMENT_THREAD" "YOUR_REPLY_MESSAGE"
 ```
 
 **If fixed, use this reply format:**
@@ -223,7 +223,7 @@ Supported URL formats:
 Execute the get-single-comment script:
 
 ```bash
-bash skills/github-pr-review/scripts/get-single-comment.sh "https://github.com/{owner}/{repo}/pull/{pr_number}#discussion_r{comment_id}"
+bash ${CLAUDE_SKILL_DIR}/scripts/get-single-comment.sh "https://github.com/{owner}/{repo}/pull/{pr_number}#discussion_r{comment_id}"
 ```
 
 This returns the complete comment thread data for the specific comment.
@@ -270,7 +270,7 @@ Based on the comment analysis:
 Execute the reply-to-comment script using the thread ID from the comment data:
 
 ```bash
-bash skills/github-pr-review/scripts/reply-to-comment.sh "THREAD_ID_FROM_GET_SINGLE_COMMENT_RESPONSE" "YOUR_REPLY_MESSAGE"
+bash ${CLAUDE_SKILL_DIR}/scripts/reply-to-comment.sh "THREAD_ID_FROM_GET_SINGLE_COMMENT_RESPONSE" "YOUR_REPLY_MESSAGE"
 ```
 
 **ALWAYS** include the commit hash of the fix if a fix was made.
@@ -373,9 +373,9 @@ Reply guidelines:
 ## Troubleshooting
 
 ### Scripts Not Found
-If scripts cannot be found, ensure you're using the full path:
+If scripts cannot be found, ensure you're using the `${CLAUDE_SKILL_DIR}` variable:
 ```bash
-bash skills/github-pr-review/scripts/SCRIPT_NAME.sh
+bash ${CLAUDE_SKILL_DIR}/scripts/SCRIPT_NAME.sh
 ```
 
 ### GitHub Authentication
@@ -398,7 +398,7 @@ If no threads are returned, all comments may already be resolved. Verify on GitH
 
 ## Script Reference
 
-All scripts are located in `skills/github-pr-review/scripts/`:
+All scripts are located in `${CLAUDE_SKILL_DIR}/scripts/`:
 
 - **list-comment-ids.sh**: Get all unresolved PR comment thread IDs
 - **get-comment-thread.sh**: Get full thread data by thread ID

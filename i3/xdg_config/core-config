@@ -207,8 +207,7 @@ for_window [class="scratchcli"] border pixel 5
 exec --no-startup-id alacritty --class scratchcli -e tmux new-session -A -s scratchcli
 
 # Zoom (😱)
-for_window [title="^zoom$" class="[zoom]*"] floating enable
-no_focus   [class="^zoom$" title="^zoom"]
+for_window [title="^Bitwarden$" class="[google-chrome]*"] floating enable
 
 # class                 border  backgr. text    indicator child_border
 client.focused          #4c7899 #3b4261 #ffffff #2e9ef4   #3b4261

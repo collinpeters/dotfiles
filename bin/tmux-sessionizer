@@ -4,7 +4,7 @@
 if [[ $# -eq 1 ]]; then
   selected=$1
 else
-  selected=$({ find ~/dev -mindepth 1 -maxdepth 2 -type d; find ~/dev/worktrees -name ".git" -type f -exec dirname {} \; 2>/dev/null; } | sort -u | fzf)
+  selected=$({ find ~/dev -mindepth 1 -maxdepth 2 -type d; find ~/dev/worktrees -maxdepth 3 -name ".git" -type f -exec dirname {} \; 2>/dev/null; } | sort -u | fzf)
 fi
 
 if [[ -z $selected ]]; then

@@ -15,8 +15,6 @@ This skill helps systematically review and resolve GitHub pull request comments.
 
 The skill handles the complete review cycle: analyzing feedback, reading code, applying fixes, committing changes, and replying to reviewers.
 
-**IMPORTANT**: After processing each comment/thread, you MUST pause and wait for explicit user approval before continuing to the next thread. Never process multiple threads without user confirmation between each one.
-
 ## When to Use This Skill
 
 Activate this skill when:
@@ -52,156 +50,178 @@ Example formats:
 
 ## Workflow 1: Review All Unresolved Comments
 
-This workflow systematically processes all unresolved comment threads on a PR.
+This workflow loads all unresolved threads, classifies them, presents an upfront summary for user approval, then executes — only pausing on items the user flagged.
 
 ### Step 1: Extract PR Information
 
 Extract the owner, repository, and PR number from the user's input.
 - Format: `https://github.com/{owner}/{repo}/pull/{pr_number}`
 
-### Step 2: Load All Unresolved PR Comment Thread IDs
+### Step 2: Load All Unresolved Threads for Classification
 
-Execute the list-comment-ids script:
-
-```bash
-bash ${CLAUDE_SKILL_DIR}/scripts/list-comment-ids.sh "https://github.com/{owner}/{repo}/pull/{pr_number}"
-```
-
-This returns a JSON array of thread objects:
-```json
-[
-  {
-    "id": "PRRT_kwDOPsBd3c5bpKKt",
-    "author": "copilot-pull-request-reviewer",
-    "url": "https://github.com/owner/repo/pull/123#discussion_r2374635451",
-    "preview": "The test branch 'fix-rust-cach..."
-  }
-]
-```
-
-Create a todo/task list with one task per thread ID returned. **Do not skip any thread IDs** - include all of them in the task list.
-
-Format each todo task title to include the thread ID, author, and comment preview:
-```
-Review and resolve thread {thread_id} from {author}: "{preview}"
-```
-
-Post a total count of threads:
-```
-Total PR comment threads to review: X
-```
-
-### Step 3: Process Each Thread
-
-For each thread ID from Step 2, create and complete a task in your todo list. **Process each thread completely before moving to the next one.**
-
-**⚠️ CRITICAL REMINDER**: After completing each thread (step 3.8), you MUST STOP and wait for user approval before starting the next thread. Do not process multiple threads in one response.
-
-#### 3.1 Mark Thread Task as In Progress and Load Thread Details
-
-Execute the get-comment-thread script:
+Execute the classification script to get thread data (bodies, paths, lines, authors — but no diffHunks):
 
 ```bash
-bash ${CLAUDE_SKILL_DIR}/scripts/get-comment-thread.sh "THREAD_ID_FROM_STEP_2"
+bash ${CLAUDE_SKILL_DIR}/scripts/list-threads-for-classification.sh "https://github.com/{owner}/{repo}/pull/{pr_number}"
 ```
 
-This returns the complete thread data including all comments and metadata.
+This returns a JSON array of thread objects with full comment bodies and metadata — enough to classify each thread without fetching diffHunks.
 
-#### 3.2 Analyze the Entire Thread Conversation
+### Step 3: Classify Each Thread
 
-Process **ALL** comments in the thread response in chronological order:
-- Sort comments by `createdAt` timestamp
-- Identify the original reviewer concern (typically the first comment)
-- Track the conversation flow between reviewer and author
-- Determine the current actionable feedback (may not be the last comment)
+Read the comment bodies, file paths, and conversation context for every thread. Classify each into one of two tiers:
 
-#### 3.3 Present the Thread Summary to the User
+#### Auto-proceed (no confirmation needed)
 
-Post a summary of the entire thread conversation including:
-- **Original concern**: What the reviewer initially flagged
-- **Conversation summary**: Key points from the discussion
-- **Current status**: What action is needed based on the latest non-bot feedback
-- **Thread link**: Link to the full conversation for reference
+Threads where the action is straightforward and low-risk:
 
-#### 3.4 Read and Check the Relevant Code
+- **Trivial fixes**: typo, spelling, grammar fixes in comments or strings; comment clarifications or doc wording; variable/function renames with local scope; formatting, whitespace, import ordering; dead code removal that is clearly unused; simple refactors with no behavior change
+- **Dismissals**: you evaluated the comment and decided not to implement it — the reviewer's suggestion doesn't apply, is already handled, or would make things worse. You will reply explaining your reasoning but make no code changes.
 
-Based on the thread analysis:
+#### Needs confirmation
+
+Threads where the user should weigh in before you proceed:
+
+- Logic changes (conditionals, loop behavior, control flow)
+- Public API changes (signatures, exports, interfaces)
+- New or changed dependencies
+- Security-relevant code (auth, crypto, input validation, permissions)
+- Changes touching more than ~30 lines or more than 3 files
+- Anything the reviewer flagged as controversial, or where thread discussion shows disagreement
+- Disagreeing with the reviewer on a non-trivial point
+- Anything ambiguous — **lean toward confirming when uncertain**
+
+### Step 4: Present Upfront Summary
+
+Present a single summary of all threads with their classifications. For each thread, show:
+
+- **Thread link** — MUST be a fully-qualified URL (e.g. `https://github.com/owner/repo/pull/123#discussion_r456789`). Do not use markdown link syntax like `[link](url)` — render the bare URL so it's clickable in terminal UIs that don't parse markdown.
+- **Author**
+- **File and line**
+- **Concern summary** (one-line description of what the reviewer flagged)
+- **Classification**: `auto-fix`, `dismiss`, or `needs confirmation`
+- **Plan**: what you intend to do (for auto-fix: the planned change; for dismiss: why; for needs confirmation: why it needs the user's eyes)
+
+Example format:
+
+```
+## PR Review Plan — 8 threads
+
+### Auto-proceed (5 threads)
+
+| # | Thread | Author | File | Concern | Action |
+|---|--------|--------|------|---------|--------|
+| 1 | https://github.com/owner/repo/pull/123#discussion_r111 | reviewer1 | src/foo.ts:42 | Typo in comment | Fix: correct spelling |
+| 2 | https://github.com/owner/repo/pull/123#discussion_r222 | reviewer2 | src/bar.ts:15 | Unused import | Fix: remove import |
+| 3 | https://github.com/owner/repo/pull/123#discussion_r333 | reviewer1 | src/baz.ts:88 | Suggestion doesn't apply | Dismiss: already handled by validation on L72 |
+
+### Needs confirmation (3 threads)
+
+| # | Thread | Author | File | Concern | Why |
+|---|--------|--------|------|---------|-----|
+| 4 | https://github.com/owner/repo/pull/123#discussion_r444 | reviewer1 | src/auth.ts:30 | Token validation logic | Security-relevant change |
+| 5 | https://github.com/owner/repo/pull/123#discussion_r555 | reviewer2 | src/api.ts:112 | Change return type | Public API change |
+| 6 | https://github.com/owner/repo/pull/123#discussion_r666 | reviewer1 | src/core.ts:55 | Refactor loop structure | Logic change spanning 40+ lines |
+```
+
+Then **pause once** and ask:
+
+> "This is my plan for the PR review. Auto-proceed items will be fixed or dismissed without stopping. I'll pause on each needs-confirmation item for your input. You can:
+> - Promote any auto-proceed item to needs-confirmation (e.g., 'confirm #2')
+> - Demote any needs-confirmation item to auto-proceed (e.g., 'auto #5')
+> - Say **go** to start execution as planned
+> - Say **confirm all** to pause on every item
+> - Say **auto all** to proceed through everything without pausing"
+
+**Wait for the user's response before continuing.**
+
+### Step 5: Execute All Threads
+
+Process every thread in order. For each thread:
+
+#### 5.1 Load Full Thread Details
+
+Fetch the complete thread data including diffHunks:
+
+```bash
+bash ${CLAUDE_SKILL_DIR}/scripts/get-comment-thread.sh "THREAD_ID"
+```
+
+#### 5.2 Read and Analyze the Code
+
 - Identify the specific code location (`path`, `line`, `diffHunk`)
-- Read the current state of the code in question
-- Consider the entire conversation context when evaluating the feedback
-- Think deeply whether to follow the suggestion based on the full discussion
+- Read the current state of the code
+- Consider the entire conversation context
 
-#### 3.5 If the Suggestion is Good and a Fix is Necessary
+#### 5.3 Implement the Fix (or Dismiss)
 
-1. **Fix the Issue**
-   - Make the necessary code changes based on the review feedback
-   - Ensure the fix addresses the reviewer's concerns
+**If fixing:**
+1. Make the code change
+2. Stage and commit with a descriptive message
+3. Push to the feature branch
 
-2. **Commit and Push**
-   - Stage your changes
-   - Create a descriptive commit message
-   - Push to the feature branch
+**If dismissing:**
+No code changes needed. Proceed directly to replying.
 
-#### 3.6 Reply to the Thread
-
-Execute the reply-to-comment script:
+#### 5.4 Reply to the Thread
 
 ```bash
-bash ${CLAUDE_SKILL_DIR}/scripts/reply-to-comment.sh "THREAD_ID_FROM_GET_COMMENT_THREAD" "YOUR_REPLY_MESSAGE"
+bash ${CLAUDE_SKILL_DIR}/scripts/reply-to-comment.sh "THREAD_ID" "YOUR_REPLY_MESSAGE"
 ```
 
 **If fixed, use this reply format:**
 ```
 Fixed in commit {commit_sha}. {description_of_fix}
 
-Addressed the original concern about {original_issue} and the follow-up discussion regarding {discussion_points}.
+Addressed the concern about {original_issue}.
 
 🤖 Generated with Claude Code
 ```
 
-**ALWAYS** include the commit hash of the fix that was pushed. Do not produce a reply without a git commit hash.
+**ALWAYS** include the commit hash when a fix was made.
 
-**Example:**
+**If dismissed, use this reply format:**
 ```
-Fixed in commit 2b36629. The redundant existence check has been removed since main() already validates the metadata file.
-
-This addresses the original performance concern and the follow-up discussion about validation order.
+Evaluated this suggestion. {reasoning_for_not_implementing}
 
 🤖 Generated with Claude Code
 ```
 
-**If not fixed**, explain your reasoning considering the full thread context.
+#### 5.5 Pause If Needed
 
-#### 3.7 Push the Changes
+- **Auto-proceed items**: continue immediately to the next thread.
+- **Needs-confirmation items** (or items the user promoted): pause, present what you plan to do for this thread, and wait for the user's approval before executing.
+- At any point, if the user said "stop" or "pause" during the upfront summary, respect that override.
 
-Push changes so the user can visually see them in the GitHub UI right away.
+### Step 6: Final Summary
 
-#### 3.8 **CRITICAL: Pause for User Verification**
+After all threads are processed, present a consolidated summary:
 
-**STOP HERE. Do not proceed to the next thread automatically.**
+```
+## PR Review Complete — 8 threads processed
 
-After completing work on this thread, you MUST:
+### Fixed (4 threads)
 
-1. **Summarize what was done**:
-   - Changes made
-   - Commit hash
-   - Reply posted
-   - Link to the comment thread
+| # | Thread | File | Change | Commit |
+|---|--------|------|--------|--------|
+| 1 | https://github.com/owner/repo/pull/123#discussion_r111 | src/foo.ts:42 | Corrected typo | abc1234 |
+| 2 | https://github.com/owner/repo/pull/123#discussion_r222 | src/bar.ts:15 | Removed unused import | def5678 |
+| 4 | https://github.com/owner/repo/pull/123#discussion_r444 | src/auth.ts:30 | Updated token validation | ghi9012 |
+| 5 | https://github.com/owner/repo/pull/123#discussion_r555 | src/api.ts:112 | Changed return type | jkl3456 |
 
-2. **Explicitly ask the user for approval** using clear language like:
-   - "I've completed work on this thread. Please verify the changes and reply were appropriate before I move to the next thread."
-   - "Ready to move to the next comment? Please confirm."
-   - "Please review this work before I continue."
+### Dismissed (2 threads)
 
-3. **Wait for explicit user response** - Do not continue until the user responds with approval (e.g., "yes", "continue", "looks good", etc.)
+| # | Thread | File | Concern | Reason |
+|---|--------|------|---------|--------|
+| 3 | https://github.com/owner/repo/pull/123#discussion_r333 | src/baz.ts:88 | Suggestion doesn't apply | Already handled by validation on L72 |
+| 6 | https://github.com/owner/repo/pull/123#discussion_r666 | src/core.ts:55 | Refactor loop | Current structure is clearer for this case |
 
-**Never** process multiple threads in a single response. Always pause after each one.
+### Skipped (0 threads)
 
-#### 3.9 Complete the Todo/Task and Continue
+(none)
+```
 
-Only after receiving user approval:
-1. Mark the task as completed for this comment thread
-2. Move on to the next thread (returning to step 3.1)
+Every thread row MUST include the fully-qualified GitHub URL as bare text (not markdown link syntax). CLI terminals auto-linkify raw URLs but don't render `[text](url)` as clickable.
 
 ---
 
@@ -358,15 +378,15 @@ Reply guidelines:
 
 ## Best Practices
 
-1. **ALWAYS PAUSE FOR USER VERIFICATION**: After completing each comment/thread, STOP and explicitly ask the user to verify your work before continuing. Never process multiple threads without user approval between each one.
-2. **Read Before Acting**: Always read the current code before suggesting or making changes
-3. **Context Matters**: Consider the full thread conversation, not just the latest comment
-4. **One Thread at a Time**: Complete each thread fully before moving to the next - do not batch process
+1. **Classify Before Acting**: Load all threads upfront and classify before doing any work
+2. **One Upfront Checkpoint**: Present the full plan once, let the user adjust, then execute
+3. **Read Before Acting**: Always read the current code before suggesting or making changes
+4. **Context Matters**: Consider the full thread conversation, not just the latest comment
 5. **Commit Hash Required**: Never reply to a comment about a fix without including the commit hash
 6. **Push Early**: Push changes immediately so they're visible in the GitHub UI
 7. **Think Critically**: Not all suggestions need to be implemented - use judgment
 8. **Respect Patterns**: Follow existing code patterns and project conventions
-9. **Clear Communication**: When pausing, provide a clear summary and ask explicit questions
+9. **Fully-Qualified Links Everywhere**: Every thread reference in both the upfront and final summary must include the fully-qualified GitHub URL as bare text (not `[text](url)` markdown syntax) — CLI terminals auto-linkify raw URLs but don't render markdown links
 
 ---
 
@@ -400,8 +420,9 @@ If no threads are returned, all comments may already be resolved. Verify on GitH
 
 All scripts are located in `${CLAUDE_SKILL_DIR}/scripts/`:
 
-- **list-comment-ids.sh**: Get all unresolved PR comment thread IDs
-- **get-comment-thread.sh**: Get full thread data by thread ID
+- **list-threads-for-classification.sh**: Get all unresolved threads with full comment bodies for classification (no diffHunks)
+- **list-comment-ids.sh**: Get all unresolved PR comment thread IDs (lightweight, IDs and previews only)
+- **get-comment-thread.sh**: Get full thread data by thread ID (includes diffHunks)
 - **get-single-comment.sh**: Get single comment thread by comment URL
 - **reply-to-comment.sh**: Post a reply to a comment thread
 

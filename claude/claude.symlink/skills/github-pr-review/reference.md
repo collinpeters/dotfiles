@@ -13,73 +13,51 @@ This document provides detailed patterns, templates, and best practices for PR r
 
 ---
 
-## User Verification Patterns
+## Upfront Summary Pattern
 
-**CRITICAL**: After completing each comment/thread, you MUST pause and wait for explicit user approval before proceeding.
+After loading and classifying all threads, present the full plan before doing any work.
 
-### Pattern 1: After Completing a Thread with Changes
+### Pattern: Upfront Classification Summary
 
-After you've made changes, committed, and replied, provide this summary and pause:
-
-```
-## Summary of Work Completed
-
-**Thread**: [link to PR comment]
-**Author**: [reviewer name]
-**Original Concern**: [brief description]
-
-**Changes Made**:
-- [file path]: [description of change]
-
-**Commit**: [commit hash]
-
-**Reply Posted**:
-> [quote the reply you posted]
-
-**GitHub Comment**: [link to the comment you replied to]
-
----
-
-I've completed work on this thread. Please verify the changes and reply were appropriate before I move to the next thread.
-
-[STOP - WAIT FOR USER RESPONSE]
-```
-
-### Pattern 2: After Completing a Thread Without Changes (Won't Fix)
-
-When you decide not to implement a suggestion:
+**Thread links MUST be bare fully-qualified URLs** (e.g. `https://github.com/owner/repo/pull/123#discussion_r456789`), not markdown `[text](url)` syntax — CLI terminals only auto-linkify raw URLs.
 
 ```
-## Summary of Work Completed
+## PR Review Plan — N threads
 
-**Thread**: [link to PR comment]
-**Author**: [reviewer name]
-**Original Concern**: [brief description]
+### Auto-proceed (X threads)
 
-**Decision**: Not implementing this suggestion
+| # | Thread | Author | File | Concern | Action |
+|---|--------|--------|------|---------|--------|
+| 1 | https://github.com/owner/repo/pull/123#discussion_r111 | reviewer1 | src/foo.ts:42 | Typo in comment | Fix: correct spelling |
+| 2 | https://github.com/owner/repo/pull/123#discussion_r222 | reviewer2 | src/bar.ts:15 | Unused import | Fix: remove import |
+| 3 | https://github.com/owner/repo/pull/123#discussion_r333 | reviewer1 | src/baz.ts:88 | Suggestion doesn't apply | Dismiss: already handled by validation on L72 |
 
-**Reasoning**: [explanation of why]
+### Needs confirmation (Y threads)
 
-**Reply Posted**:
-> [quote the reply explaining reasoning]
-
----
-
-I've responded to this thread with reasoning. Please verify this approach is appropriate before I move to the next thread.
-
-[STOP - WAIT FOR USER RESPONSE]
+| # | Thread | Author | File | Concern | Why |
+|---|--------|--------|------|---------|-----|
+| 4 | https://github.com/owner/repo/pull/123#discussion_r444 | reviewer1 | src/auth.ts:30 | Token validation logic | Security-relevant change |
+| 5 | https://github.com/owner/repo/pull/123#discussion_r555 | reviewer2 | src/api.ts:112 | Change return type | Public API change |
 ```
 
-### Pattern 3: Asking for User Decision
+Then pause once with user options:
+- **go** — start execution as planned
+- **confirm #N** — promote an auto-proceed item to needs-confirmation
+- **auto #N** — demote a needs-confirmation item to auto-proceed
+- **confirm all** — pause on every item
+- **auto all** — proceed through everything without pausing
 
-When you're uncertain about a suggestion:
+### Pattern: Needs-Confirmation Pause (During Execution)
+
+For items classified as needs-confirmation, pause before executing:
 
 ```
-## Thread Analysis
+## Thread #4 — Needs Confirmation
 
-**Thread**: [link to PR comment]
-**Author**: [reviewer name]
-**Concern**: [description]
+**Thread**: [link]
+**Author**: reviewer1
+**File**: src/auth.ts:30
+**Concern**: Token validation logic
 
 **Current Code**:
 ```[language]
@@ -88,49 +66,36 @@ When you're uncertain about a suggestion:
 
 **Reviewer's Suggestion**: [what they want changed]
 
-**My Analysis**: [your assessment]
+**My Plan**: [what I intend to do]
 
-**Options**:
-1. Implement the suggestion as requested
-2. Implement with modifications: [describe]
-3. Decline with reasoning: [explain]
-
-What would you like me to do with this comment?
-
-[STOP - WAIT FOR USER DECISION]
+Proceed with this fix?
 ```
 
-### Pattern 4: User Approval Responses
+### Pattern: Final Summary
 
-After pausing, wait for responses like:
-- ✅ "continue" / "yes" / "proceed" / "next" / "looks good"
-- ✅ "go ahead" / "approved" / "ok" / "lgtm"
-- ❌ "wait" / "hold on" / "let me check" / "not yet"
-- ❌ "make this change first..." (requires additional work)
+After all threads are processed:
 
-**Only continue to the next thread when you receive explicit approval.**
+```
+## PR Review Complete — N threads processed
 
-### What NOT to Do
+### Fixed (X threads)
 
-❌ **Don't batch process**: Never handle multiple threads in one response
-❌ **Don't assume approval**: Never continue without explicit user confirmation
-❌ **Don't be vague**: Don't say "moving to next thread" without pausing
-❌ **Don't skip summaries**: Always provide detailed summary before pausing
+| # | Thread | File | Change | Commit |
+|---|--------|------|--------|--------|
+| 1 | https://github.com/owner/repo/pull/123#discussion_r111 | src/foo.ts:42 | Corrected typo | abc1234 |
 
-### Communication Templates
+### Dismissed (Y threads)
 
-**When pausing after completing a thread:**
-- "I've completed work on this thread. Please verify the changes and reply were appropriate before I move to the next thread."
-- "Ready to move to the next comment? Please confirm."
-- "Please review this work before I continue to the next thread."
+| # | Thread | File | Concern | Reason |
+|---|--------|------|---------|--------|
+| 3 | https://github.com/owner/repo/pull/123#discussion_r333 | src/baz.ts:88 | Doesn't apply | Already handled on L72 |
 
-**When waiting for decision:**
-- "I need your input on this comment before proceeding. What would you like me to do?"
-- "This suggestion requires a decision. Should I implement it, modify it, or decline it?"
+### Skipped (Z threads)
 
-**When acknowledging approval:**
-- "Thanks! Moving to the next thread now."
-- "Acknowledged. Proceeding with thread #2..."
+(none)
+```
+
+Every thread row MUST include the fully-qualified GitHub URL as bare text (not markdown link syntax) so CLI terminals can auto-linkify it.
 
 ---
 
@@ -609,10 +574,13 @@ If you believe a suggestion shouldn't be implemented:
 ## Quick Reference Commands
 
 ```bash
-# List unresolved threads
+# Load all unresolved threads with classification data (bodies, paths — no diffHunks)
+bash skills/github-pr-review/scripts/list-threads-for-classification.sh "PR_URL"
+
+# List unresolved thread IDs only (lightweight)
 bash skills/github-pr-review/scripts/list-comment-ids.sh "PR_URL"
 
-# Get specific thread
+# Get full thread data including diffHunks (for execution phase)
 bash skills/github-pr-review/scripts/get-comment-thread.sh "THREAD_ID"
 
 # Get single comment by URL

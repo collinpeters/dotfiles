@@ -156,7 +156,7 @@ bash ${CLAUDE_SKILL_DIR}/scripts/get-comment-thread.sh "THREAD_ID"
 **Before doing any work on this thread**, check its classification from the upfront plan:
 
 - **Auto-proceed items**: continue to step 5.3.
-- **Needs-confirmation items** (including items the user promoted, or ALL items if the user said "confirm all"): **STOP HERE**. Do not read code. Do not make changes. Do not commit. Present this to the user and wait for explicit approval:
+- **Needs-confirmation items** (including items the user promoted, or ALL items if the user said "confirm all"): **STOP HERE**. You MAY read the code to form a concrete plan, but do NOT make changes, stage anything, or commit. Present this to the user and wait for explicit approval:
 
   ```
   ## Thread #N — Needs Confirmation
@@ -453,7 +453,7 @@ Reply guidelines:
 
 1. **Classify Before Acting**: Load all threads upfront and classify before doing any work
 2. **One Upfront Checkpoint**: Present the full plan once, let the user adjust, then execute
-3. **🛑 Needs-Confirmation Means Stop**: When a thread is classified as needs-confirmation (or promoted by the user), you MUST pause at step 5.2 BEFORE reading code or making changes. Present the plan and wait for explicit approval. Auto-proceeding past this is a hard violation of the workflow, not an optimization.
+3. **🛑 Needs-Confirmation Means Stop**: When a thread is classified as needs-confirmation (or promoted by the user), you MUST pause at step 5.2 BEFORE making any code changes. You may read the code to form a concrete plan, but presenting the plan and receiving explicit approval comes before any edits, staging, or commits. Auto-proceeding past this is a hard violation of the workflow, not an optimization.
 4. **🔒 One Commit Per Thread (Default)**: Every thread that gets a fix gets its own commit. The only exception: threads that describe the *same underlying issue* with the *same fix* may share a commit — decided up front, not retroactively. When in doubt, commit separately. See step 5.4 for the full rules.
 5. **Read Before Acting**: Always read the current code before suggesting or making changes
 6. **Context Matters**: Consider the full thread conversation, not just the latest comment

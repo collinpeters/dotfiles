@@ -410,7 +410,7 @@ Determine if the feedback is:
 
 ### Pattern: Single Fix Commit
 
-For single-file, focused fixes:
+For single-file, focused fixes (commit locally — push is deferred to Step 6):
 
 ```bash
 # Stage specific file
@@ -422,13 +422,13 @@ git commit -m "Fix null check in processUser function
 Addresses PR review comment about potential null pointer.
 Adds explicit null check before accessing user.profile."
 
-# Push to feature branch
-git push
+# Capture the commit hash for the thread tracker
+git rev-parse --short HEAD
 ```
 
 ### Pattern: Multi-file Fix
 
-For fixes spanning multiple files:
+For fixes spanning multiple files (still a single thread — still one commit):
 
 ```bash
 # Stage each file individually
@@ -444,8 +444,18 @@ Addresses PR review comment about missing validation.
 - Updated User model to validate on creation
 - Added tests for validation edge cases"
 
-# Push to feature branch
-git push
+# Capture the commit hash for the thread tracker
+git rev-parse --short HEAD
+```
+
+### Pattern: Deferred Push
+
+All thread commits are pushed together at the end of the review, not after each one. This keeps CI runs to a single build:
+
+```bash
+# After all threads have been processed and committed locally:
+git log --oneline origin/<branch>..HEAD   # Sanity check the local commits
+git push                                   # One push, one CI run
 ```
 
 ### Pattern: Get Latest Commit Hash
@@ -595,6 +605,9 @@ git rev-parse --short HEAD
 # Check current branch
 git branch --show-current
 
-# Stage and commit
-git add FILE && git commit -m "MESSAGE" && git push
+# Stage and commit (push is deferred to Step 6 — one push for all review commits)
+git add FILE && git commit -m "MESSAGE"
+
+# Push once, after all review commits are done
+git push
 ```

@@ -2,6 +2,8 @@
 
 This document provides real-world examples of PR comment scenarios and how to address them.
 
+> **Note on `git push` in these examples:** Each example below shows `git push` inline with the commit for readability of the per-thread workflow. In the actual execution, pushing is deferred to Step 6 — you commit each thread locally, then push once at the end of the whole review so CI runs one build instead of one per thread. See `SKILL.md` Step 6 for the authoritative sequence.
+
 ## Table of Contents
 
 - [Example 1: Null Check Missing](#example-1-null-check-missing)

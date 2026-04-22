@@ -139,7 +139,9 @@ Then **pause once** and ask:
 
 ### Step 5: Execute Each Thread
 
-Process threads **one at a time**, in order. For each thread, follow 5.1 → 5.6 completely before starting the next thread. **Never batch work across threads** — each thread must get its own fix, its own commit, and its own reply before you touch the next one.
+Process threads **one at a time**, in order. For each thread, follow 5.1 → 5.5 completely before starting the next thread. **Never batch code changes across threads** — each thread's fix is implemented and committed separately.
+
+**Important — push and reply are deferred:** During Step 5, commit locally but do **NOT** push, and do **NOT** post replies. Keep a running tracker of thread → (commit hash, planned reply text) pairs as you work. All pushes and all replies happen together in Step 6 after every thread has been processed. This keeps CI runs to a single build instead of N, and avoids stale commit-hash citations if a later commit amends or reorders things.
 
 #### 5.1 Load Full Thread Details
 
@@ -184,17 +186,17 @@ bash ${CLAUDE_SKILL_DIR}/scripts/get-comment-thread.sh "THREAD_ID"
 - Read the current state of the code
 - Consider the entire conversation context
 
-#### 5.4 Implement the Fix (or Dismiss)
+#### 5.4 Implement and Commit the Fix (or Record a Dismissal)
 
 **If fixing — default to one commit per thread:**
 
 1. Make the code change for THIS thread only
 2. Stage ONLY the files you modified for THIS thread (`git add <specific files>`, never `git add .` or `git add -A`)
 3. Commit with a descriptive message referencing this thread's concern
-4. Push to the feature branch
-5. Capture the commit hash for use in the reply (`git rev-parse --short HEAD`)
+4. **DO NOT push yet** — pushing is deferred to Step 6 so CI runs once for the whole review
+5. Capture the commit hash with `git rev-parse --short HEAD` and record it in your thread tracker alongside the planned reply text — commit hashes are stable locally and the same hash will be present on the remote after Step 6's push
 
-**🚫 Do NOT batch commits across threads as a default.** The default is always one commit per thread. Do not accumulate unrelated fixes and commit them together at the end.
+**🚫 Do NOT batch commits across threads as a default.** The default is always one commit per thread. Do not accumulate unrelated fixes and commit them together.
 
 **Narrow exception — genuinely-shared fix across threads:** If two (or more) threads describe the **same underlying issue** and the fix is literally the same change (not "similar" — the *same*), you may make a judgment call to combine them into a single commit. Legitimate cases:
 
@@ -203,15 +205,39 @@ bash ${CLAUDE_SKILL_DIR}/scripts/get-comment-thread.sh "THREAD_ID"
 
 When you combine threads into one commit:
 - Make the decision BEFORE writing code. Don't batch retroactively after fixing each one separately.
-- Reply to EACH thread individually, citing the same commit hash in each reply, and note in each reply that this fix also resolves thread #N (with the other thread's fully-qualified URL).
+- In your tracker, record the same commit hash against each of the combined threads. Each thread will still get its own reply in Step 6, and each reply will note that this fix also resolves thread #N (with the other thread's fully-qualified URL).
 - Record the combination in the final summary so the audit trail is clear.
 
 If you are unsure whether two threads qualify for combining, commit them separately — that is always safe.
 
 **If dismissing:**
-No code changes needed. Proceed directly to replying.
+No code changes needed. Record the planned dismissal reply in your tracker and move on to the next thread.
 
-#### 5.5 Reply to the Thread
+#### 5.5 Move to Next Thread
+
+Return to step 5.1 for the next thread. At this point you have a local commit (if fixing) and a planned reply, but nothing has been pushed or posted yet.
+
+### Step 6: Push Once and Post All Replies
+
+After all threads in Step 5 have been processed (all needs-confirmation pauses resolved, all fixes committed locally, all dismissals recorded):
+
+#### 6.1 Verify Local State
+
+- Run `git log --oneline origin/<branch>..HEAD` (or `git status`) to confirm your local commits match the tracker.
+- Confirm every tracker entry has either a commit hash (fix) or a dismissal note.
+- If anything looks inconsistent (missing commit, extra commit, wrong hash), pause and investigate rather than pushing.
+
+#### 6.2 Push Once
+
+```bash
+git push
+```
+
+A single push triggers a single CI run for all the review fixes — the reason replies are deferred. If the push fails (e.g., remote has new commits), resolve the conflict and retry; do not post replies until the push succeeds, since the commit hashes must be reachable on the remote for reviewers to follow them.
+
+#### 6.3 Post All Replies
+
+For each thread in the tracker, post its reply using the recorded commit hash (or dismissal reasoning):
 
 ```bash
 bash ${CLAUDE_SKILL_DIR}/scripts/reply-to-comment.sh "THREAD_ID" "YOUR_REPLY_MESSAGE"
@@ -226,7 +252,7 @@ Addressed the concern about {original_issue}.
 🤖 Generated with Claude Code
 ```
 
-**ALWAYS** include the commit hash from step 5.4 — the commit that contains THIS thread's fix, not a later batched commit.
+**ALWAYS** include the commit hash from the tracker — the commit that contains THIS thread's fix. For combined threads, the same hash appears in multiple replies and each reply notes the other thread's URL.
 
 **If dismissed, use this reply format:**
 ```
@@ -235,11 +261,9 @@ Evaluated this suggestion. {reasoning_for_not_implementing}
 🤖 Generated with Claude Code
 ```
 
-#### 5.6 Move to Next Thread
+If a reply fails to post, retry that specific reply; do not re-push or re-commit.
 
-Only after this thread's fix is committed, pushed, and its reply posted, return to step 5.1 for the next thread.
-
-### Step 6: Final Summary
+### Step 7: Final Summary
 
 After all threads are processed, present a consolidated summary:
 
@@ -405,13 +429,13 @@ When implementing fixes:
 ### Committing Changes
 
 Follow these git practices:
-1. **Default: one commit per thread.** Commit each thread's fix immediately, before moving on. Do not accumulate changes across threads and commit them together at the end.
+1. **Default: one commit per thread.** Commit each thread's fix locally before moving on. Do not accumulate changes across threads and commit them together at the end.
 2. **Exception**: threads describing the *same underlying issue* with the *same fix* may be combined into one commit — see step 5.4 for the rules (decision made up front, each thread replied to individually citing the shared commit, combination recorded in final summary).
 3. Stage only the files you modified for THIS thread's fix (`git add <file>`, never `git add .` or `git add -A`)
 4. Write clear, descriptive commit messages
 5. Reference the PR comment concern in the commit message
-6. Push immediately after committing so the commit hash is available for the reply
-7. Capture the commit hash with `git rev-parse --short HEAD` immediately after the commit, so the reply references THIS thread's commit, not a later one
+6. **Commit locally, do NOT push per-thread.** Pushing is deferred to Step 6 so CI runs once for the whole review instead of once per commit.
+7. Capture the commit hash with `git rev-parse --short HEAD` immediately after committing, and record it in your thread tracker. The hash is stable — the same value will be on the remote after Step 6's push.
 8. Never commit directly to main/master branch
 
 ### Replying to Comments
@@ -434,7 +458,7 @@ Reply guidelines:
 5. **Read Before Acting**: Always read the current code before suggesting or making changes
 6. **Context Matters**: Consider the full thread conversation, not just the latest comment
 7. **Commit Hash Required**: Never reply to a comment about a fix without including the commit hash
-8. **Push Early**: Push changes immediately so they're visible in the GitHub UI
+8. **Push Once at the End**: Commit per-thread locally, but push once in Step 6 after all fixes are done. A single push triggers a single CI run instead of one build per commit.
 9. **Think Critically**: Not all suggestions need to be implemented - use judgment
 10. **Respect Patterns**: Follow existing code patterns and project conventions
 11. **Fully-Qualified Links Everywhere**: Every thread reference in both the upfront and final summary must include the fully-qualified GitHub URL as bare text (not `[text](url)` markdown syntax) — CLI terminals auto-linkify raw URLs but don't render markdown links

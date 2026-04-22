@@ -186,7 +186,7 @@ bash ${CLAUDE_SKILL_DIR}/scripts/get-comment-thread.sh "THREAD_ID"
 
 #### 5.4 Implement the Fix (or Dismiss)
 
-**If fixing — one commit per thread, no exceptions:**
+**If fixing — default to one commit per thread:**
 
 1. Make the code change for THIS thread only
 2. Stage ONLY the files you modified for THIS thread (`git add <specific files>`, never `git add .` or `git add -A`)
@@ -194,13 +194,19 @@ bash ${CLAUDE_SKILL_DIR}/scripts/get-comment-thread.sh "THREAD_ID"
 4. Push to the feature branch
 5. Capture the commit hash for use in the reply (`git rev-parse --short HEAD`)
 
-**🚫 NEVER batch commits across threads.** Each thread gets its own commit, even if:
-- Two threads touch the same file
-- Two threads have nearly identical fixes
-- It would be "more efficient" to combine them
-- The fixes are trivial
+**🚫 Do NOT batch commits across threads as a default.** The default is always one commit per thread. Do not accumulate unrelated fixes and commit them together at the end.
 
-Batching makes it impossible to cite an accurate commit hash in each reply, defeats per-thread review, and destroys the audit trail the reviewer expects. If you find yourself about to stage changes from multiple threads together, **stop and commit each one separately.**
+**Narrow exception — genuinely-shared fix across threads:** If two (or more) threads describe the **same underlying issue** and the fix is literally the same change (not "similar" — the *same*), you may make a judgment call to combine them into a single commit. Legitimate cases:
+
+- Two reviewers independently flagged the exact same line/concern.
+- The same bug appears in multiple files (e.g., a count is off-by-one in two places, or the same typo recurs) and a single logical fix addresses all of them.
+
+When you combine threads into one commit:
+- Make the decision BEFORE writing code. Don't batch retroactively after fixing each one separately.
+- Reply to EACH thread individually, citing the same commit hash in each reply, and note in each reply that this fix also resolves thread #N (with the other thread's fully-qualified URL).
+- Record the combination in the final summary so the audit trail is clear.
+
+If you are unsure whether two threads qualify for combining, commit them separately — that is always safe.
 
 **If dismissing:**
 No code changes needed. Proceed directly to replying.
@@ -399,13 +405,14 @@ When implementing fixes:
 ### Committing Changes
 
 Follow these git practices:
-1. **One commit per thread — no batching.** Commit the fix for each thread immediately, before moving on. Never accumulate changes across multiple threads and then commit them together.
-2. Stage only the files you modified for THIS thread's fix (`git add <file>`, never `git add .` or `git add -A`)
-3. Write clear, descriptive commit messages
-4. Reference the PR comment concern in the commit message
-5. Push immediately after committing so the commit hash is available for the reply
-6. Capture the commit hash with `git rev-parse --short HEAD` immediately after the commit, so the reply references THIS thread's commit, not a later one
-7. Never commit directly to main/master branch
+1. **Default: one commit per thread.** Commit each thread's fix immediately, before moving on. Do not accumulate changes across threads and commit them together at the end.
+2. **Exception**: threads describing the *same underlying issue* with the *same fix* may be combined into one commit — see step 5.4 for the rules (decision made up front, each thread replied to individually citing the shared commit, combination recorded in final summary).
+3. Stage only the files you modified for THIS thread's fix (`git add <file>`, never `git add .` or `git add -A`)
+4. Write clear, descriptive commit messages
+5. Reference the PR comment concern in the commit message
+6. Push immediately after committing so the commit hash is available for the reply
+7. Capture the commit hash with `git rev-parse --short HEAD` immediately after the commit, so the reply references THIS thread's commit, not a later one
+8. Never commit directly to main/master branch
 
 ### Replying to Comments
 
@@ -423,7 +430,7 @@ Reply guidelines:
 1. **Classify Before Acting**: Load all threads upfront and classify before doing any work
 2. **One Upfront Checkpoint**: Present the full plan once, let the user adjust, then execute
 3. **🛑 Needs-Confirmation Means Stop**: When a thread is classified as needs-confirmation (or promoted by the user), you MUST pause at step 5.2 BEFORE reading code or making changes. Present the plan and wait for explicit approval. Auto-proceeding past this is a hard violation of the workflow, not an optimization.
-4. **🔒 One Commit Per Thread**: Every thread that gets a fix gets its own commit — no batching, ever. Even if two threads touch the same file, commit each separately. The reply's commit hash must point to a commit that contains only that thread's fix.
+4. **🔒 One Commit Per Thread (Default)**: Every thread that gets a fix gets its own commit. The only exception: threads that describe the *same underlying issue* with the *same fix* may share a commit — decided up front, not retroactively. When in doubt, commit separately. See step 5.4 for the full rules.
 5. **Read Before Acting**: Always read the current code before suggesting or making changes
 6. **Context Matters**: Consider the full thread conversation, not just the latest comment
 7. **Commit Hash Required**: Never reply to a comment about a fix without including the commit hash

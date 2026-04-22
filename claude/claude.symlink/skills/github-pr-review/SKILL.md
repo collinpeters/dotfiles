@@ -126,7 +126,7 @@ Example format:
 
 Then **pause once** and ask:
 
-> "This is my plan for the PR review. Auto-proceed items will be fixed or dismissed without stopping. I'll pause on each needs-confirmation item for your input. You can:
+> "This is my plan for the PR review. Auto-proceed items will be fixed or dismissed without stopping. **Each needs-confirmation item will be a hard stop** — I'll present the concrete plan for that thread and wait for your explicit approval before touching any code. You can:
 > - Promote any auto-proceed item to needs-confirmation (e.g., 'confirm #2')
 > - Demote any needs-confirmation item to auto-proceed (e.g., 'auto #5')
 > - Say **go** to start execution as planned
@@ -135,9 +135,11 @@ Then **pause once** and ask:
 
 **Wait for the user's response before continuing.**
 
-### Step 5: Execute All Threads
+**Reminder**: Once execution starts, every needs-confirmation thread MUST trigger a pause per step 5.2 — the classification is a promise to the user, not a preference. Do not reclassify threads mid-execution to avoid pausing.
 
-Process every thread in order. For each thread:
+### Step 5: Execute Each Thread
+
+Process threads **one at a time**, in order. For each thread, follow 5.1 → 5.6 completely before starting the next thread. **Never batch work across threads** — each thread must get its own fix, its own commit, and its own reply before you touch the next one.
 
 #### 5.1 Load Full Thread Details
 
@@ -147,23 +149,63 @@ Fetch the complete thread data including diffHunks:
 bash ${CLAUDE_SKILL_DIR}/scripts/get-comment-thread.sh "THREAD_ID"
 ```
 
-#### 5.2 Read and Analyze the Code
+#### 5.2 🛑 CHECKPOINT: Pause If This Is a Needs-Confirmation Thread
+
+**Before doing any work on this thread**, check its classification from the upfront plan:
+
+- **Auto-proceed items**: continue to step 5.3.
+- **Needs-confirmation items** (including items the user promoted, or ALL items if the user said "confirm all"): **STOP HERE**. Do not read code. Do not make changes. Do not commit. Present this to the user and wait for explicit approval:
+
+  ```
+  ## Thread #N — Needs Confirmation
+
+  **Thread**: [fully-qualified URL]
+  **Author**: [name]
+  **File**: [path:line]
+  **Concern**: [summary]
+
+  **Current Code**:
+  [code snippet from diffHunk or current file]
+
+  **My Plan**: [concrete description of what you intend to change]
+
+  Proceed with this fix?
+  ```
+
+  **Wait for the user's explicit response** (e.g., "yes", "go", "proceed", or instructions to modify the plan). If they say no or give new direction, adjust and re-confirm. Do NOT continue to step 5.3 until you have explicit approval for THIS thread.
+
+- If the user said "stop" or "pause" at any earlier point, respect that and wait.
+
+**Do not rationalize your way past this checkpoint.** The whole purpose of the upfront classification is to identify threads where the user wants input. Skipping this pause defeats the entire workflow.
+
+#### 5.3 Read and Analyze the Code
 
 - Identify the specific code location (`path`, `line`, `diffHunk`)
 - Read the current state of the code
 - Consider the entire conversation context
 
-#### 5.3 Implement the Fix (or Dismiss)
+#### 5.4 Implement the Fix (or Dismiss)
 
-**If fixing:**
-1. Make the code change
-2. Stage and commit with a descriptive message
-3. Push to the feature branch
+**If fixing — one commit per thread, no exceptions:**
+
+1. Make the code change for THIS thread only
+2. Stage ONLY the files you modified for THIS thread (`git add <specific files>`, never `git add .` or `git add -A`)
+3. Commit with a descriptive message referencing this thread's concern
+4. Push to the feature branch
+5. Capture the commit hash for use in the reply (`git rev-parse --short HEAD`)
+
+**🚫 NEVER batch commits across threads.** Each thread gets its own commit, even if:
+- Two threads touch the same file
+- Two threads have nearly identical fixes
+- It would be "more efficient" to combine them
+- The fixes are trivial
+
+Batching makes it impossible to cite an accurate commit hash in each reply, defeats per-thread review, and destroys the audit trail the reviewer expects. If you find yourself about to stage changes from multiple threads together, **stop and commit each one separately.**
 
 **If dismissing:**
 No code changes needed. Proceed directly to replying.
 
-#### 5.4 Reply to the Thread
+#### 5.5 Reply to the Thread
 
 ```bash
 bash ${CLAUDE_SKILL_DIR}/scripts/reply-to-comment.sh "THREAD_ID" "YOUR_REPLY_MESSAGE"
@@ -178,7 +220,7 @@ Addressed the concern about {original_issue}.
 🤖 Generated with Claude Code
 ```
 
-**ALWAYS** include the commit hash when a fix was made.
+**ALWAYS** include the commit hash from step 5.4 — the commit that contains THIS thread's fix, not a later batched commit.
 
 **If dismissed, use this reply format:**
 ```
@@ -187,11 +229,9 @@ Evaluated this suggestion. {reasoning_for_not_implementing}
 🤖 Generated with Claude Code
 ```
 
-#### 5.5 Pause If Needed
+#### 5.6 Move to Next Thread
 
-- **Auto-proceed items**: continue immediately to the next thread.
-- **Needs-confirmation items** (or items the user promoted): pause, present what you plan to do for this thread, and wait for the user's approval before executing.
-- At any point, if the user said "stop" or "pause" during the upfront summary, respect that override.
+Only after this thread's fix is committed, pushed, and its reply posted, return to step 5.1 for the next thread.
 
 ### Step 6: Final Summary
 
@@ -359,11 +399,13 @@ When implementing fixes:
 ### Committing Changes
 
 Follow these git practices:
-1. Stage only the files you modified for this specific fix
-2. Write clear, descriptive commit messages
-3. Reference the PR comment concern in the commit message
-4. Push immediately after committing
-5. Never commit directly to main/master branch
+1. **One commit per thread — no batching.** Commit the fix for each thread immediately, before moving on. Never accumulate changes across multiple threads and then commit them together.
+2. Stage only the files you modified for THIS thread's fix (`git add <file>`, never `git add .` or `git add -A`)
+3. Write clear, descriptive commit messages
+4. Reference the PR comment concern in the commit message
+5. Push immediately after committing so the commit hash is available for the reply
+6. Capture the commit hash with `git rev-parse --short HEAD` immediately after the commit, so the reply references THIS thread's commit, not a later one
+7. Never commit directly to main/master branch
 
 ### Replying to Comments
 
@@ -380,13 +422,15 @@ Reply guidelines:
 
 1. **Classify Before Acting**: Load all threads upfront and classify before doing any work
 2. **One Upfront Checkpoint**: Present the full plan once, let the user adjust, then execute
-3. **Read Before Acting**: Always read the current code before suggesting or making changes
-4. **Context Matters**: Consider the full thread conversation, not just the latest comment
-5. **Commit Hash Required**: Never reply to a comment about a fix without including the commit hash
-6. **Push Early**: Push changes immediately so they're visible in the GitHub UI
-7. **Think Critically**: Not all suggestions need to be implemented - use judgment
-8. **Respect Patterns**: Follow existing code patterns and project conventions
-9. **Fully-Qualified Links Everywhere**: Every thread reference in both the upfront and final summary must include the fully-qualified GitHub URL as bare text (not `[text](url)` markdown syntax) — CLI terminals auto-linkify raw URLs but don't render markdown links
+3. **🛑 Needs-Confirmation Means Stop**: When a thread is classified as needs-confirmation (or promoted by the user), you MUST pause at step 5.2 BEFORE reading code or making changes. Present the plan and wait for explicit approval. Auto-proceeding past this is a hard violation of the workflow, not an optimization.
+4. **🔒 One Commit Per Thread**: Every thread that gets a fix gets its own commit — no batching, ever. Even if two threads touch the same file, commit each separately. The reply's commit hash must point to a commit that contains only that thread's fix.
+5. **Read Before Acting**: Always read the current code before suggesting or making changes
+6. **Context Matters**: Consider the full thread conversation, not just the latest comment
+7. **Commit Hash Required**: Never reply to a comment about a fix without including the commit hash
+8. **Push Early**: Push changes immediately so they're visible in the GitHub UI
+9. **Think Critically**: Not all suggestions need to be implemented - use judgment
+10. **Respect Patterns**: Follow existing code patterns and project conventions
+11. **Fully-Qualified Links Everywhere**: Every thread reference in both the upfront and final summary must include the fully-qualified GitHub URL as bare text (not `[text](url)` markdown syntax) — CLI terminals auto-linkify raw URLs but don't render markdown links
 
 ---
 

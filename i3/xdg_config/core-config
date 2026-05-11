@@ -195,7 +195,6 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightne
 for_window [class="Pavucontrol" instance="pavucontrol"] floating enable
 
 # app workspace assignments
-assign [class="jetbrains-idea"] workspace 2
 assign [class="Slack"] workspace 4
 assign [class="Spotify"] workspace 5
 

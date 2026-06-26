@@ -83,6 +83,7 @@ prefix = "ctrl+a"
 # remote_image_paste = "ctrl+v" # only active in herdr --remote; empty disables raw-key image paste
 # new_tab = "prefix+c"
 # rename_tab = "prefix+shift+t"
+rename_tab = "prefix+,"
 # previous_tab = "prefix+p"
 # next_tab = "prefix+n"
 # switch_tab = "prefix+1..9"
@@ -271,7 +272,7 @@ pane_history = false
 [[keys.command]]
 key = "prefix+ctrl+f"
 type = "pane"
-command = "/home/collin/.config/herdr/scripts/herdr-sessionizer"
+command = "~/.config/herdr/scripts/herdr-sessionizer"
 description = "sessionizer: fuzzy open/resume a project"
 
 # Fuzzy-switch between existing workspaces (mirrors tmux prefix+C-j). Same fzf
@@ -280,7 +281,7 @@ description = "sessionizer: fuzzy open/resume a project"
 [[keys.command]]
 key = "prefix+ctrl+j"
 type = "pane"
-command = "/home/collin/.config/herdr/scripts/herdr-switcher"
+command = "~/.config/herdr/scripts/herdr-switcher"
 description = "sessionizer: fuzzy switch between workspaces"
 
 # New worktrees created via Herdr's built-in worktree actions (e.g. prefix+shift+g)

@@ -76,8 +76,8 @@ settings = "prefix+shift+s"
 # remove_worktree = ""  # optional, unset by default; opens confirmation
 # rename_workspace = "prefix+shift+w"
 # close_workspace = "prefix+shift+d"
-# previous_workspace = "" # optional, unset by default
-# next_workspace = ""     # optional, unset by default
+previous_workspace = "ctrl+shift+tab" # optional, unset by default
+next_workspace = "ctrl+tab"     # optional, unset by default
 # previous_agent = ""     # optional, unset by default
 # next_agent = ""         # optional, unset by default
 # focus_agent = ""        # optional indexed binding, e.g. "prefix+alt+1..9"
@@ -293,6 +293,14 @@ key = "prefix+."
 type = "plugin_action"
 command = "third774.last-workspace.toggle"
 description = "last workspace"
+
+# Create/resume a Git worktree via `wtp` (runs .wtp.yaml hooks), opened as a
+# workspace. Trigger from inside a project pane.
+[[keys.command]]
+key = "prefix+ctrl+g"
+type = "pane"
+command = "~/.config/herdr/scripts/herdr-wtp"
+description = "worktree: create/resume via wtp"
 
 # New worktrees created via Herdr's built-in worktree actions (e.g. prefix+shift+g)
 # land here, matching the existing ~/dev/worktrees convention. The sessionizer

@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# herdr-wtp — create (or resume) a Git worktree via `wtp`, then open it as a
+# Herdr workspace. Uses `wtp add` so .wtp.yaml hooks (file copying, setup) run.
+#
+# Wired in config.toml as a type="pane" keybind so fzf gets a real TTY. Runs in
+# the focused pane's repo (HERDR_ACTIVE_PANE_CWD), so trigger it from a project.
+set -uo pipefail
+
+cd "${HERDR_ACTIVE_PANE_CWD:-$PWD}" 2>/dev/null || exit 0
+
+# Pick an existing branch, or type a new name (created with `wtp add -b`).
+branches=$({ git for-each-ref --format='%(refname:short)' refs/heads
+             git for-each-ref --format='%(refname:short)' refs/remotes | grep / | sed 's#^origin/##'
+           } | grep -vx HEAD | sort -u)
+out=$(printf '%s\n' "$branches" | fzf --reverse --print-query \
+        --prompt "worktree branch> " \
+        --header "Enter on an existing branch, or type a new name + Enter")
+query=$(sed -n '1p' <<<"$out"); choice=$(sed -n '2p' <<<"$out")
+
+if   [[ -n $choice ]]; then branch=$choice; path=$(wtp add "$branch" -q 2>/dev/null | tail -n1)
+elif [[ -n $query  ]]; then branch=$query;  path=$(wtp add -b "$branch" -q 2>/dev/null | tail -n1)
+else exit 0; fi
+
+# Already exists → resume by resolving its path.
+[[ -z $path ]] && path=$(wtp cd "$branch" 2>/dev/null | tail -n1)
+[[ -z $path ]] && { echo "wtp: couldn't create/find worktree for '$branch'"; sleep 2; exit 1; }
+
+# Create-or-resume the Herdr workspace for that worktree (label = dir name).
+name=$(basename "$path" | tr . _)
+id=$(herdr workspace list | jq -r --arg n "$name" \
+       '.result.workspaces[] | select(.label == $n) | .workspace_id' | head -n1)
+[[ -n $id ]] && herdr workspace focus "$id" || herdr workspace create --cwd "$path" --label "$name" --focus

@@ -285,6 +285,12 @@ type = "pane"
 command = "~/.config/herdr/scripts/herdr-switcher"
 description = "sessionizer: fuzzy switch between workspaces"
 
+[[keys.command]]
+key = "prefix+."
+type = "plugin_action"
+command = "third774.last-workspace.toggle"
+description = "last workspace"
+
 # New worktrees created via Herdr's built-in worktree actions (e.g. prefix+shift+g)
 # land here, matching the existing ~/dev/worktrees convention. The sessionizer
 # script above also folds existing worktrees into its picker.

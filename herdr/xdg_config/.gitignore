@@ -1,0 +1,7 @@
+# Herdr runtime / machine-specific state — not config
+*.log
+session.json
+plugins.json
+
+# Herdr-managed plugin installs (we link/develop plugins from ~/dev instead)
+plugins/github/

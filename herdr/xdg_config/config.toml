@@ -1,5 +1,4 @@
-onboarding = false
-# herdr configuration
+onboarding = false # herdr configuration
 # Place this file at ~/.config/herdr/config.toml
 
 # Show first-run notification setup on startup.
@@ -68,7 +67,7 @@ prefix = "ctrl+a"
 # detach = "prefix+q"
 # reload_config = "prefix+shift+r"
 # open_notification_target = "prefix+o"
-workspace_picker = "prefix+ctrl+j"   # switch between existing workspaces (mirrors tmux prefix+C-j)
+# workspace_picker = "prefix+w"   # unused: prefix+ctrl+j runs herdr-switcher (see [[keys.command]] below)
 # goto = "prefix+g"
 # new_workspace = "prefix+shift+n"
 # new_worktree = "prefix+shift+g"
@@ -274,6 +273,15 @@ key = "prefix+ctrl+f"
 type = "pane"
 command = "/home/collin/dev/home/dotfiles/bin/herdr-sessionizer"
 description = "sessionizer: fuzzy open/resume a project"
+
+# Fuzzy-switch between existing workspaces (mirrors tmux prefix+C-j). Same fzf
+# UX as the picker above, but over current spaces. (workspace_picker only
+# focuses the sidebar; this script gives a searchable picker like `goto`.)
+[[keys.command]]
+key = "prefix+ctrl+j"
+type = "pane"
+command = "/home/collin/dev/home/dotfiles/bin/herdr-switcher"
+description = "sessionizer: fuzzy switch between workspaces"
 
 # New worktrees created via Herdr's built-in worktree actions (e.g. prefix+shift+g)
 # land here, matching the existing ~/dev/worktrees convention. The sessionizer

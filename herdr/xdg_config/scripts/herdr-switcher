@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# herdr-switcher — fuzzy-switch between existing Herdr workspaces. A Herdr port
+# of the tmux prefix+C-j session switcher; same fzf-in-a-pane UX as
+# bin/herdr-sessionizer, but over current workspaces instead of directories.
+#
+# Wired up in herdr/xdg_config/config.toml as a type="pane" keybind so fzf
+# renders in a real pane TTY.
+set -uo pipefail
+
+# "id<TAB>label" for every workspace except the one currently focused.
+rows=$(herdr workspace list \
+  | jq -r '.result.workspaces[] | select(.focused | not) | "\(.workspace_id)\t\(.label)"')
+[[ -n ${rows:-} ]] || exit 0
+
+# Show labels; keep the id in column 1 for the focus call.
+selected=$(printf '%s\n' "$rows" \
+  | fzf --reverse --header "jump to workspace" --delimiter='\t' --with-nth=2)
+[[ -n ${selected:-} ]] || exit 0
+
+herdr workspace focus "${selected%%$'\t'*}"

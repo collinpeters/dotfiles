@@ -175,3 +175,18 @@ any = [
   { contains = ["esc to interrupt"] },
   { line_regex = ['…\s*\([0-9]'] },
 ]
+
+# Subagent / background working: the indicator renders BELOW the prompt box
+# (e.g. "◯ general-purpose … · ↓ 66.4k tokens", or "1 shell still running").
+# Key on the active token-streaming arrow (↓/↑) + "still running" so a finished
+# subagent row or the idle statusline's token count doesn't false-match.
+[[rules]]
+id = "live_working_footer"
+state = "working"
+priority = 970
+region = "bottom_non_empty_lines(10)"
+visible_working = true
+any = [
+  { line_regex = ['[\x{2193}\x{2191}]\s*[0-9][0-9.]*[kKmM]?\s*tokens'] },
+  { contains = ["shell", "still running"] },
+]

@@ -23,3 +23,5 @@ local*.md
 *.bak
 
 .wtp.yml
+
+**/.claude/settings.local.json

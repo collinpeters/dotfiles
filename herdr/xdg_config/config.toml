@@ -271,11 +271,14 @@ pane_history = false
 
 # --- Sessionizer (ThePrimeagen tmux-sessionizer port) ---
 # Fuzzy-find a project/worktree directory and create-or-resume its workspace
-# (mirrors tmux prefix+C-f). Runs as a pane so fzf gets a real TTY.
+# (mirrors tmux prefix+C-f). Runs as a session-modal popup so fzf gets a real
+# TTY while floating over the current tab layout instead of retiling it.
 [[keys.command]]
 key = "prefix+ctrl+f"
-type = "pane"
+type = "popup"
 command = "~/.config/herdr/scripts/herdr-sessionizer"
+width = "50%"
+height = "80%"
 description = "sessionizer: fuzzy open/resume a project"
 
 # Fuzzy-switch between existing workspaces (mirrors tmux prefix+C-j). Same fzf
@@ -283,8 +286,10 @@ description = "sessionizer: fuzzy open/resume a project"
 # focuses the sidebar; this script gives a searchable picker like `goto`.)
 [[keys.command]]
 key = "prefix+ctrl+j"
-type = "pane"
+type = "popup"
 command = "~/.config/herdr/scripts/herdr-switcher"
+width = "50%"
+height = "80%"
 description = "sessionizer: fuzzy switch between workspaces"
 
 [[keys.command]]

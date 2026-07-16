@@ -14,7 +14,7 @@ rows=$(herdr workspace list \
 
 # Show labels; keep the id in column 1 for the focus call.
 selected=$(printf '%s\n' "$rows" \
-  | fzf --reverse --header "jump to workspace" --delimiter='\t' --with-nth=2)
+  | fzf --reverse --border=rounded --border-label=' jump to workspace ' --delimiter='\t' --with-nth=2)
 [[ -n ${selected:-} ]] || exit 0
 
 herdr workspace focus "${selected%%$'\t'*}"

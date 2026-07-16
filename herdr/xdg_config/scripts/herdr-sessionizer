@@ -14,7 +14,7 @@ else
   selected=$({
     find ~/dev -mindepth 1 -maxdepth 2 -type d 2>/dev/null
     find ~/dev/worktrees -maxdepth 3 -name .git -type f -exec dirname {} \; 2>/dev/null
-  } | sort -u | fzf --reverse --header "open / resume project")
+  } | sort -u | fzf --reverse --border=rounded --border-label=' open / resume project ')
 fi
 [[ -n ${selected:-} ]] || exit 0
 

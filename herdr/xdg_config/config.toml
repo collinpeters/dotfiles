@@ -191,6 +191,15 @@ agent_panel_sort = "spaces"
 # Accepts: hex (#89b4fa), named colors (cyan, blue, magenta), or rgb(r,g,b)
 # accent = "cyan"
 
+# Expanded Space and Agent sidebar entries pack tightly by default (row_gap 0
+# as of 0.7.4). Restore the previous roomier spacing with a blank row between
+# entries.
+[ui.sidebar.agents]
+row_gap = 1
+
+[ui.sidebar.spaces]
+row_gap = 1
+
 # Background notification popup delivery
 [ui.toast]
 # off = disable pop-up notifications

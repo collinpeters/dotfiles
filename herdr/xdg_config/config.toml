@@ -199,6 +199,12 @@ row_gap = 1
 
 [ui.sidebar.spaces]
 row_gap = 1
+# Show the PR number (reported by scripts/herdr-pr-poller) on the workspace row.
+# Declaring rows overrides the default layout, so the built-in rows are restated.
+rows = [
+  ["state_icon", "workspace", "$pr"],
+  ["branch", "git_status"],
+]
 
 # Background notification popup delivery
 [ui.toast]

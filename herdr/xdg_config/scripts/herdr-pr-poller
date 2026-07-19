@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+# herdr-pr-poller — populate the Space sidebar `$pr` token with each workspace's
+# GitHub PR number, authoritatively, via `gh`.
+#
+# For every workspace, it finds a representative pane's cwd (from the Herdr API
+# snapshot), resolves that repo's current branch, and asks `gh` for the PR tied
+# to that branch. The number (plus a state suffix for non-open PRs) is reported
+# as workspace metadata token `pr`; workspaces with no PR have the token cleared.
+#
+# Pairs with:  [ui.sidebar.spaces] rows = [["state_icon","workspace","$pr"], ...]
+#
+# Usage:
+#   herdr-pr-poller           # loop forever (for a service / detached shell)
+#   herdr-pr-poller --once    # single sweep (for a systemd timer / cron)
+#
+# Env:
+#   HERDR_PR_POLL_INTERVAL   seconds between sweeps in loop mode (default 90)
+#   HERDR_PR_POLL_JOBS       parallel `gh` lookups per sweep       (default 4)
+set -uo pipefail
+
+herdr=${HERDR_BIN_PATH:-herdr}
+source_id="gh-pr-poller"
+interval=${HERDR_PR_POLL_INTERVAL:-90}
+jobs=${HERDR_PR_POLL_JOBS:-4}
+# TTL outlives ~3 sweeps so a dead poller's badges expire instead of going stale.
+ttl_ms=$(( interval * 3000 ))
+
+command -v gh  >/dev/null 2>&1 || { echo "herdr-pr-poller: gh not found" >&2; exit 1; }
+command -v jq  >/dev/null 2>&1 || { echo "herdr-pr-poller: jq not found" >&2; exit 1; }
+
+# Resolve one workspace's PR token and report it. Args: workspace_id, cwd.
+resolve_one() {
+  local ws=$1 cwd=$2 branch pr state number value
+
+  # Skip non-git dirs and detached HEAD (no branch → no PR to track).
+  branch=$(git -C "$cwd" symbolic-ref --quiet --short HEAD 2>/dev/null) || {
+    "$herdr" workspace report-metadata "$ws" --source "$source_id" --clear-token pr >/dev/null 2>&1
+    return
+  }
+
+  # `gh pr view <branch>` resolves the repo from the cwd's git remotes.
+  local err tmp
+  tmp=$(mktemp)
+  pr=$(cd "$cwd" && gh pr view "$branch" --json number,state,isDraft 2>"$tmp") || {
+    err=$(<"$tmp"); rm -f "$tmp"
+    # "no PR" is a real answer → clear. A transient error → leave the value be.
+    if [[ $err == *"no pull requests found"* ]]; then
+      "$herdr" workspace report-metadata "$ws" --source "$source_id" --clear-token pr >/dev/null 2>&1
+    fi
+    return
+  }
+  rm -f "$tmp"
+
+  number=$(jq -r '.number' <<<"$pr")
+  state=$(jq -r 'if .isDraft and .state=="OPEN" then "draft" else .state end' <<<"$pr")
+  case $state in
+    OPEN)   value="#${number}" ;;
+    draft)  value="#${number} draft" ;;
+    MERGED) value="#${number} merged" ;;
+    CLOSED) value="#${number} closed" ;;
+    *)      value="#${number}" ;;
+  esac
+
+  "$herdr" workspace report-metadata "$ws" \
+    --source "$source_id" --token "pr=${value}" --ttl-ms "$ttl_ms" >/dev/null 2>&1
+}
+
+sweep() {
+  # workspace_id \t representative cwd (prefer foreground_cwd, first pane wins).
+  "$herdr" api snapshot 2>/dev/null | jq -r '
+      .result.snapshot.panes
+      | group_by(.workspace_id)
+      | map(.[0])
+      | .[]
+      | [.workspace_id, (.foreground_cwd // .cwd)]
+      | @tsv
+    ' | while IFS=$'\t' read -r ws cwd; do
+      [[ -n $ws && -n $cwd && -d $cwd ]] || continue
+      # Bound concurrency of network-bound gh lookups.
+      while (( $(jobs -rp | wc -l) >= jobs )); do wait -n; done
+      resolve_one "$ws" "$cwd" &
+    done
+  wait
+}
+
+if [[ ${1:-} == --once ]]; then
+  sweep
+  exit 0
+fi
+
+while :; do
+  sweep
+  sleep "$interval"
+done

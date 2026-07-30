@@ -2,6 +2,7 @@
 *.log
 session.json
 plugins.json
+release-notes.json
 
 # Herdr-managed plugin installs (we link/develop plugins from ~/dev instead)
 plugins/github/

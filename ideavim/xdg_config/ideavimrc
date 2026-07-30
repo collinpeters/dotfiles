@@ -16,6 +16,7 @@ set history=1000
 
 " ----------------
 " Plugins (builtin)
+set VimEverywhere
 set NERDTree
 set which-key
 set notimeout " for which-key

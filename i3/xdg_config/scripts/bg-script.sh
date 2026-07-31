@@ -15,7 +15,7 @@ while true; do
   feh --bg-scale /usr/share/backgrounds/current-background.jpg
 
   # let it stay for awhile
-  sleep 1h
+  sleep 24h
 
   # rotate in next one
   RESULT=$(./bg-rotor.sh $PICTURES_FOLDER $SEEN_FOLDER)

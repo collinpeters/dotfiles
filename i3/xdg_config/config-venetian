@@ -15,6 +15,10 @@ font pango:UbuntuMono Nerd Font 13
 # Font for alacritty terminal
 set $ALACRITTY_FONT_SIZE 11
 
+# Terminal
+set $terminal alacritty
+set $terminal_scratch alacritty --class scratchcli -e tmux new-session -A -s scratchcli
+
 # Load the core config
 include core-config
 

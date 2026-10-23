@@ -23,3 +23,9 @@ include core-config
 set $mod Mod4
 bindsym $mod+o exec "$HOME/Apps/bash-otp/otp.sh sonatype-aws"
 bindsym $mod+i exec intellij-idea-ultimate
+
+# app workspace assignments
+assign [class="slack"] workspace 4
+
+# focus Slack
+bindsym $mod+c [class="slack"] focus

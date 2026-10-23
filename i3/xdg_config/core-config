@@ -62,9 +62,6 @@ bindsym $mod+a focus parent
 # open a new browser
 bindsym $mod+b exec x-www-browser
 
-# focus Slack
-bindsym $mod+c [class="Slack"] focus
-
 # reload the configuration file
 bindsym $mod+Shift+c reload
 
@@ -195,7 +192,6 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightne
 for_window [class="Pavucontrol" instance="pavucontrol"] floating enable
 
 # app workspace assignments
-assign [class="Slack"] workspace 4
 assign [class="Spotify"] workspace 5
 
 # scratch cli running a persistent tmux instance

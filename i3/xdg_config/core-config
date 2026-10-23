@@ -192,6 +192,7 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightne
 # assign certain apps to be floating
 for_window [class="Pavucontrol" instance="pavucontrol"] floating enable
 for_window [class="^Google-chrome$" instance="^crx_nngceckbapebfimnlniiiahkandclblb$"] floating enable
+for_window [class="Gedit" instance="gedit"] floating enable
 
 # app workspace assignments
 assign [class="Spotify"] workspace 5

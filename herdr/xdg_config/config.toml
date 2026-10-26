@@ -316,11 +316,15 @@ command = "third774.last-workspace.toggle"
 description = "last workspace"
 
 # Create/resume a Git worktree via `wtp` (runs .wtp.yaml hooks), opened as a
-# workspace. Trigger from inside a project pane.
+# workspace. Trigger from inside a project pane. Runs as a session-modal popup
+# (like the sessionizer above) so fzf gets a real TTY floating over the current
+# tab layout instead of retiling it.
 [[keys.command]]
 key = "prefix+ctrl+g"
-type = "pane"
+type = "popup"
 command = "~/.config/herdr/scripts/herdr-wtp"
+width = "50%"
+height = "80%"
 description = "worktree: create/resume via wtp"
 
 # New worktrees created via Herdr's built-in worktree actions (e.g. prefix+shift+g)

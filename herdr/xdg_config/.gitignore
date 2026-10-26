@@ -4,8 +4,12 @@ session.json
 plugins.json
 release-notes.json
 .plugins.lock
-herdr.sock.agent
+*.sock*
 session-snapshots/
 
 # Herdr-managed plugin installs (we link/develop plugins from ~/dev instead)
 plugins/github/
+
+# Plugin runtime output and secrets
+plugins/config/*/serve.out
+plugins/config/*/.env

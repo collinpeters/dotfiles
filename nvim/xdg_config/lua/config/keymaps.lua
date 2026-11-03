@@ -23,122 +23,169 @@ vim.keymap.del("n", "<leader>dph")
 vim.keymap.del("n", "<leader>dpp")
 vim.keymap.del("n", "<leader>dps")
 
--- VS Code - specifics for if we are in VS Code or NOT in VS Code
--- stylua: ignore start
-if not vim.g.vscode then
-  -- Todo
+-- ============================================================================
+-- IdeaVim-mirrored keymaps (native Neovim)
+-- Ported from ~/.config/ideavim/ideavimrc. Goal: IntelliJ muscle memory for
+-- LSP-level navigation. Run/debug/build intentionally omitted (run from
+-- console, debug in IntelliJ). Java LSP via lazyvim.plugins.extras.lang.java.
+--
+-- Where a mapping overrides a LazyVim default, the default is noted inline for
+-- reference (kept, not used).
+-- ============================================================================
+
+local map = vim.keymap.set
+
+-- Small helper: prefer a jdtls-aware handler for Java, else the LSP fallback.
+local function java_or(lsp_fn, jdtls_method)
+  return function()
+    local ok, jdtls = pcall(require, "jdtls")
+    if ok and vim.bo.filetype == "java" and jdtls[jdtls_method] then
+      jdtls[jdtls_method]()
+    else
+      lsp_fn()
+    end
+  end
 end
 
-if vim.g.vscode then
-  -- Helper function to call VSCode commands
-  local vscode = require("vscode")
+-- ----------------------------------------------------------------------------
+-- <leader>o : Open / search / find   (ideavimrc: SearchEverywhere etc.)
+-- ----------------------------------------------------------------------------
+map("n", "<leader>oe", function()
+  Snacks.picker.smart()
+end, { desc = "Search everywhere" })
+map("n", "<leader>oa", function()
+  Snacks.picker.commands()
+end, { desc = "Search for action" })
+map("n", "<leader>oc", function()
+  Snacks.picker.lsp_workspace_symbols()
+end, { desc = "Search for class" })
+map("n", "<leader>of", function()
+  Snacks.picker.files()
+end, { desc = "Search for file" })
+map("n", "<leader>og", function()
+  Snacks.picker.grep()
+end, { desc = "Grep in files" })
+map("n", "<leader>or", function()
+  Snacks.picker.recent()
+end, { desc = "Recent files" })
+map("n", "<leader>os", function()
+  Snacks.picker.lsp_symbols()
+end, { desc = "Goto symbol" })
 
-  -- Open/search/find mappings
-  vim.keymap.set('n', '<leader>oe', function() vscode.call('workbench.action.showCommands') end, { desc = 'Search everywhere' })
-  vim.keymap.set('n', '<leader>oa', function() vscode.call('workbench.action.showCommands') end, { desc = 'Go to action' })
-  vim.keymap.set('n', '<leader>oc', function() vscode.call('workbench.action.showAllSymbols') end, { desc = 'Go to class' })
-  vim.keymap.set('n', '<leader>of', function() vscode.call('workbench.action.quickOpen') end, { desc = 'Go to file' })
-  vim.keymap.set('n', '<leader>og', function() vscode.call('workbench.action.findInFiles') end, { desc = 'Find in path' })
-  vim.keymap.set('n', '<leader>or', function() vscode.call('workbench.action.openRecent') end, { desc = 'Recent files' })
-  vim.keymap.set('n', '<leader>os', function() vscode.call('workbench.action.gotoSymbol') end, { desc = 'Go to symbol' })
+-- ----------------------------------------------------------------------------
+-- <leader>g : Goto / jumps   (ideavimrc: GotoDeclaration etc.)
+-- LazyVim default <leader>g* = git prefix (lazygit <leader>gg, git log <leader>gl,
+--   git blame <leader>gb, git browse <leader>gB/gY). Overridden below.
+-- Vim-idiomatic LSP jumps gd/gr/gI/gy/gD from LazyVim are kept as-is.
+-- ----------------------------------------------------------------------------
+map("n", "<leader>gd", vim.lsp.buf.definition, { desc = "Goto declaration" })
+map("n", "<leader>gK", vim.lsp.buf.type_definition, { desc = "Goto type declaration" })
+map("n", "<leader>gi", vim.lsp.buf.implementation, { desc = "Goto implementation" })
+map("n", "<leader>gs", java_or(vim.lsp.buf.definition, "super_implementation"), { desc = "Goto super method" })
+-- GotoTest / GotoRelated: no clean native equivalent without extra tooling.
+-- map("n", "<leader>gt", ...)  -- ideavim: GotoTest
+-- map("n", "<leader>gl", ...)  -- ideavim: GotoRelated  (NOTE: LazyVim default = Git Log)
 
-  -- Navigate -> goto/jumps
-  -- Go to definition - LazyVim default: gd
-  -- Go to references - LazyVim default: gr
-  -- Go to implementation - LazyVim default: gI
-  -- Go to t[y]pe definition - LazyVim default: gy
-  -- Go to declaration - LazyVim default: gD
-  -- vim.keymap.set('n', '<leader>gd', function() vscode.call('editor.action.revealDefinition') end, { desc = 'Goto definition' })
-  -- vim.keymap.set('n', '<leader>gK', function() vscode.call('editor.action.goToTypeDefinition') end, { desc = 'Goto type definition' })
-  -- vim.keymap.set('n', '<leader>gi', function() vscode.call('editor.action.revealDefinition') end, { desc = 'Goto implementation' })
-  -- vim.keymap.set('n', '<leader>gs', function() vscode.call('editor.action.goToReferences') end, { desc = 'Goto super method' })
-  vim.keymap.set('n', '<leader>gt', function() vscode.call('java.test.goToTest') end, { desc = 'Goto test' })
-  -- vim.keymap.set('n', '<leader>gl', function() vscode.call('editor.action.goToReferences') end, { desc = 'Goto related' })
+-- ----------------------------------------------------------------------------
+-- Navigate -> windows/dialogs
+-- ----------------------------------------------------------------------------
+-- LazyVim default <leader>m = (unused prefix). ideavim: FileStructurePopup.
+map("n", "<leader>m", function()
+  Snacks.picker.lsp_symbols()
+end, { desc = "File structure" })
+-- LazyVim default <leader>u* = UI-toggle prefix (uf format, ur redraw, ud diagnostics...).
+-- Overridden: ideavim FindUsages.
+map("n", "<leader>u", vim.lsp.buf.references, { desc = "Find usages" })
 
-  -- Navigate -> windows/dialogs
-  vim.keymap.set('n', '<leader>m', function() vscode.call('workbench.action.gotoSymbol') end, { desc = 'File structure' })
-  vim.keymap.set('n', '<leader>u', function() vscode.call('references-view.findReferences') end, { desc = 'Find usages' })
+-- ----------------------------------------------------------------------------
+-- <leader>s : Show (hierarchies / structure / diff)   (ideavimrc)
+-- LazyVim default <leader>s* = search prefix (only present with snacks_picker
+--   extra, which is NOT enabled here). Safe to reuse.
+-- ----------------------------------------------------------------------------
+map("n", "<leader>sh", function()
+  Snacks.picker.lsp_incoming_calls()
+end, { desc = "Call hierarchy" })
+map("n", "<leader>st", function()
+  Snacks.picker.lsp_type_definitions()
+end, { desc = "Type hierarchy" })
+map("n", "<leader>ss", function()
+  Snacks.picker.lsp_symbols()
+end, { desc = "Structure view" })
+map("n", "<leader>sd", function()
+  Snacks.picker.git_diff()
+end, { desc = "Show diff" })
 
-  -- Show (in sidebar)
-  vim.keymap.set('n', '<leader>sh', function() vscode.call('references-view.showCallHierarchy') end, { desc = 'Call hierarchy' })
-  vim.keymap.set('n', '<leader>st', function() vscode.call('references-view.showTypeHierarchy') end, { desc = 'Type hierarchy' })
-  vim.keymap.set('n', '<leader>ss', function() vscode.call('outline.focus') end, { desc = 'Structure view' })
-  vim.keymap.set('n', '<leader>sd', function() vscode.call('workbench.scm.focus') end, { desc = 'Show diff' })
+-- ----------------------------------------------------------------------------
+-- Code / refactor
+-- ----------------------------------------------------------------------------
+-- ideavim <leader>f = ReformatCode + OptimizeImports.
+-- LazyVim default: format is <leader>cf; <leader>f* is find prefix (ff, fr, fn...).
+map({ "n", "v" }, "<leader>f", function()
+  require("conform").format({ async = false, lsp_format = "fallback" })
+  -- organize imports via LSP code action (jdtls / ts / etc.)
+  vim.lsp.buf.code_action({
+    context = { only = { "source.organizeImports" }, diagnostics = {} },
+    apply = true,
+  })
+end, { desc = "Format code and organize imports" })
 
-  -- Code formatting
-  vim.keymap.set('n', '<leader>f', function() 
-    vscode.call('editor.action.formatDocument')
-    vscode.call('editor.action.organizeImports')
-  end, { desc = 'Format code and organize imports' })
+-- LazyVim default <leader>rr = (unused). ideavim: RenameElement.
+map("n", "<leader>rr", vim.lsp.buf.rename, { desc = "Rename element" })
 
-  -- NERDTree equivalent (Explorer)
-  vim.keymap.set('n', '<leader>t', function() vscode.call('workbench.files.action.showActiveFileInExplorer') end, { desc = 'Goto project window' })
+-- ----------------------------------------------------------------------------
+-- Project tree   (ideavim: NERDTreeFind)
+-- LazyVim default <leader>t = (unused prefix); explorer is <leader>e.
+-- LazyVim default <leader>ft/fT = terminal.
+-- ----------------------------------------------------------------------------
+map("n", "<leader>t", function()
+  Snacks.explorer.reveal()
+end, { desc = "Goto project window" })
 
-  -- Refactor
-  vim.keymap.set('n', '<leader>rr', function() vscode.call('editor.action.rename') end, { desc = 'Rename element' })
+-- ----------------------------------------------------------------------------
+-- Move statements up/down   (ideavim: MoveStatement, <C-Up>/<C-Down>)
+-- LazyVim default <C-Up>/<C-Down> = resize window height (kept for reference).
+-- LazyVim also provides <A-j>/<A-k> for move (kept).
+-- ----------------------------------------------------------------------------
+map("n", "<C-Up>", "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", { desc = "Move line up" })
+map("n", "<C-Down>", "<cmd>execute 'move .+' . v:count1<cr>==", { desc = "Move line down" })
+map("v", "<C-Up>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", { desc = "Move lines up" })
+map("v", "<C-Down>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", { desc = "Move lines down" })
 
-  -- Execute - run/debug
-  vim.keymap.set('n', '<leader>xb', function() vscode.call('editor.debug.action.toggleBreakpoint') end, { desc = 'Toggle breakpoint' })
-  vim.keymap.set('n', '<leader>xr', function() vscode.call('workbench.action.debug.run') end, { desc = 'Run previous' })
-  vim.keymap.set('n', '<leader>xR', function() vscode.call('java.debug.runJavaFile') end, { desc = 'Run current class' })
-  vim.keymap.set('n', '<leader>xd', function() vscode.call('workbench.action.debug.start') end, { desc = 'Debug previous' })
-  vim.keymap.set('n', '<leader>xD', function() vscode.call('java.debug.debugJavaFile') end, { desc = 'Debug current class' })
-  vim.keymap.set('n', '<leader>xc', function() vscode.call('workbench.action.debug.selectandstart') end, { desc = 'Choose run configuration' })
-  vim.keymap.set('n', '<leader>xC', function() vscode.call('workbench.action.debug.selectandstart') end, { desc = 'Choose debug configuration' })
+-- ----------------------------------------------------------------------------
+-- Unimpaired-style navigation   (ideavimrc [x / ]x)
+-- Mapped to nearest native targets.
+-- ----------------------------------------------------------------------------
+map("n", "[<leader>", "<C-o>", { desc = "Navigate back" })
+map("n", "]<leader>", "<C-i>", { desc = "Navigate forward" })
+-- [q/]q quickfix, [d/]d diagnostics, [h/]h git hunks are LazyVim/gitsigns defaults (kept).
+-- ideavim [f/]f = prev/next error -> LazyVim default [e/]e (kept). [f/]f stay
+-- LazyVim's treesitter function jumps (buffer-local, so a global map never fires).
+-- ideavim [m/]m = method up/down:
+map("n", "[m", "[m", { desc = "Method up" })
+map("n", "]m", "]m", { desc = "Method down" })
 
-  -- Build (Java/Maven specific - adjust based on your project type)
-  vim.keymap.set('n', '<leader>bc', function() vscode.call('java.compile.workspace') end, { desc = 'Compile file' })
-  vim.keymap.set('n', '<leader>bd', function() vscode.call('java.compile.workspace') end, { desc = 'Compile dirty files' })
-  vim.keymap.set('n', '<leader>bp', function() vscode.call('java.compile.workspace') end, { desc = 'Compile project' })
+-- ----------------------------------------------------------------------------
+-- Git   (ideavim: <leader>Gd Compare.SameVersion)
+-- ----------------------------------------------------------------------------
+map("n", "<leader>Gd", function()
+  require("gitsigns").diffthis()
+end, { desc = "Git diff" })
 
-  -- Windows
-  vim.keymap.set('n', '<leader>wM', function() vscode.call('workbench.view.extensions') end, { desc = 'Activate Maven tool window' })
-  vim.keymap.set('n', '<leader>wm', function() vscode.call('java.projectConfiguration.update') end, { desc = 'Maven reimport' })
-  vim.keymap.set('n', '<leader>wd', function() vscode.call('workbench.view.debug') end, { desc = 'Activate debug tool window' })
-  vim.keymap.set('n', '<leader>wr', function() vscode.call('workbench.action.output.toggleOutput') end, { desc = 'Activate run tool window' })
-  vim.keymap.set('n', '<leader>wp', function() vscode.call('workbench.action.quickSwitchWindow') end, { desc = 'Next project window' })
-  vim.keymap.set('n', '<leader>wP', function() vscode.call('workbench.action.openRecent') end, { desc = 'Recent projects window' })
-  vim.keymap.set('n', '<leader>wh', function() vscode.call('workbench.action.closePanel') end, { desc = 'Hide all windows' })
-  vim.keymap.set('n', '<leader>wt', function() vscode.call('workbench.action.moveEditorToNextGroup') end, { desc = 'Move editor to opposite tab group' })
+-- ----------------------------------------------------------------------------
+-- Reselect visual selection after indenting   (kept; also LazyVim default)
+-- ----------------------------------------------------------------------------
+map("v", "<", "<gv", { desc = "Indent left and reselect" })
+map("v", ">", ">gv", { desc = "Indent right and reselect" })
 
-  -- Move lines up and down
-  vim.keymap.set('n', '<C-Up>', function() vscode.call('editor.action.moveLinesUpAction') end, { desc = 'Move line up' })
-  vim.keymap.set('n', '<C-Down>', function() vscode.call('editor.action.moveLinesDownAction') end, { desc = 'Move line down' })
-  vim.keymap.set('v', '<C-Up>', function() vscode.call('editor.action.moveLinesUpAction') end, { desc = 'Move lines up' })
-  vim.keymap.set('v', '<C-Down>', function() vscode.call('editor.action.moveLinesDownAction') end, { desc = 'Move lines down' })
-
-  -- Unimpaired mappings
-  vim.keymap.set('n', '[<leader>', function() vscode.call('workbench.action.navigateBack') end, { desc = 'Navigate back' })
-  vim.keymap.set('n', ']<leader>', function() vscode.call('workbench.action.navigateForward') end, { desc = 'Navigate forward' })
-  vim.keymap.set('n', '[q', function() vscode.call('editor.action.marker.prevInFiles') end, { desc = 'Previous occurrence' })
-  vim.keymap.set('n', ']q', function() vscode.call('editor.action.marker.nextInFiles') end, { desc = 'Next occurrence' })
-  vim.keymap.set('n', '[m', function() vscode.call('cursorMove', { to = 'prevBlankLine' }) end, { desc = 'Method up' })
-  vim.keymap.set('n', ']m', function() vscode.call('cursorMove', { to = 'nextBlankLine' }) end, { desc = 'Method down' })
-  vim.keymap.set('n', '[c', function() vscode.call('workbench.action.editor.previousChange') end, { desc = 'Previous change marker' })
-  vim.keymap.set('n', ']c', function() vscode.call('workbench.action.editor.nextChange') end, { desc = 'Next change marker' })
-  vim.keymap.set('n', '[f', function() vscode.call('editor.action.marker.prevInFiles') end, { desc = 'Go to previous error' })
-  vim.keymap.set('n', ']f', function() vscode.call('editor.action.marker.nextInFiles') end, { desc = 'Go to next error' })
-  vim.keymap.set('n', '[e', function() vscode.call('workbench.action.compareEditor.previousChange') end, { desc = 'Jump to next change' })
-  vim.keymap.set('n', ']e', function() vscode.call('workbench.action.compareEditor.nextChange') end, { desc = 'Jump to last change' })
-
-  -- Git mappings
-  vim.keymap.set('n', '<leader>Gd', function() vscode.call('git.openChange') end, { desc = 'Git diff' })
-
-  -- Reselect visual selection after indenting
-  vim.keymap.set('v', '<', '<gv', { desc = 'Indent left and reselect' })
-  vim.keymap.set('v', '>', '>gv', { desc = 'Indent right and reselect' })
-
-  -- ----------------
-  -- Additional VSCode-Neovim specific settings
-
-  -- Ensure VSCode handles certain key combinations
-  -- Note: In VSCode-Neovim, some of these might need to be configured in VSCode settings.json
-  -- Add these to your VSCode settings.json if needed:
-  --   "vscode-neovim.ctrlKeysForNormalMode": ["<C-h>", "<C-j>", "<C-k>", "<C-l>"]
-
-  -- Optional: Enable which-key equivalent using legendary.nvim or which-key.nvim
-  -- You'll need to install these as Neovim plugins separately
-  -- Example with which-key.nvim:
-  -- require("which-key").setup({})
+-- ----------------------------------------------------------------------------
+-- which-key group labels (mirror ideavim whichkeyrc)
+-- ----------------------------------------------------------------------------
+local ok_wk, wk = pcall(require, "which-key")
+if ok_wk then
+  wk.add({
+    { "<leader>o", group = "Search" },
+    { "<leader>g", group = "Goto" },
+    { "<leader>s", group = "Show" },
+    { "<leader>r", group = "Refactor" },
+  })
 end
--- stylua: ignore end

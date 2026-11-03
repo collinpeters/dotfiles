@@ -12,6 +12,9 @@
 /windows.json
 /update-notes.json
 /data/
+/telemetry/
+# Why an invalid file was rejected: keys.error, settings.error, layout.error, ... (AGENTS.md:52)
+*.error
 
 # Rewritten by Herdr on every start
 /AGENTS.md

@@ -1,0 +1,14 @@
+{
+  "zoom": 1,
+  "sounds": {
+    "enabled": true
+  },
+  "minimum_contrast": 1,
+  "ui_font": "DejaVuSansM Nerd Font",
+  "appearance": "dark",
+  "theme": {
+    "light": "paper",
+    "dark": "atom-one-dark"
+  },
+  "telemetry": false
+}

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# herdr-wtp BRANCH [--new] — create (or resume) a Git worktree for BRANCH with
+# `wtp add` (so .wtp.yml hooks run), then show its Herdr space. --new creates the
+# branch (`wtp add -b`). Run by the `wtp` mod (keys.json: "ctrl-a ctrl-g") in a
+# dialog terminal in the repo's folder; the mod picks the branch.
+set -uo pipefail
+branch=${1:?usage: herdr-wtp BRANCH [--new]}
+
+# The worktree checked out on BRANCH, if any. (`wtp cd` takes worktree names,
+# not branches, and doesn't see unmanaged worktrees.)
+worktree_of() {
+  git worktree list --porcelain \
+    | awk -v want="branch refs/heads/$branch" '/^worktree /{p=substr($0,10)} $0==want{print p; exit}'
+}
+
+path=$(worktree_of)
+if [[ -z $path ]]; then
+  if [[ ${2:-} == --new ]]; then wtp add -b "$branch"; else wtp add "$branch"; fi
+  rc=$?
+  path=$(worktree_of)
+  if (( rc != 0 )) || [[ -z $path ]]; then
+    [[ -z $path ]] && echo "herdr-wtp: no worktree for '$branch'"
+    read -rsn1 -p $'\nwtp failed. Press any key to close.'
+    [[ -n $path ]] || exit 1
+  fi
+fi
+
+# Show the worktree's space, or create it (name = folder name, dots made underscores).
+name=$(basename "$path" | tr . _)
+id=$(herdr-app ls | jq -r --arg n "$name" \
+       '.spaces[] | select(.machine == null and .name == $n) | .id' | head -n1)
+if [[ -n $id ]]; then
+  herdr-app do space.select --id "$id" >/dev/null
+else
+  herdr-app do space.new --name "$name" --folder "$path" --machine '' >/dev/null
+fi

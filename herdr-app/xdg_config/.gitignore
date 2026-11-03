@@ -1,0 +1,64 @@
+# herdr-app: ~/.config/herdr-app is a symlink to this folder (script/bootstrap).
+# Commit only hand-written files: keys.json, settings.json, programs.json,
+# own mods/layouts/themes, scripts/. Everything below is Herdr's.
+
+# Written by Herdr while it runs (AGENTS.md "The files")
+/view.json
+/shared.json
+/shared.json.corrupt-*
+/seen.json
+/installed.json
+/window.json
+/windows.json
+/update-notes.json
+/data/
+
+# Rewritten by Herdr on every start
+/AGENTS.md
+/icons/
+/frame/
+/update-notes-media/
+*.d.ts
+jsconfig.json
+node_modules/
+
+# Layout clicks (sizes, panel picks, theme pick, a copy of the layout)
+/layouts/.state/
+
+# Asides Herdr makes (escape hatch, layout.reset, key migration).
+# <name>-edited mods/layouts are left visible on purpose: they are your edits.
+*.reset-*
+*.old-*
+*.pre-herdr-migration
+
+# Shipped layouts and themes (replaced whole on start)
+/layouts/main.json
+/layouts/terminals.json
+/layouts/win98.json
+/layouts/win98.svg
+/themes/atom-one-dark.json
+/themes/win98.json
+
+# Shipped mods (keys of installed.json). A new Herdr release that ships a new
+# mod shows it as untracked: add it here.
+/mods/agents/
+/mods/changes/
+/mods/confirm/
+/mods/files/
+/mods/help/
+/mods/machine-add/
+/mods/menu/
+/mods/new-menu/
+/mods/pane/
+/mods/peek/
+/mods/picker/
+/mods/prompt/
+/mods/spaces/
+/mods/tabs/
+/mods/terminals-bar/
+/mods/terminals-pane/
+/mods/toast/
+/mods/win98/
+/mods/workspace-chrome/
+/mods/workspace-status/
+/mods/worktree/

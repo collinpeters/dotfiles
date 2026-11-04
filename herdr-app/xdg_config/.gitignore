@@ -2,6 +2,9 @@
 # Commit only hand-written files: keys.json, settings.json, programs.json,
 # own mods/layouts/themes, scripts/. Everything below is Herdr's.
 
+# Per-machine mod overrides (e.g. mods/sessionizer/config.local.json)
+config.local.json
+
 # Written by Herdr while it runs (AGENTS.md "The files")
 /view.json
 /shared.json

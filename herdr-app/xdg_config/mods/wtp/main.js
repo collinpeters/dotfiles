@@ -1,6 +1,9 @@
 // ctrl-a ctrl-g: pick a branch of the focused pane's repo (or type a new name),
 // then run scripts/herdr-wtp in a terminal dialog: `wtp add` with its .wtp.yml
-// hooks (live output, no time limit, answerable prompts), then the worktree's space.
+// hooks (live output, no time limit; wtp gives hooks /dev/null as stdin, so they
+// can't prompt), then the worktree's space.
+// A remote space's repo is read on its machine (exec's `on`); the dialog terminal
+// stays here and runs wtp there (herdr-wtp --on).
 // This popup closes before the terminal dialog opens: closing it hands the
 // keyboard back to whatever had it, which would otherwise take it from the dialog.
 import { exec, hc, appHome, focused, spaces, notify, openOverlay } from "herdr";
@@ -14,21 +17,23 @@ export default class Wtp extends FuzzyPick {
     this.branches = [];
     this.worktrees = new Set();
     this.repo = null;
+    this.on = null; // the focused space's machine, null for this computer
     this.message = "Loading branches…";
     cx.spawn(async (cx) => {
       const f = focused();
-      const local = spaces().find((s) => s.id === f?.space)?.machine == null;
-      const cwd = local ? f?.cwd : null;
-      const top = cwd ? await exec("git", ["rev-parse", "--show-toplevel"], { cwd }).catch(() => null) : null;
+      this.on = spaces().find((s) => s.id === f?.space)?.machine ?? null;
+      const git = (args, cwd) => exec("git", args, { cwd, on: this.on });
+      const top = f?.cwd ? await git(["rev-parse", "--show-toplevel"], f.cwd).catch((e) => ({ code: -1, stderr: String(e?.message ?? e) })) : null;
       if (top?.code !== 0) {
-        this.message = cwd ? `Not in a git repo: ${cwd}` : "The focused pane isn't a folder on this computer.";
+        const where = this.on ? ` on ${this.on}` : "";
+        this.message = !f?.cwd ? "The focused pane has no folder." : top.code === -1 ? `${top.stderr}${where}` : `Not in a git repo: ${f.cwd}${where}`;
         return cx.notify();
       }
       this.repo = top.stdout.trim();
-      this.title = `Worktree: ${this.repo.split("/").pop()}`;
+      this.title = `Worktree: ${this.repo.split("/").pop()}${this.on ? ` (${this.on})` : ""}`;
       const [refs, list] = await Promise.all([
-        exec("git", ["for-each-ref", "--format=%(refname)", "refs/heads", "refs/remotes"], { cwd: this.repo }),
-        exec("git", ["worktree", "list", "--porcelain"], { cwd: this.repo }),
+        git(["for-each-ref", "--format=%(refname)", "refs/heads", "refs/remotes"], this.repo),
+        git(["worktree", "list", "--porcelain"], this.repo),
       ]);
       // Local branches, then remote ones with origin/ dropped (remote HEADs skipped).
       const names = lines(refs)
@@ -60,8 +65,9 @@ export default class Wtp extends FuzzyPick {
     cx.spawn(async () => {
       let address = null;
       try {
-        const args = ["run", "--bg", "--json", "--rm", "--no-parent", "--no-notify", "--cwd", this.repo, "--", `${appHome()}/scripts/herdr-wtp`, r.branch];
+        const args = ["run", "--bg", "--json", "--rm", "--no-parent", "--no-notify", "--", `${appHome()}/scripts/herdr-wtp`, r.branch, "--repo", this.repo];
         if (r.create) args.push("--new");
+        if (this.on) args.push("--on", this.on);
         const res = await hc(args);
         if (res.code !== 0) throw new Error(res.stderr.trim() || `hc run exited ${res.code}`);
         address = JSON.parse(res.stdout).address;

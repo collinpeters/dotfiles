@@ -1,21 +1,59 @@
 #!/usr/bin/env bash
-# herdr-wtp BRANCH [--new] — create (or resume) a Git worktree for BRANCH with
-# `wtp add` (so .wtp.yml hooks run), then show its Herdr space. --new creates the
-# branch (`wtp add -b`). Run by the `wtp` mod (keys.json: "ctrl-a ctrl-g") in a
-# dialog terminal in the repo's folder; the mod picks the branch.
+# herdr-wtp BRANCH [--new] [--repo DIR] [--on MACHINE] — create (or resume) a Git
+# worktree for BRANCH with `wtp add` (so .wtp.yml hooks run), then show its Herdr
+# space. --new creates the branch (`wtp add -b`). --repo is the repo's folder
+# (default: here); with --on it is on that machine (`hc machine ls`), where git and
+# wtp run while this script and its herdr-app calls stay on this computer (the
+# window is here). Run by the `wtp` mod (keys.json: "ctrl-a ctrl-g") in a dialog
+# terminal; the mod picks the branch.
 set -uo pipefail
-branch=${1:?usage: herdr-wtp BRANCH [--new]}
+usage='usage: herdr-wtp BRANCH [--new] [--repo DIR] [--on MACHINE]'
+branch='' new='' repo=$PWD on=''
+while (( $# )); do
+  case $1 in
+    --new) new=1 ;;
+    --repo) repo=${2:?$usage}; shift ;;
+    --on) on=${2:?$usage}; shift ;;
+    -*) echo "$usage" >&2; exit 2 ;;
+    *) branch=$1 ;;
+  esac
+  shift
+done
+[[ -n $branch ]] || { echo "$usage" >&2; exit 2; }
+
+# git in the repo, on its machine.
+repo_git() {
+  if [[ -n $on ]]; then hc exec --on "$on" --cwd "$repo" -- git "$@"; else git -C "$repo" "$@"; fi
+}
 
 # The worktree checked out on BRANCH, if any. (`wtp cd` takes worktree names,
 # not branches, and doesn't see unmanaged worktrees.)
 worktree_of() {
-  git worktree list --porcelain \
+  repo_git worktree list --porcelain \
     | awk -v want="branch refs/heads/$branch" '/^worktree /{p=substr($0,10)} $0==want{print p; exit}'
+}
+
+# wtp add in the repo. Remotely it runs in a terminal there, in the user's login
+# and interactive shell (where wtp is on PATH), attached here so its output shows
+# live and typing reaches wtp (not its hooks: wtp runs them with stdin /dev/null);
+# detaching (ctrl-\) counts as a failure and ends it.
+wtp_add() {
+  local args=(add ${new:+-b} "$branch")
+  if [[ -z $on ]]; then (cd "$repo" && wtp "${args[@]}"); return; fi
+  local address code
+  address=$(hc run --bg --json --no-notify --on "$on" --cwd "$repo" -- \
+              sh -c 'exec "${SHELL:-sh}" -lic "$1"' sh "wtp $(printf '%q ' "${args[@]}")" | jq -r .address) \
+    || return 1
+  hc attach "$address"
+  code=$(hc get --json "$address" | jq -r '.exit_code // 1')
+  hc kill "$address" >/dev/null 2>&1
+  hc rm "$address" >/dev/null 2>&1
+  return "$code"
 }
 
 path=$(worktree_of)
 if [[ -z $path ]]; then
-  if [[ ${2:-} == --new ]]; then wtp add -b "$branch"; else wtp add "$branch"; fi
+  wtp_add
   rc=$?
   path=$(worktree_of)
   if (( rc != 0 )) || [[ -z $path ]]; then
@@ -25,12 +63,13 @@ if [[ -z $path ]]; then
   fi
 fi
 
-# Show the worktree's space, or create it (name = folder name, dots made underscores).
+# Show the worktree's space on its machine, or create it (name = folder name,
+# dots made underscores).
 name=$(basename "$path" | tr . _)
-id=$(herdr-app ls | jq -r --arg n "$name" \
-       '.spaces[] | select(.machine == null and .name == $n) | .id' | head -n1)
+id=$(herdr-app ls | jq -r --arg n "$name" --arg m "$on" \
+       '.spaces[] | select((.machine // "") == $m and .name == $n) | .id' | head -n1)
 if [[ -n $id ]]; then
   herdr-app do space.select --id "$id" >/dev/null
 else
-  herdr-app do space.new --name "$name" --folder "$path" --machine '' >/dev/null
+  herdr-app do space.new --name "$name" --folder "$path" --machine "$on" >/dev/null
 fi

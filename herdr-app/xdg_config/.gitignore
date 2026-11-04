@@ -14,6 +14,7 @@ config.local.json
 /window.json
 /windows.json
 /update-notes.json
+/update-notes-cache.md
 /data/
 /telemetry/
 # The running window's control socket (herdr-app status/do/shot)

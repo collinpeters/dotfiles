@@ -16,6 +16,8 @@ config.local.json
 /update-notes.json
 /data/
 /telemetry/
+# The running window's control socket (herdr-app status/do/shot)
+/herdr-app.sock
 # Why an invalid file was rejected: keys.error, settings.error, layout.error, ... (AGENTS.md:52)
 *.error
 

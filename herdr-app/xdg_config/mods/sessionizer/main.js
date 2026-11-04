@@ -2,8 +2,8 @@
 // creating it if needed (port of the old herdr tmux-style sessionizer).
 // Folders: DEFAULTS below, or per machine from config.local.json beside this
 // file (git-ignored). Either key replaces its default list:
-//   { "projects":  [{ "dir": "~/dev", "depth": 2 }],
-//     "worktrees": [{ "dir": "~/dev/worktrees", "depth": 3 }] }
+//   { "projects":  [{ "dir": "~/src", "depth": 2 }],
+//     "worktrees": [{ "dir": "~/src/worktrees", "depth": 3 }] }
 // projects: every folder 1..depth levels under dir. worktrees: every folder
 // up to depth levels under dir whose .git is a file (a linked worktree).
 import * as fs from "fs/promises";

@@ -53,19 +53,20 @@ export default class Wtp extends FuzzyPick {
 
   // A worktree's row is named after its folder (as in `wtp list` and its space)
   // when that differs from its branch, e.g. folder gh-938-fleet-capacity on branch
-  // gh-938-plan; choosing it opens the worktree by its branch. A branch whose
-  // folder another branch's worktree took is left out: wtp add can't make it, and
-  // the worktree row carries its name.
+  // gh-938-plan; choosing it opens the worktree by its branch, and typing either
+  // name finds it. A branch whose folder another branch's worktree took is left
+  // out: wtp add can't make it, and the worktree row carries its name.
   candidates() {
     const paths = [...this.worktrees.values()];
     const rows = [];
     for (const b of this.branches) {
       const path = this.worktrees.get(b);
-      if (path && !path.endsWith(`/${b}`)) rows.push({ key: path, label: path.split("/").pop(), branch: b, tag: `worktree · ${b}` });
-      else if (path) rows.push({ key: b, label: b, branch: b, tag: "worktree" });
-      else if (!paths.some((p) => p.endsWith(`/${b}`))) rows.push({ key: b, label: b, branch: b, tag: null });
+      const base = b.split("/").pop();
+      if (path && !path.endsWith(`/${b}`)) rows.push({ key: path, label: path.split("/").pop(), base, branch: b, tag: `worktree · ${b}` });
+      else if (path) rows.push({ key: b, label: b, base, branch: b, tag: "worktree" });
+      else if (!paths.some((p) => p.endsWith(`/${b}`))) rows.push({ key: b, label: b, base, branch: b, tag: null });
     }
-    return rows.map((r) => ({ ...r, base: r.label.split("/").pop() })).sort((a, b) => (a.label < b.label ? -1 : a.label > b.label ? 1 : 0));
+    return rows.sort((a, b) => (a.label < b.label ? -1 : a.label > b.label ? 1 : 0));
   }
 
   extra(q) {

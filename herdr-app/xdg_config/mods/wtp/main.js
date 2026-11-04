@@ -15,7 +15,7 @@ export default class Wtp extends FuzzyPick {
   init(_props, cx) {
     this.setup(cx, { title: "Worktree", placeholder: "Branch to open, or a new branch name…" });
     this.branches = [];
-    this.worktrees = new Set();
+    this.worktrees = new Map();
     this.repo = null;
     this.on = null; // the focused space's machine, null for this computer
     this.message = "Loading branches…";
@@ -41,16 +41,31 @@ export default class Wtp extends FuzzyPick {
         .filter((n) => !n.endsWith("/HEAD"))
         .map((n) => n.replace(/^origin\//, ""));
       this.branches = [...new Set(names)].sort();
-      // Branches with a linked worktree (the first entry is the main checkout).
+      // Linked worktrees on a branch: branch → folder (the first entry is the main checkout).
       const linked = (list?.stdout ?? "").trim().split("\n\n").slice(1);
-      this.worktrees = new Set(linked.map((b) => b.match(/^branch refs\/heads\/(.+)$/m)?.[1]).filter(Boolean));
+      this.worktrees = new Map(linked
+        .map((b) => [b.match(/^branch refs\/heads\/(.+)$/m)?.[1], b.match(/^worktree (.+)$/m)?.[1]])
+        .filter(([branch, path]) => branch && path));
       this.message = this.branches.length ? null : "No branches";
       cx.notify();
     });
   }
 
+  // A worktree's row is named after its folder (as in `wtp list` and its space)
+  // when that differs from its branch, e.g. folder gh-938-fleet-capacity on branch
+  // gh-938-plan; choosing it opens the worktree by its branch. A branch whose
+  // folder another branch's worktree took is left out: wtp add can't make it, and
+  // the worktree row carries its name.
   candidates() {
-    return this.branches.map((b) => ({ key: b, label: b, base: b.split("/").pop(), branch: b, tag: this.worktrees.has(b) ? "worktree" : null }));
+    const paths = [...this.worktrees.values()];
+    const rows = [];
+    for (const b of this.branches) {
+      const path = this.worktrees.get(b);
+      if (path && !path.endsWith(`/${b}`)) rows.push({ key: path, label: path.split("/").pop(), branch: b, tag: `worktree · ${b}` });
+      else if (path) rows.push({ key: b, label: b, branch: b, tag: "worktree" });
+      else if (!paths.some((p) => p.endsWith(`/${b}`))) rows.push({ key: b, label: b, branch: b, tag: null });
+    }
+    return rows.map((r) => ({ ...r, base: r.label.split("/").pop() })).sort((a, b) => (a.label < b.label ? -1 : a.label > b.label ? 1 : 0));
   }
 
   extra(q) {

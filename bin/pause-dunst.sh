@@ -18,10 +18,17 @@ DURATION_SECONDS=$(awk "BEGIN {print $DISPLAY_MINUTES * 60}")
 cleanup() {
     [[ -n "$SLEEP_PID" ]] && kill "$SLEEP_PID" 2>/dev/null
     echo ""
+    if [[ "$WAS_PAUSED" == "true" ]]; then
+        echo "Script terminated or finished. Dunst was already paused before; leaving it paused."
+        return
+    fi
     echo "Script terminated or finished. Resuming dunst..."
     dunstctl set-paused false
     echo "Dunst resumed."
 }
+
+# Remember whether dunst was already paused, so cleanup doesn't unpause it behind your back
+WAS_PAUSED=$(dunstctl is-paused)
 
 # EXIT covers every way out; INT/TERM just exit so cleanup runs once, via EXIT
 trap cleanup EXIT

@@ -38,7 +38,9 @@ trap 'exit 143' TERM
 
 # --- Main Logic ---
 # Pause dunst
-echo "Pausing dunst for $DISPLAY_MINUTES minutes..."
+UNIT=minutes
+[[ "$DISPLAY_MINUTES" == "1" ]] && UNIT=minute
+echo "Pausing dunst for $DISPLAY_MINUTES $UNIT..."
 dunstctl set-paused true
 
 # Wait for the specified duration (supports non-integers in DURATION_SECONDS due to awk calculation).

@@ -3,16 +3,14 @@
 # --- Configuration ---
 DEFAULT_MINUTES=5 # Default time if no argument is provided
 
-# Determine the duration: use the first argument ($1) if it's a number, otherwise use default
-if [[ "$1" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
-    # Calculate seconds from minutes argument
-    DURATION_SECONDS=$(awk "BEGIN {print $1 * 60}")
-    DISPLAY_MINUTES=$1
-else
-    DURATION_SECONDS=$(awk "BEGIN {print $DEFAULT_MINUTES * 60}")
-    DISPLAY_MINUTES=$DEFAULT_MINUTES
-    echo "No valid argument provided. Defaulting to $DEFAULT_MINUTES minutes."
+# Determine the duration: the first argument ($1) in minutes, or the default if omitted
+DISPLAY_MINUTES=${1:-$DEFAULT_MINUTES}
+if [[ ! "$DISPLAY_MINUTES" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+    echo "Usage: $(basename "$0") [minutes]  (got '$1'; expected a number like 5 or 1.5)" >&2
+    exit 2
 fi
+# Calculate seconds from minutes
+DURATION_SECONDS=$(awk "BEGIN {print $DISPLAY_MINUTES * 60}")
 
 
 # --- Trap and Cleanup Function ---

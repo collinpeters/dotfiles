@@ -18,6 +18,7 @@ fi
 # --- Trap and Cleanup Function ---
 # Define the function to run when the script exits or is interrupted
 cleanup() {
+    [[ -n "$SLEEP_PID" ]] && kill "$SLEEP_PID" 2>/dev/null
     echo ""
     echo "Script terminated or finished. Resuming dunst..."
     dunstctl set-paused false
@@ -35,7 +36,11 @@ trap 'exit 143' TERM
 echo "Pausing dunst for $DISPLAY_MINUTES minutes..."
 dunstctl set-paused true
 
-# Wait for the specified duration (supports non-integers in DURATION_SECONDS due to awk calculation)
-sleep "$DURATION_SECONDS"
+# Wait for the specified duration (supports non-integers in DURATION_SECONDS due to awk calculation).
+# Sleep in the background and `wait`, so a signal interrupts the wait immediately;
+# bash defers traps until a foreground command finishes.
+sleep "$DURATION_SECONDS" &
+SLEEP_PID=$!
+wait "$SLEEP_PID"
 
 # The cleanup function (trap) will automatically run when sleep finishes or is interrupted.

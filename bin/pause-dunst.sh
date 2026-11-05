@@ -24,8 +24,10 @@ cleanup() {
     echo "Dunst resumed."
 }
 
-# Trap signals (INT for Ctrl-C, TERM for standard kill, EXIT for natural end)
-trap cleanup INT TERM EXIT
+# EXIT covers every way out; INT/TERM just exit so cleanup runs once, via EXIT
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 
 # --- Main Logic ---

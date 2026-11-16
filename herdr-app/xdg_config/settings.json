@@ -3,12 +3,15 @@
   "sounds": {
     "enabled": true
   },
-  "minimum_contrast": 1,
+  "font": "UbuntuMono Nerd Font",
+  "font_size": 16,
+  "font_ligatures": false,
   "ui_font": "DejaVuSansM Nerd Font",
+  "telemetry": false,
+  "minimum_contrast": 1,
   "appearance": "dark",
   "theme": {
     "light": "paper",
     "dark": "atom-one-dark"
-  },
-  "telemetry": false
+  }
 }

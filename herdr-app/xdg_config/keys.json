@@ -45,6 +45,7 @@
     "ctrl-shift-/": "app.help",
     "ctrl-shift-?": "app.help",
     "ctrl-shift-b": "layout.toggle:sidebar",
+    "ctrl-shift-m": "mod.open:markdown-viewer",
     "ctrl-shift-n": "space.new",
     "ctrl-shift-t": "tab.new",
     "ctrl-shift-k": "mod.open:picker",
@@ -125,5 +126,13 @@
     "ctrl-insert": "terminal.copy",
     "shift-insert": "terminal.paste",
     "ctrl-a ctrl-a": "send:\u0001"
+  },
+  "mod:markdown-viewer": {
+    "ctrl-=": "markdown-viewer.bigger",
+    "ctrl-+": "markdown-viewer.bigger",
+    "ctrl--": "markdown-viewer.smaller",
+    "alt-=": "markdown-viewer.looser",
+    "alt--": "markdown-viewer.tighter",
+    "ctrl-0": "markdown-viewer.reset"
   }
 }
